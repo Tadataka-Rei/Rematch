@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://dthiw4j1bpkru"]
+
+[ext_resource type="PackedScene" uid="uid://bxtxby0of0lqp" path="res://models/characters/player/Player_loco.glb" id="1_xclpl"]
+[ext_resource type="Script" uid="uid://dblrujvrq4kdw" path="res://scripts/Player_control/player_loco.gd" id="2_ere1b"]
+[ext_resource type="Script" uid="uid://b2eyjoin7eyce" path="res://scripts/Player_control/CameraControl.gd" id="3_olwg4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ere1b"]
+radius = 0.28466797
+height = 2.0188904
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_olwg4"]
+animation = &"Jump"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nobmo"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1ildo"]
+animation = &"RightstrafeRun"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8jnjb"]
+animation = &"Run"
+play_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p42m1"]
+animation = &"LeftstrafeRun"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tes8u"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_bebnq"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_nobmo")
+blend_point_0/pos = Vector2(0, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_1ildo")
+blend_point_1/pos = Vector2(-1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_8jnjb")
+blend_point_2/pos = Vector2(0, -1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_p42m1")
+blend_point_3/pos = Vector2(1, 0)
+blend_point_4/node = SubResource("AnimationNodeAnimation_tes8u")
+blend_point_4/pos = Vector2(0, 1.1)
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ere1b"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i6jpi"]
+animation = &"Walk"
+play_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8fn1l"]
+animation = &"RightStrafeWalk"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0i0k1"]
+animation = &"LeftstrafeWalki"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cc4b3"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_p42m1"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_ere1b")
+blend_point_0/pos = Vector2(0, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_i6jpi")
+blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_8fn1l")
+blend_point_2/pos = Vector2(1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_0i0k1")
+blend_point_3/pos = Vector2(-1, 0)
+blend_point_4/node = SubResource("AnimationNodeAnimation_cc4b3")
+blend_point_4/pos = Vector2(0, 1)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mte5d"]
+animation = &"fall"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nobmo"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1ildo"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8jnjb"]
+xfade_time = 0.3
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i6jpi"]
+xfade_time = 0.3
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_olwg4"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6f410"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_06kcm"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tccgb"]
+xfade_time = 0.3
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p8f4m"]
+xfade_time = 0.3
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_tes8u"]
+states/Jump/node = SubResource("AnimationNodeAnimation_olwg4")
+states/Jump/position = Vector2(758, 81)
+states/RunBlend/node = SubResource("AnimationNodeBlendSpace2D_bebnq")
+states/RunBlend/position = Vector2(591, 8)
+states/Start/position = Vector2(199, 100)
+states/WalkBlend/node = SubResource("AnimationNodeBlendSpace2D_p42m1")
+states/WalkBlend/position = Vector2(386, 81)
+states/fall/node = SubResource("AnimationNodeAnimation_mte5d")
+states/fall/position = Vector2(579, 183)
+transitions = ["Start", "WalkBlend", SubResource("AnimationNodeStateMachineTransition_nobmo"), "fall", "WalkBlend", SubResource("AnimationNodeStateMachineTransition_1ildo"), "WalkBlend", "Jump", SubResource("AnimationNodeStateMachineTransition_8jnjb"), "Jump", "fall", SubResource("AnimationNodeStateMachineTransition_i6jpi"), "WalkBlend", "fall", SubResource("AnimationNodeStateMachineTransition_olwg4"), "WalkBlend", "RunBlend", SubResource("AnimationNodeStateMachineTransition_6f410"), "RunBlend", "WalkBlend", SubResource("AnimationNodeStateMachineTransition_06kcm"), "RunBlend", "Jump", SubResource("AnimationNodeStateMachineTransition_tccgb"), "RunBlend", "fall", SubResource("AnimationNodeStateMachineTransition_p8f4m")]
+graph_offset = Vector2(261, -32)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_xclpl"]
+graph_offset = Vector2(-366.87817, 30.106903)
+nodes/output/position = Vector2(160, 120)
+nodes/locomotion_state_machine/node = SubResource("AnimationNodeStateMachine_tes8u")
+nodes/locomotion_state_machine/position = Vector2(-260, 60)
+node_connections = [&"output", 0, &"locomotion_state_machine"]
+
+[node name="Player_loco" unique_id=1540085897 node_paths=PackedStringArray("animationTree") instance=ExtResource("1_xclpl")]
+script = ExtResource("2_ere1b")
+loco_Walk_BlendPath = "parameters/locomotion_state_machine/WalkBlend/blend_position"
+loco_Run_BlendPath = "parameters/locomotion_state_machine/RunBlend/blend_position"
+loco_PlaybackPath = "parameters/locomotion_state_machine/playback"
+JumpStateName = "Jump"
+FallStateName = "fall"
+WalkStateName = "WalkBlend"
+animationTree = NodePath("AnimationTree")
+
+[node name="Armature" parent="." index="0" unique_id=458754741]
+transform = Transform3D(-0.2, -1.7484556e-08, 7.642742e-16, 0, -8.742278e-09, -0.2, 1.7484556e-08, -0.2, 8.742278e-09, 0, 0, -0.012363)
+
+[node name="Skeleton3D" parent="Armature" index="0" unique_id=538243480]
+bones/0/position = Vector3(-0.00065898895, 0.13331503, -4.4967265)
+bones/0/rotation = Quaternion(-0.7274495, -0.050154123, 0.013256817, 0.6841975)
+bones/1/rotation = Quaternion(-0.0062803426, 0.012635012, 0.021117711, 0.9996775)
+bones/2/rotation = Quaternion(-0.0013373084, 0.002191346, 0.014431621, 0.99989265)
+bones/3/rotation = Quaternion(-0.0015561358, 0.0027645759, 0.014395045, 0.9998914)
+bones/4/rotation = Quaternion(0.09152828, -0.0019560617, 0.0027118146, 0.99579686)
+bones/5/rotation = Quaternion(-0.048549153, 0.007655378, -0.0025965816, 0.9987881)
+bones/6/rotation = Quaternion(1, 6.2796873e-10, -1.6238375e-06, -3.1470752e-06)
+bones/7/rotation = Quaternion(-0.69636804, -0.30825076, 0.5295226, -0.37370968)
+bones/8/rotation = Quaternion(0.4694393, 0.11655423, 0.029801866, 0.87473077)
+bones/9/rotation = Quaternion(-0.059344582, 0.0024156596, 0.036518235, 0.9975665)
+bones/11/rotation = Quaternion(0.6954382, -0.30488628, 0.5458558, 0.35419145)
+bones/12/rotation = Quaternion(0.40099025, -0.21314265, -0.028499428, 0.89048576)
+bones/13/rotation = Quaternion(-0.057507284, -0.005226348, -0.107523955, 0.99252415)
+bones/15/rotation = Quaternion(0.13266051, 0.08382064, 0.9848173, -0.074231006)
+bones/16/rotation = Quaternion(-0.17037773, -0.01709923, 0.031280342, 0.9847338)
+bones/17/rotation = Quaternion(0.51901984, -0.049166434, -0.044107817, 0.8522064)
+bones/18/rotation = Quaternion(0.2903341, 0.045682497, -0.010771551, 0.9557737)
+bones/20/rotation = Quaternion(-0.088624455, -0.022575336, 0.9954859, -0.025376117)
+bones/21/rotation = Quaternion(-0.08182188, 0.083102204, -0.024989748, 0.9928619)
+bones/22/rotation = Quaternion(0.5389265, 0.04020955, 0.011453295, 0.8413147)
+bones/23/rotation = Quaternion(0.31084234, -0.045182783, 0.010216003, 0.94933206)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=85425360]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0817741, 0)
+shape = SubResource("CapsuleShape3D_ere1b")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="3" unique_id=82899149]
+tree_root = SubResource("AnimationNodeBlendTree_xclpl")
+anim_player = NodePath("../AnimationPlayer")
+parameters/locomotion_state_machine/RunBlend/blend_position = Vector2(0.85121953, 0.83886254)
+parameters/locomotion_state_machine/WalkBlend/blend_position = Vector2(-0.002439022, 0.023696661)
+
+[node name="CameraPivot" type="Node3D" parent="." index="4" unique_id=84140556 node_paths=PackedStringArray("bodyNode")]
+script = ExtResource("3_olwg4")
+bodyNode = NodePath("..")
+cameraPanSpeed = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot" index="0" unique_id=35371255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.619663, 3.7516928)
