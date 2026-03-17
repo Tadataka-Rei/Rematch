@@ -1,26 +1,22 @@
 extends Node3D
 
-@export var bodyNode: Node3D;
-@export var cameraPanSpeed: float;
+@export var cameraPanSpeed: float = 0.0015
+@onready var springarm: SpringArm3D = $SpringArm3D
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED;
-	pass # Replace with function body.
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _input(event: InputEvent) -> void:
-	if (event is InputEventMouseMotion):
-		var deltam = event.relative;
-		var newY = bodyNode.rotation_degrees.y - deltam.x * cameraPanSpeed;
-		var newX = rotation_degrees.x + deltam.y * cameraPanSpeed;
+	if event is InputEventMouseMotion:
+		# Rotate the pivot itself (horizontally)
+		rotate_y(-event.relative.x * cameraPanSpeed)
 		
-		newX = clamp(newX, -60, 50);
+		# Rotate the spring arm (vertically)
+		springarm.rotate_x(-event.relative.y * cameraPanSpeed)
+		springarm.rotation.x = clamp(springarm.rotation.x, deg_to_rad(-70), deg_to_rad(30))
 		
-		bodyNode.rotation_degrees= Vector3(0, newY,0);
-		rotation_degrees = Vector3(newX, rotation_degrees.y, 0);
-		
-	if(event.is_action_pressed("ui_cancel")):
-		if(Input.mouse_mode == Input.MOUSE_MODE_CAPTURED):
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
+	if event.is_action_pressed("ui_cancel"):
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED;
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dthiw4j1bpkru" path="res://models/characters/player/player_loco.tscn" id="1_8ri1i"]
 [ext_resource type="Script" uid="uid://dx77wntwq1s1l" path="res://scripts/Player_control/Playerskill.gd" id="2_c3lgt"]
+[ext_resource type="PackedScene" uid="uid://dwl65stnblj20" path="res://entities/test_enemy/Test_dummy.tscn" id="3_3mglk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ri1i"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -49,7 +50,7 @@ mesh = SubResource("PlaneMesh_ytjst")
 shape = SubResource("ConcavePolygonShape3D_8ri1i")
 
 [node name="Player_loco" parent="." unique_id=360992613 instance=ExtResource("1_8ri1i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.953259, 0.063578375, -5.778547)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9168894, 0.063578375, -5.778547)
 transitionSpeed = 3.0
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="Player_loco" unique_id=471239449]
@@ -66,3 +67,6 @@ mesh = SubResource("BoxMesh_8ri1i")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D" unique_id=607591054]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13378644, 0)
 shape = SubResource("ConcavePolygonShape3D_c3lgt")
+
+[node name="TestDummy" parent="." unique_id=1617229400 instance=ExtResource("3_3mglk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8983145, 0.9672575, -13.199508)
