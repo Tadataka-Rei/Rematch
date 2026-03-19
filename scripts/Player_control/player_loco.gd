@@ -1,81 +1,113 @@
 extends CharacterBody3D
 
-@export_group("Paths")
-@export var loco_Walk_BlendPath: String
-@export var loco_Run_BlendPath: String
-@export var loco_PlaybackPath: String
-@export var JumpStateName: String
-@export var FallStateName: String
-@export var WalkStateName: String
-@export var RunStateName: String
+# --- var stuff ---
+@export_group("Animation Paths")
+@export var loco_Walk_BlendPath: String = "parameters/Walk/blend_position"
+@export var loco_Run_BlendPath: String = "parameters/Run/blend_position"
+@export var loco_PlaybackPath: String = "parameters/playback"
 
-@export_group("Settings")
+@export_group("State Names")
+@export var JumpStateName: String = "Jump"
+@export var FallStateName: String = "Fall"
+@export var WalkStateName: String = "Walk"
+@export var RunStateName: String = "Run"
+
+@export_group("Movement Settings")
 @export var animationTree: AnimationTree
-@export var transitionSpeed: float = 8.0
+@export var transitionSpeed: float = 0.3
 @export var speed: float = 5.0
 @export var rotation_speed: float = 10.0
 @export var JUMP_VELOCITY: float = 4.5
 
 @onready var armature: Node3D = $Armature
 @onready var camera_pivot: Node3D = $CameraPivot
+@onready var camera: Camera3D = $CameraPivot/SpringArm3D/Camera3D
+@onready var playback: AnimationNodeStateMachinePlayback = animationTree.get(loco_PlaybackPath)
 
-var curVelocity: Vector2 = Vector2.ZERO
+var blend_input: Vector2 = Vector2.ZERO
 var falling: bool = false
 var running: bool = false
 
+var fall_buffer: float = 0.0 # timer prevent flicker
+const FALL_THRESHOLD: float = 0.3
+# ----------------------------------------bweh---------
+
 func _ready() -> void:
 	if not animationTree:
-		push_error("AnimationTree not assigned!")
+		set_physics_process(false) # Disable movement if all hell break lose
+		push_error("AnimationTree missing!")
 
-func get_playback() -> AnimationNodeStateMachinePlayback:
-	return animationTree.get(loco_PlaybackPath)
-
-# Triggered by Animation Call Method Track
-func Execute_Jump() -> void:
-	velocity.y = JUMP_VELOCITY
-
+#region visuals & FOV
 func _process(delta: float) -> void:
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	curVelocity = curVelocity.move_toward(input_dir, transitionSpeed * delta)
+	var raw_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var target_blend = Vector2(raw_input.x, -raw_input.y)
 	
-	if !running:
-		animationTree.set(loco_Walk_BlendPath, curVelocity)
-	else:
-		animationTree.set(loco_Run_BlendPath, curVelocity)
+	blend_input = blend_input.move_toward(target_blend, transitionSpeed * delta)
 
+
+	var active_path = loco_Run_BlendPath if running else loco_Walk_BlendPath
+	var target_fov = 85.0 if running else 75.0
+	
+	animationTree.set(active_path, blend_input)
+	camera.fov = lerp(camera.fov, target_fov, delta * 5.0)
+#endregion
+
+#region physics & movement
 func _physics_process(delta: float) -> void:
-	# Gravity Logic
+	_handle_gravity(delta)
+	_handle_movement(delta)
+	move_and_slide()
+	
+	# State check AFTER movement to ensure accurate is_on_floor()
+	_update_state()
+
+func _handle_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-		if not falling:
+		
+		fall_buffer += delta
+		if not falling and fall_buffer > FALL_THRESHOLD:
 			falling = true
-			get_playback().travel(FallStateName)
+			playback.travel(FallStateName)
 	else:
+		fall_buffer = 0.0
 		if falling:
 			falling = false
-			get_playback().travel(RunStateName if running else WalkStateName)
+			_sync_animation_state()
 
-	running = Input.is_action_pressed("Shift")
-	
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		get_playback().travel(JumpStateName)
+func _update_state() -> void:
+	var move_pressed = Input.is_action_pressed("Shift")
+	if running != move_pressed:
+		running = move_pressed
+		if is_on_floor():
+			_sync_animation_state()
 
+	if is_on_floor() and Input.is_action_just_pressed("ui_accept"):
+		playback.travel(JumpStateName)
+
+func _sync_animation_state() -> void:
+	playback.travel(RunStateName if running else WalkStateName)
+
+func _handle_movement(delta: float) -> void:
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
-	# Don't ask me how this work, I copy it from youtube tutorial
-	var dir = Vector3(input_dir.x, 0, input_dir.y).rotated(Vector3.UP, camera_pivot.rotation.y)
+	var move_dir = (camera_pivot.global_basis * Vector3(input_dir.x, 0, input_dir.y))
+	move_dir.y = 0
+	move_dir = move_dir.normalized()
 	
-	var current_speed = speed * 1.5 if running else speed
+	var target_speed = speed * (1.5 if running else 1.0)
 
-	if dir.length() > 0.001:
-		velocity.x = dir.x * current_speed
-		velocity.z = dir.z * current_speed
+	if move_dir:
+		velocity.x = move_dir.x * target_speed
+		velocity.z = move_dir.z * target_speed
 		
-		# ROTATE THE AMATURE
-		var target_angle = atan2(-dir.x, -dir.z)
-		armature.rotation.y = lerp_angle(armature.rotation.y, target_angle, rotation_speed * delta)
+		# Rotate armature 
+		var target_rotation = atan2(move_dir.x, move_dir.z)
+		armature.rotation.y = lerp_angle(armature.rotation.y, target_rotation, rotation_speed * delta)
 	else:
-		velocity.x = move_toward(velocity.x, 0, current_speed)
-		velocity.z = move_toward(velocity.z, 0, current_speed)
+		velocity.x = move_toward(velocity.x, 0, target_speed)
+		velocity.z = move_toward(velocity.z, 0, target_speed)
 
-	move_and_slide()
+func Execute_Jump() -> void:
+	velocity.y = JUMP_VELOCITY
+#endregion
