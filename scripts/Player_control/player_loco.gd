@@ -24,15 +24,18 @@ extends CharacterBody3D
 @onready var camera: Camera3D = $CameraPivot/SpringArm3D/Camera3D
 @onready var playback: AnimationNodeStateMachinePlayback = animationTree.get(loco_PlaybackPath)
 
+@onready var BoardSkill: Node3D = $ChessboardDeploy;
+
 var blend_input: Vector2 = Vector2.ZERO
 var falling: bool = false
 var running: bool = false
 
-var fall_buffer: float = 0.0 # timer prevent flicker
+var fall_buffer: float = 0.0 # timer prevent flicker go awa-aawawawaw
 const FALL_THRESHOLD: float = 0.3
 # ----------------------------------------bweh---------
 
 func _ready() -> void:
+	BoardSkill.set_process(false)
 	if not animationTree:
 		set_physics_process(false) # Disable movement if all hell break lose
 		push_error("AnimationTree missing!")
@@ -40,6 +43,7 @@ func _ready() -> void:
 #region visuals & FOV
 func _process(delta: float) -> void:
 	var raw_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	#why negative? Idk either WHERE IS LEFT AND WHERE IS RIGHT?!?! WHY IS IT GOIN BACK WARD AAAAAAAAAAAAAAAAAAAAA
 	var target_blend = Vector2(raw_input.x, -raw_input.y)
 	
 	blend_input = blend_input.move_toward(target_blend, transitionSpeed * delta)
@@ -111,3 +115,15 @@ func _handle_movement(delta: float) -> void:
 func Execute_Jump() -> void:
 	velocity.y = JUMP_VELOCITY
 #endregion
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	print_debug(body.name)
+	BoardSkill.set_process(true)
+	pass # Replace with function body.
+
+
+func _on_area_3d_body_exited(body: Node3D) -> void:
+	print_debug(body.name)
+	BoardSkill.set_process(true)
+	pass # Replace with function body.

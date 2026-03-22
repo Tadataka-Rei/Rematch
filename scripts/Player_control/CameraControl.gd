@@ -6,6 +6,7 @@ extends Node3D
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+#region Input Handler
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		# Rotate the pivot itself (horizontally)
@@ -20,3 +21,4 @@ func _input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+#endregion

@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bxtxby0of0lqp" path="res://models/characters/player/Player_loco.glb" id="1_xclpl"]
 [ext_resource type="Script" uid="uid://dblrujvrq4kdw" path="res://scripts/Player_control/player_loco.gd" id="2_ere1b"]
 [ext_resource type="Script" uid="uid://b2eyjoin7eyce" path="res://scripts/Player_control/CameraControl.gd" id="3_olwg4"]
+[ext_resource type="Shader" uid="uid://dy36gnw5v1s6i" path="res://materials/Shader/Chesstiles.gdshader" id="4_nobmo"]
+[ext_resource type="Script" uid="uid://dx77wntwq1s1l" path="res://scripts/Player_control/Playerskill.gd" id="5_1ildo"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ere1b"]
 radius = 0.28466797
@@ -114,18 +116,36 @@ transitions = ["Start", "WalkBlend", SubResource("AnimationNodeStateMachineTrans
 graph_offset = Vector2(261, -32)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_xclpl"]
-graph_offset = Vector2(-386.89127, -39.35893)
 nodes/output/position = Vector2(160, 120)
 nodes/locomotion_state_machine/node = SubResource("AnimationNodeStateMachine_tes8u")
 nodes/locomotion_state_machine/position = Vector2(-260, 60)
 node_connections = [&"output", 0, &"locomotion_state_machine"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_nobmo"]
+size = Vector3(9.494934, 1, 31.491089)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nobmo"]
+render_priority = 0
+shader = ExtResource("4_nobmo")
+shader_parameter/speed = 2.0
+shader_parameter/strength = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_1ildo"]
+material = SubResource("ShaderMaterial_nobmo")
+size = Vector3(2, 0.5, 3)
+
+[sub_resource type="MultiMesh" id="MultiMesh_8jnjb"]
+transform_format = 1
+use_colors = true
+mesh = SubResource("BoxMesh_1ildo")
+
 [node name="Player_loco" unique_id=1540085897 node_paths=PackedStringArray("animationTree") instance=ExtResource("1_xclpl")]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("2_ere1b")
 loco_Walk_BlendPath = "parameters/locomotion_state_machine/WalkBlend/blend_position"
 loco_Run_BlendPath = "parameters/locomotion_state_machine/RunBlend/blend_position"
 loco_PlaybackPath = "parameters/locomotion_state_machine/playback"
-JumpStateName = "Jump"
 FallStateName = "fall"
 WalkStateName = "WalkBlend"
 RunStateName = "RunBlend"
@@ -135,28 +155,28 @@ animationTree = NodePath("AnimationTree")
 transform = Transform3D(-0.2, -1.7484556e-08, 7.642742e-16, 0, -8.742278e-09, -0.2, 1.7484556e-08, -0.2, 8.742278e-09, 0, 0, -0.012363)
 
 [node name="Skeleton3D" parent="Armature" index="0" unique_id=538243480]
-bones/0/position = Vector3(-0.00065898895, 0.13705224, -4.493749)
-bones/0/rotation = Quaternion(-0.7274548, -0.052776333, 0.014852103, 0.6839618)
-bones/1/rotation = Quaternion(-0.0062043136, 0.012509134, 0.019951813, 0.9997035)
-bones/2/rotation = Quaternion(0.009374739, 0.0019053906, 0.013397801, 0.9998646)
-bones/3/rotation = Quaternion(0.009153912, 0.002132684, 0.013444099, 0.9998655)
-bones/4/rotation = Quaternion(0.083237655, -0.0012317826, 0.004409486, 0.9965192)
-bones/5/rotation = Quaternion(-0.06456831, 0.011469612, -0.0022169054, 0.997845)
+bones/0/position = Vector3(-0.00065898895, 0.13256498, -4.4982305)
+bones/0/rotation = Quaternion(-0.7272521, -0.054246273, 0.016361032, 0.6840278)
+bones/1/rotation = Quaternion(-0.005864233, 0.01212199, 0.020961238, 0.9996896)
+bones/2/rotation = Quaternion(0.0033399984, 0.0019166193, 0.014165805, 0.9998923)
+bones/3/rotation = Quaternion(0.0031328397, 0.0023368045, 0.014151639, 0.99989223)
+bones/4/rotation = Quaternion(0.087775856, -0.0012230178, 0.0027850654, 0.9961356)
+bones/5/rotation = Quaternion(-0.055319473, 0.009796345, -0.0014486946, 0.99841964)
 bones/6/rotation = Quaternion(1, 6.2879246e-10, -1.6238173e-06, -3.1470581e-06)
-bones/7/rotation = Quaternion(-0.70793146, -0.28678468, 0.5403403, -0.35301563)
-bones/8/rotation = Quaternion(0.43444595, 0.119816065, 0.0255335, 0.89232785)
-bones/9/rotation = Quaternion(-0.059881963, -0.00021990875, 0.035291955, 0.9975814)
-bones/11/rotation = Quaternion(0.705525, -0.28373212, 0.5573165, 0.33336022)
-bones/12/rotation = Quaternion(0.36770603, -0.20732081, -0.04372832, 0.90548235)
-bones/13/rotation = Quaternion(-0.05872703, -0.00248208, -0.08206484, 0.9948922)
-bones/15/rotation = Quaternion(0.13339666, 0.084575295, 0.98477894, -0.07254582)
-bones/16/rotation = Quaternion(-0.160539, -0.015708605, 0.037927695, 0.9861755)
-bones/17/rotation = Quaternion(0.51651394, -0.05082583, -0.046523597, 0.85350204)
-bones/18/rotation = Quaternion(0.29086, 0.045668565, -0.010754664, 0.95561457)
-bones/20/rotation = Quaternion(-0.08982627, -0.03096257, 0.9951078, -0.02707641)
-bones/21/rotation = Quaternion(-0.07443024, 0.08239871, -0.027239371, 0.9934429)
-bones/22/rotation = Quaternion(0.5343356, 0.04234832, 0.012866462, 0.8441128)
-bones/23/rotation = Quaternion(0.3153841, -0.045018286, 0.010099401, 0.94784194)
+bones/7/rotation = Quaternion(-0.70148915, -0.2993524, 0.53373885, -0.36527258)
+bones/8/rotation = Quaternion(0.4555382, 0.11739731, 0.030008731, 0.88193107)
+bones/9/rotation = Quaternion(-0.059937224, 0.0012768266, 0.0350658, 0.9975853)
+bones/11/rotation = Quaternion(0.70005506, -0.29584506, 0.5506018, 0.3453063)
+bones/12/rotation = Quaternion(0.3869195, -0.21261793, -0.033100273, 0.8966557)
+bones/13/rotation = Quaternion(-0.058270793, -0.0042303847, -0.09963833, 0.993307)
+bones/15/rotation = Quaternion(0.13438569, 0.083182275, 0.98463684, -0.07423982)
+bones/16/rotation = Quaternion(-0.1664604, -0.018500106, 0.034017164, 0.9852875)
+bones/17/rotation = Quaternion(0.51835096, -0.050324254, -0.04557422, 0.8524686)
+bones/18/rotation = Quaternion(0.29059416, 0.045675606, -0.010763201, 0.955695)
+bones/20/rotation = Quaternion(-0.08889852, -0.025282925, 0.99537385, -0.02624416)
+bones/21/rotation = Quaternion(-0.07534254, 0.08356242, -0.026059851, 0.99330854)
+bones/22/rotation = Quaternion(0.53557426, 0.038911168, 0.013067637, 0.84349)
+bones/23/rotation = Quaternion(0.3111006, -0.04517561, 0.010207645, 0.94924784)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=85425360]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996002, 0)
@@ -177,3 +197,22 @@ spring_length = 3.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" index="0" unique_id=1929057572]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.26088762, 3.487861)
+
+[node name="Area3D" type="Area3D" parent="CameraPivot/SpringArm3D/Camera3D" index="0" unique_id=364313962]
+collision_layer = 2147483648
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraPivot/SpringArm3D/Camera3D/Area3D" index="0" unique_id=1131332662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24636841, 0, -16.199385)
+shape = SubResource("BoxShape3D_nobmo")
+
+[node name="ChessboardDeploy" type="MultiMeshInstance3D" parent="." index="5" unique_id=1115210200]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05721593, 0.066443205, -0.06561661)
+top_level = true
+multimesh = SubResource("MultiMesh_8jnjb")
+script = ExtResource("5_1ildo")
+
+[connection signal="area_entered" from="CameraPivot/SpringArm3D/Camera3D/Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="CameraPivot/SpringArm3D/Camera3D/Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="body_entered" from="CameraPivot/SpringArm3D/Camera3D/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="CameraPivot/SpringArm3D/Camera3D/Area3D" to="." method="_on_area_3d_body_exited"]
