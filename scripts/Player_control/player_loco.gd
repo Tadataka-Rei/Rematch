@@ -23,8 +23,7 @@ extends CharacterBody3D
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var camera: Camera3D = $CameraPivot/SpringArm3D/Camera3D
 @onready var playback: AnimationNodeStateMachinePlayback = animationTree.get(loco_PlaybackPath)
-
-@onready var BoardSkill: Node3D = $ChessboardDeploy;
+@onready var SummonBoard: MultiMeshInstance3D = $ChessboardDeploy
 
 var blend_input: Vector2 = Vector2.ZERO
 var falling: bool = false
@@ -35,7 +34,7 @@ const FALL_THRESHOLD: float = 0.3
 # ----------------------------------------bweh---------
 
 func _ready() -> void:
-	BoardSkill.set_process(false)
+	SummonBoard.set_process_input(false)
 	if not animationTree:
 		set_physics_process(false) # Disable movement if all hell break lose
 		push_error("AnimationTree missing!")
@@ -120,11 +119,12 @@ func Execute_Jump() -> void:
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Enemy_Group")):
-		BoardSkill.set_process(true)
+		SummonBoard.set_process_input(true)
+		SummonBoard.target_enemy = body;
 	pass # Replace with function body.
 
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
 	if(body.is_in_group("Enemy_Group")):
-		BoardSkill.set_process(true)
+		SummonBoard.set_process_input(false)
 	pass # Replace with function body.

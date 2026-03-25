@@ -3,6 +3,8 @@ extends MultiMeshInstance3D
 @export_subgroup("setting")
 @export var spacing = 3.0
 @export var spawn_distance: float = 5.0
+
+var target_enemy: Node3D = null;
 var Armature: Node3D;
 var total_instances: int;
 var Board_Created: bool = false;
