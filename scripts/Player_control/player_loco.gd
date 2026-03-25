@@ -65,6 +65,7 @@ func _physics_process(delta: float) -> void:
 	# State check AFTER movement to ensure accurate is_on_floor()
 	_update_state()
 
+# ------------------------- GRAVITY-
 func _handle_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -105,7 +106,7 @@ func _handle_movement(delta: float) -> void:
 		velocity.x = move_dir.x * target_speed
 		velocity.z = move_dir.z * target_speed
 		
-		# Rotate armature 
+		# Rotate armature brrr
 		var target_rotation = atan2(move_dir.x, move_dir.z)
 		armature.rotation.y = lerp_angle(armature.rotation.y, target_rotation, rotation_speed * delta)
 	else:
@@ -118,12 +119,12 @@ func Execute_Jump() -> void:
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	print_debug(body.name)
-	BoardSkill.set_process(true)
+	if(body.is_in_group("Enemy_Group")):
+		BoardSkill.set_process(true)
 	pass # Replace with function body.
 
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
-	print_debug(body.name)
-	BoardSkill.set_process(true)
+	if(body.is_in_group("Enemy_Group")):
+		BoardSkill.set_process(true)
 	pass # Replace with function body.

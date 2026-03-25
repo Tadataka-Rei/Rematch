@@ -29,6 +29,73 @@ data = PackedVector3Array(2.5, 0, 2.5, -2.5, 0, 2.5, 2.5, 0, -2.5, -2.5, 0, 2.5,
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3mglk"]
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
+[sub_resource type="Gradient" id="Gradient_c3lgt"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3mglk"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ui04h"]
+noise = SubResource("FastNoiseLite_3mglk")
+color_ramp = SubResource("Gradient_c3lgt")
+seamless = true
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_kku4g"]
+_shader_parameters = {
+&"bias_distance": 512.0,
+&"blend_sharpness": 0.87,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
+&"height_blending": true,
+&"macro_variation1": Color(1, 1, 1, 1),
+&"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
+&"noise1_angle": 0.0,
+&"noise1_offset": Vector2(0.5, 0.5),
+&"noise1_scale": 0.04,
+&"noise2_scale": 0.076,
+&"noise3_scale": 0.225,
+&"noise_texture": SubResource("NoiseTexture2D_ui04h"),
+&"projection_angular_division": 2.0,
+&"projection_threshold": 0.8,
+&"world_space_normal_blend": true
+}
+world_background = 0
+show_checkered = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_36hhj"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_e4qjf"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_36hhj")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_pwi18"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_e4qjf")])
+
 [node name="TestWorld" type="Node3D" unique_id=1865288085]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2042720920]
@@ -39,7 +106,7 @@ transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545
 light_color = Color(0.8175213, 0.8175213, 0.81752115, 1)
 shadow_enabled = true
 
-[node name="plane" type="MeshInstance3D" parent="." unique_id=859748550]
+[node name="plane" type="MeshInstance3D" parent="." unique_id=859748550 groups=["Floor_Group"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -0.003827095, -0.03274393, 0.034698486)
 mesh = SubResource("PlaneMesh_ytjst")
 
@@ -49,7 +116,7 @@ mesh = SubResource("PlaneMesh_ytjst")
 shape = SubResource("ConcavePolygonShape3D_8ri1i")
 
 [node name="Player_loco" parent="." unique_id=360992613 instance=ExtResource("1_8ri1i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9168894, 0.063578375, 6.221453)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9168894, 0.063578375, 18.221453)
 transitionSpeed = 3.0
 metadata/_edit_group_ = true
 
@@ -64,3 +131,12 @@ shape = SubResource("ConcavePolygonShape3D_3mglk")
 
 [node name="TestDummy" parent="." unique_id=1617229400 instance=ExtResource("3_3mglk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8983145, 0.9672575, -13.199508)
+
+[node name="Terrain3D" type="Terrain3D" parent="." unique_id=757347114 groups=["Floor_Group"]]
+data_directory = "res://terrain/testmap_terrain"
+material = SubResource("Terrain3DMaterial_kku4g")
+assets = SubResource("Terrain3DAssets_pwi18")
+save_16_bit = true
+mesh_size = 32
+show_checkered = true
+top_level = true
