@@ -34,13 +34,13 @@ func _input(event: InputEvent) -> void:
 func Caculate_board_POS() -> Vector3:
 	var Center: Vector3;
 	
-	if(target_enemy!= null):
-		Center.x = (position.x + target_enemy.position.x)/2
-		Center.z = (position.z + target_enemy.position.z)/2
+	if (target_enemy != null):
+		Center.x = (position.x + target_enemy.position.x) / 2
+		Center.z = (position.z + target_enemy.position.z) / 2
 		
-		Center.y = min(target_enemy.position.y, position.y)-Lowest_height;
+		Center.y = min(target_enemy.position.y, position.y) - Lowest_height;
 	else:
-		return Vector3(-999,-999,-999)
+		return Vector3(-999, -999, -999)
 	return Center
 
 
@@ -51,7 +51,7 @@ func create_board(board_size: int) -> void:
 	var spawn_pos = Armature.global_position - (Armature.global_transform.basis.z * spawn_distance)
 	
 	var offset = (board_size - 1) * spacing / 2.0
-	for i:int in range(total_instances):
+	for i: int in range(total_instances):
 		var x = i % board_size
 		var z = i / board_size
 		
