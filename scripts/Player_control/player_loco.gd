@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-# --- var stuff ---
+#region --- var stuff ---
 @export_group("Animation Paths")
 @export var loco_Walk_BlendPath: String = "parameters/Walk/blend_position"
 @export var loco_Run_BlendPath: String = "parameters/Run/blend_position"
@@ -31,6 +31,8 @@ var running: bool = false
 
 var fall_buffer: float = 0.0 # timer prevent flicker go awa-aawawawaw
 const FALL_THRESHOLD: float = 0.3
+#endregion
+
 # ----------------------------------------bweh---------
 
 func _ready() -> void:
@@ -39,7 +41,7 @@ func _ready() -> void:
 		set_physics_process(false) # Disable movement if all hell break lose
 		push_error("AnimationTree missing!")
 
-#region visuals & FOV
+#region ---------visuals & FOV----------
 func _process(delta: float) -> void:
 	var raw_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	#why negative? Idk either WHERE IS LEFT AND WHERE IS RIGHT?!?! WHY IS IT GOIN BACK WARD AAAAAAAAAAAAAAAAAAAAA
@@ -55,7 +57,7 @@ func _process(delta: float) -> void:
 	camera.fov = lerp(camera.fov, target_fov, delta * 5.0)
 #endregion
 
-#region physics & movement
+#region  ------------physics & movement----------
 func _physics_process(delta: float) -> void:
 	_handle_gravity(delta)
 	_handle_movement(delta)
@@ -116,7 +118,7 @@ func Execute_Jump() -> void:
 	velocity.y = JUMP_VELOCITY
 #endregion
 
-
+#region --------AREA3d----------------
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Monolith")):
 		SummonBoard.set_process_input(true)
@@ -126,5 +128,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
 	if(body.is_in_group("Monolith")):
+		SummonBoard.target_enemy = null;
 		SummonBoard.set_process_input(false)
 	pass # Replace with function body.
+#endregion

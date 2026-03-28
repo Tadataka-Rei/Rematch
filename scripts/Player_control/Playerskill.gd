@@ -1,8 +1,10 @@
 extends MultiMeshInstance3D
-#region config
+#region ------var----------
 @export_subgroup("setting")
 @export var spacing = 3.0
 @export var spawn_distance: float = 5.0
+@export var Lowest_height: float = 10.0;
+
 
 var target_enemy: Node3D = null;
 var Armature: Node3D;
@@ -16,7 +18,7 @@ func _ready() -> void:
 		print_debug("shit")
 	pass
 
-#region Input handler
+#region ------------Input handler----------
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		if event.is_action_pressed("Q"):
@@ -28,6 +30,20 @@ func _input(event: InputEvent) -> void:
 				Destroy_Board()
 #endregion
 
+
+func Caculate_board_POS() -> Vector3:
+	var Center: Vector3;
+	
+	if(target_enemy!= null):
+		Center.x = (position.x + target_enemy.position.x)/2
+		Center.z = (position.z + target_enemy.position.z)/2
+		
+		Center.y = min(target_enemy.position.y, position.y)-Lowest_height;
+	else:
+		return Vector3(-999,-999,-999)
+	return Center
+
+
 func create_board(board_size: int) -> void:
 	total_instances = board_size * board_size
 	
@@ -35,7 +51,7 @@ func create_board(board_size: int) -> void:
 	var spawn_pos = Armature.global_position - (Armature.global_transform.basis.z * spawn_distance)
 	
 	var offset = (board_size - 1) * spacing / 2.0
-	for i in range(total_instances):
+	for i:int in range(total_instances):
 		var x = i % board_size
 		var z = i / board_size
 		
@@ -51,9 +67,8 @@ func create_board(board_size: int) -> void:
 		var color = Color.WHITE if (x + z) % 2 == 0 else Color.BLACK
 		multimesh.set_instance_color(i, color)
 
+# Teleport the board to somewhere else
 func Destroy_Board() -> void:
 	for i in range(total_instances):
 		multimesh.set_instance_transform(i, Transform3D(Basis(), Vector3(9999, 0, 9999)));
-	pass
-func _process(delta: float) -> void:
 	pass
