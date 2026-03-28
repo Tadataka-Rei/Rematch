@@ -118,13 +118,13 @@ func Execute_Jump() -> void:
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	if(body.is_in_group("Enemy_Group")):
+	if(body.is_in_group("Monolith")):
 		SummonBoard.set_process_input(true)
 		SummonBoard.target_enemy = body;
 	pass # Replace with function body.
 
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
-	if(body.is_in_group("Enemy_Group")):
+	if(body.is_in_group("Monolith")):
 		SummonBoard.set_process_input(false)
 	pass # Replace with function body.

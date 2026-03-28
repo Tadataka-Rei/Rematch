@@ -114,7 +114,7 @@ mesh = SubResource("BoxMesh_8ri1i")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="cube/Cubebody" unique_id=143894235]
 shape = SubResource("ConcavePolygonShape3D_3mglk")
 
-[node name="TestDummy" parent="." unique_id=1617229400 groups=["Enemy_Group"] instance=ExtResource("3_3mglk")]
+[node name="Monolith test" parent="." unique_id=1617229400 groups=["Monolith"] instance=ExtResource("3_3mglk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8983145, 0.9672575, -13.199508)
 
 [node name="Terrain3D" type="Terrain3D" parent="." unique_id=757347114 groups=["Floor_Group"]]
