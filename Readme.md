@@ -1,7 +1,7 @@
 # Rematch - Tài Liệu Kỹ Thuật
 
 ## Tổng quan
-Rematch là một trò chơi hành động góc nhìn thứ ba 3D được phát triển bằng Godot 4.6 (chế độ GL Compatibility). Dự án bao gồm nhân vật người chơi với hệ thống di chuyển nâng cao, hòa trộn hoạt ảnh (animation blending) và hệ thống kỹ năng bàn cờ độc đáo. Trò chơi hiện đang trong giai đoạn phát triển sớm với các hệ thống di chuyển cốt lõi đã được hoàn thiện và cấu trúc có khả năng mở rộng cho AI, chiến đấu và hệ thống menu.
+Rematch là một trò chơi chiến thuật góc nhìn thứ ba 3D được phát triển bằng Godot 4.6. Dự án bao gồm nhân vật người chơi với hệ thống di chuyển và hệ thống kỹ năng bàn cờ độc đáo.
 
 **Cảnh thử nghiệm (Test Scene):** `scenes/Maps/Test_world.tscn`  
 **Phiên bản Project:** Godot 4.6  
@@ -14,66 +14,43 @@ rematch/
 ├── addons/
 │   └── terrain_3d/          # Plugin Terrain3D để tạo địa hình
 ├── scripts/
-│   └── Player_control/      # Cơ chế người chơi cốt lõi (di chuyển, camera, kỹ năng)
+│   └── Player_control/      # Core player script (di chuyển, camera, kỹ năng)
 ├── scenes/
-│   ├── Maps/                # Cảnh cấp độ (IntroWorld.tscn, Test_world.tscn)
+│   ├── Maps/                # Scenes (IntroWorld.tscn, Test_world.tscn)
 │   └── Menu/                # Hệ thống menu (Main_menu.tscn)
 ├── models/
 │   └── characters/player/   # Tài nguyên và hoạt ảnh nhân vật người chơi
 ├── entities/
-│   └── test_enemy/          # Thực thể kẻ thù (Test_dummy.tscn)
+│   └── test_enemy/          # thực thể
 ├── materials/
-│   └── Shader/              # Shader tùy chỉnh (Chesstiles.gdshader)
-├── textures/                # Tài nguyên texture
-├── terrain/                 # Tài nguyên địa hình cụ thể
-├── ai/                      # Hệ thống AI (hiện tại trống)
-├── audio/                   # Tài nguyên âm thanh (hiện tại trống)
-├── main/                    # Logic trò chơi chính (hiện tại trống)
-└── resources/               # Tài nguyên trò chơi (hiện tại trống)
+│   └── Shader/              # Shader (Chesstiles.gdshader)
+├── textures/
+├── terrain/                 # Height map được lưu dưới dạng binary
+├── ai/                      # Hệ thống AI
+├── audio/                   # Tài nguyên âm thanh
+├── main/                    # Logic trò chơi chính
+└── resources/               # Tài nguyên trò chơi
 ```
-
-**Tổ chức thư mục theo mã màu:**
-- 🟦 Xanh dương: scripts/
-- 🟩 Xanh lá: main/, scenes/
-- 🟨 Vàng: materials/, models/, textures/
-- 🟧 Cam: resources/
-- 🟦 Xanh lơ: entities/
 
 ## Hệ thống cốt lõi
 
 ### Hệ thống điều khiển người chơi (Player Control System)
 
-#### Di chuyển & Hoạt ảnh (`scripts/Player_control/player_loco.gd`)
+#### Di chuyển & Animation (`scripts/Player_control/player_loco.gd`)
 - **Lớp cơ sở (Base Class):** `CharacterBody3D`
 - **Tính năng di chuyển:**
-  - Hòa trộn Đi bộ/Chạy với hệ số tốc độ 1.5x (phím Shift).
-  - Hòa trộn hoạt ảnh 8 hướng (tiến, lùi, di chuyển ngang trái/phải).
-  - Cơ chế nhảy với vận tốc có thể cấu hình (4.5 đơn vị).
-  - Hệ thống trọng lực với bộ đệm rơi (ngưỡng 0.3 giây) để ngăn lỗi nháy hoạt ảnh.
-  - Di chuyển tương đối theo Camera (hướng tiến luôn là "hướng ra xa camera").
+  - Blend Đi bộ/Chạy với hệ số tốc độ (phím Shift).
+  - Blend hoạt ảnh 8 hướng (tiến, lùi, di chuyển ngang trái/phải).
+  - Cơ chế nhảy với vận tốc có thể cấu hình.
+  - Hệ thống trọng lực với bộ đệm rơi (ngưỡng 0.3 giây) để ngăn lỗi nháy animation.
+  - Di chuyển tương đối theo Camera (hướng tiến luôn là "hướng đối diện camera basis").
 
-- **Hệ thống hoạt ảnh:**
+- **Hệ thống Animations:**
   - AnimationTree với State Machine và 2D Blend Spaces.
   - Trạng thái đi bộ (Walk): 5 hoạt ảnh (nghỉ + 4 hướng).
   - Trạng thái chạy (Run): 4 hoạt ảnh hướng.
-  - Trạng thái Nhảy/Rơi (Jump/Fall) với chuyển tiếp chồng mờ (cross-fade).
+  - Trạng thái Nhảy/Rơi (Jump/Fall) với chuyển tiếp cross-fade.
   - Điều chỉnh FOV động: 75° (đi bộ) → 85° (chạy).
-
-- **Các tham số chính:**
-  ```gdscript
-  @export_group("Movement Settings")
-  @export var default_speed: float = 5.0
-  @export var run_multiplier: float = 1.5
-  @export var jump_velocity: float = 4.5
-  @export var rotation_speed: float = 10.0
-
-
-#### Hệ thống Camera (`scripts/Player_control/CameraControl.gd`)
-- **Kiến trúc**: CameraPivot (ngang) → SpringArm3D (dọc) → Camera3D.
-- **Điều khiển**: Di chuyển chuột với khả năng lia mượt mà (độ nhạy: 0.0015).
-- **Phạm vi nhìn dọc**: -70° (xuống) đến +30° (lên).
-- **Độ dài Spring Arm**: 3.0 đơn vị.
-- **Tính năng**: Nhấn ESC để bật/tắt khóa chuột, vùng phát hiện Area3D cho các tương tác.(sẽ được thay đổi để mở menu trong tương lai)
 
 #### Tính năng Bàn cờ (`scripts/Player_control/Playerskill.gd`)
 - **Lớp**: MultiMeshInstance3D
@@ -125,7 +102,7 @@ TestWorld [Node3D]
 
 ### Player_loco.tscn (Player Prefab)
 - CharacterBody3D với Skeleton3D có rigging
-- AnimationTree cho di chuyển hòa trộn
+- AnimationTree cho blend di chuyển
 - Hệ thống camera với spring arm
 - MultiMeshInstance3D cho kỹ năng bàn cờ
 
@@ -174,13 +151,8 @@ func _handle_movement(delta: float):
 - **Thiết kế mô-đun:** Giữ các chức năng tách biệt (di chuyển, camera, kỹ năng)
 - **Tham số hóa:** Làm cho các biến có thể cấu hình qua `@export`
 - **Tài liệu:** Thêm comment cho logic phức tạp
-- **Kiểm thử:** Xác minh tương tác va chạm và trạng thái hoạt ảnh
 
 ## Technical Notes
 
 - **Armature Forward:** Hướng -Z (mũi tên xanh Godot)
-- **Hướng di chuyển:** Tương đối theo camera, không phải hướng nhân vật
-- **Hòa trộn hoạt ảnh:** Trục Y bị đảo ngược trong không gian blend (tiến = -1)
-- **Tối ưu hóa MultiMesh:** Được sử dụng để render bàn cờ hiệu quả
-- **Bộ đệm rơi:** Ngăn nháy hoạt ảnh trên các cạnh nhỏ
-- **Sử dụng Shader:** Shader không gian cho hiệu ứng 3D, shader canvas cho UI
+- **Blend animation:** Trục Y bị đảo ngược trong không gian blend (tiến = -1)
