@@ -10,6 +10,7 @@ var target_enemy: Node3D = null;
 var Armature: Node3D;
 var total_instances: int;
 var Board_Created: bool = false;
+var angel;
 #endregion
 
 func _ready() -> void:
@@ -30,19 +31,18 @@ func _input(event: InputEvent) -> void:
 				Destroy_Board()
 #endregion
 
-
+#region ----------Caculate board transform point---------
 func Caculate_board_POS() -> Vector3:
-	var Center: Vector3;
+	var spawnheigh = min(target_enemy.y, global_position.y) - Lowest_height;
+	var Center: Vector3 = Vector3(global_position.x - target_enemy.global_position.x, spawnheigh,
+	global_position.z - target_enemy.global_position.z)
 	
-	if (target_enemy != null):
-		Center.x = (position.x + target_enemy.position.x) / 2
-		Center.z = (position.z + target_enemy.position.z) / 2
+	Center.normalized()
+	
+	var shared_angle = atan2(Center.x, Center.z);
+	return Center;
 		
-		Center.y = min(target_enemy.position.y, position.y) - Lowest_height;
-	else:
-		return Vector3(-999, -999, -999)
-	return Center
-
+#endregion
 
 func create_board(board_size: int) -> void:
 	total_instances = board_size * board_size
