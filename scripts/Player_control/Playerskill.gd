@@ -25,7 +25,8 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("Q"):
 			if not Board_Created:
 				Board_Created = true
-				create_board(8)
+				var Center = Caculate_board_POS()
+				create_board(8, Center)
 			else:
 				Board_Created = false
 				Destroy_Board()
@@ -33,8 +34,8 @@ func _input(event: InputEvent) -> void:
 
 #region ----------Caculate board transform point---------
 func Caculate_board_POS() -> Vector3:
-	var spawnheigh = min(target_enemy.y, global_position.y) - Lowest_height;
-	var Center: Vector3 = Vector3(global_position.x - target_enemy.global_position.x, spawnheigh,
+	var Center: Vector3 = Vector3(global_position.x - target_enemy.global_position.x,
+	0,
 	global_position.z - target_enemy.global_position.z)
 	
 	Center.normalized()
@@ -44,25 +45,26 @@ func Caculate_board_POS() -> Vector3:
 		
 #endregion
 
-func create_board(board_size: int) -> void:
+func create_board(board_size: int, Center: Vector3) -> void:
 	total_instances = board_size * board_size
-	
 	multimesh.instance_count = total_instances
-	var spawn_pos = Armature.global_position - (Armature.global_transform.basis.z * spawn_distance)
 	
-	var offset = (board_size - 1) * spacing / 2.0
+	var Foward_vector = Vector2((Center.x / Center.length()) * 2, (Center.z / Center.length()) * 2)
+	var Right_vector = Vector2(-Foward_vector.y, Foward_vector.x);
+	
+	var spawn_pos = Center
 	for i: int in range(total_instances):
 		var x = i % board_size
 		@warning_ignore("integer_division")
 		var z = i / board_size
 		
-		# Local grid position relative to the calculated spawn_pos
-		var local_pos = Vector3(x * spacing - offset, 0, z * spacing - offset)
-		var final_pos = spawn_pos + local_pos
+		var final_pos = target_enemy.position;
 		
 		# Apply transform (Keeping identity basis/rotation)
 		var xform = Transform3D(Basis(), final_pos)
+		
 		multimesh.set_instance_transform(i, xform)
+		
 		
 		# Chessboard coloring
 		var color = Color.WHITE if (x + z) % 2 == 0 else Color.BLACK
