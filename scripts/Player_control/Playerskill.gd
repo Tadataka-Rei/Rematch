@@ -2,9 +2,9 @@ extends MultiMeshInstance3D
 
 #region -----variables-----
 @export_subgroup("setting")
-@export var spacing: float = 3.0
+@export var spacing: float = 2.0
 @export var spawn_distance: float = 5.0
-@export var lowest_height: float = 10.0
+@export var lower_value: float = 10.0
 
 var target_enemy: Node3D = null
 var armature: Node3D
@@ -24,45 +24,56 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("Q"):
 			board_created = not board_created
 			if board_created:
-				var center = calculate_board_position()
-				create_board(8, center)
+				var direction_vector = calculate_direction_vector()
+				create_board(8, direction_vector)
 			else:
 				destroy_board()
 #endregion
 
-#region ----------boardfunctions-------------------
-func calculate_board_position() -> Vector3:
-	var center: Vector3 = Vector3(
-		global_position.x - target_enemy.global_position.x,
-		0,
-		global_position.z - target_enemy.global_position.z,
-	)
+#region ----------Caculate board XZ-------------------
+func calculate_direction_vector() -> Vector3:
+	var direction_vector: Vector3 = (global_position - target_enemy.global_position).normalized()
+	direction_vector.y = 0
+	angle = atan2(direction_vector.x, direction_vector.z)
+	return direction_vector
+#endregion 
 
-	angle = atan2(center.x, center.z)
-	return center
+#region ----------- Caculate Y spawn POS ---------
+# this part is not yet done and full of error, not facing the right direction and not spawning at the right location z,y, need to be fixed later
+func Caculate_Y_Point() -> float:
+	return min(target_enemy.global_position.y, global_position.y) - lower_value;
+#endregion
 
-#---------------- Board Creation----------------
-func create_board(board_size: int, center: Vector3) -> void:
+#region ---------------- Board Creation----------------
+func create_board(board_size: int, direction_to_enemy: Vector3) -> void:
 	total_instances = board_size * board_size
 	multimesh.instance_count = total_instances
 
-	var forward_vector = Vector2((center.x / center.length()) * 2, (center.z / center.length()) * 2)
-	var right_vector: Vector2 = Vector2(-forward_vector.y, forward_vector.x)
-
+	var forward = direction_to_enemy
+	var right = Vector3.UP.cross(forward).normalized()
+	
+	var half_board = (board_size - 1) * spacing * 0.5
+	var starting_point = global_position - (forward * half_board) - (right * half_board)
+	
+	var final_y = Caculate_Y_Point()
+	var board_basis = Basis(right, Vector3.UP, -forward).orthonormalized()
 	for i: int in range(total_instances):
 		var x = i % board_size
 		@warning_ignore("integer_division")
 		var z = i / board_size
-
-		var final_pos = target_enemy.position
+		
+		var local_offset = (forward * z * spacing) + (right * x * spacing)
+		var final_pos = starting_point + local_offset
+		final_pos.y = 2
+		
 		var xform = Transform3D(Basis(), final_pos)
 		multimesh.set_instance_transform(i, xform)
+		print_debug(final_pos)
 
 		var color = Color.WHITE if (x + z) % 2 == 0 else Color.BLACK
 		multimesh.set_instance_color(i, color)
-
+#endregion
 #---------------- Board Destruction----------------
 func destroy_board() -> void:
 	for i in range(total_instances):
 		multimesh.set_instance_transform(i, Transform3D(Basis(), Vector3(9999, 0, 9999)))
-#endregion

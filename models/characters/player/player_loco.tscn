@@ -134,7 +134,7 @@ shader_parameter/strength = 0.5
 
 [sub_resource type="BoxMesh" id="BoxMesh_1ildo"]
 material = SubResource("ShaderMaterial_nobmo")
-size = Vector3(2, 0.5, 3)
+size = Vector3(2, 0.5, 2)
 
 [sub_resource type="MultiMesh" id="MultiMesh_8jnjb"]
 transform_format = 1
@@ -157,28 +157,28 @@ animationTree = NodePath("AnimationTree")
 transform = Transform3D(-0.2, -1.7484556e-08, 7.642742e-16, 0, -8.742278e-09, -0.2, 1.7484556e-08, -0.2, 8.742278e-09, 0, 0, -0.012363)
 
 [node name="Skeleton3D" parent="Armature" index="0" unique_id=538243480]
-bones/0/position = Vector3(-0.00065898895, 0.13525118, -4.498212)
-bones/0/rotation = Quaternion(-0.7256738, -0.057182137, 0.016534872, 0.6854592)
-bones/1/rotation = Quaternion(-0.0076953657, 0.01064562, 0.019340029, 0.99972665)
-bones/2/rotation = Quaternion(0.0027429746, 0.0011711491, 0.013503215, 0.9999044)
-bones/3/rotation = Quaternion(0.002514815, 0.0015990708, 0.013514899, 0.9999043)
-bones/4/rotation = Quaternion(0.08751986, -0.0017250426, 0.0060902652, 0.9961427)
-bones/5/rotation = Quaternion(-0.052632175, 0.011947212, -0.0042436924, 0.99853355)
+bones/0/position = Vector3(-0.00065898895, 0.13310696, -4.496042)
+bones/0/rotation = Quaternion(-0.72704244, -0.05370737, 0.015901096, 0.68430406)
+bones/1/rotation = Quaternion(-0.0058904397, 0.0116331475, 0.02073295, 0.99970007)
+bones/2/rotation = Quaternion(0.004206665, 0.001766219, 0.014038382, 0.99989104)
+bones/3/rotation = Quaternion(0.0040114047, 0.002154233, 0.014016604, 0.9998914)
+bones/4/rotation = Quaternion(0.08702856, -0.0010429237, 0.0026156157, 0.99620193)
+bones/5/rotation = Quaternion(-0.056768857, 0.0103172595, -0.0012888192, 0.9983333)
 bones/6/rotation = Quaternion(1, 6.2879246e-10, -1.6238173e-06, -3.1470581e-06)
-bones/7/rotation = Quaternion(-0.7000685, -0.30149212, 0.53330886, -0.36686298)
-bones/8/rotation = Quaternion(0.45582172, 0.12390056, 0.021938829, 0.88113225)
-bones/9/rotation = Quaternion(-0.05956236, 0.001641597, 0.04793224, 0.99707186)
-bones/11/rotation = Quaternion(0.697641, -0.29907295, 0.5516626, 0.34571776)
-bones/12/rotation = Quaternion(0.38796014, -0.21130645, -0.038489193, 0.89630073)
-bones/13/rotation = Quaternion(-0.058446333, -0.0038877826, -0.0937386, 0.9938722)
-bones/15/rotation = Quaternion(0.13398106, 0.0866547, 0.9842394, -0.07624355)
-bones/16/rotation = Quaternion(-0.16778965, -0.020488244, 0.034343727, 0.9850114)
-bones/17/rotation = Quaternion(0.5198322, -0.0506109, -0.04592801, 0.8515302)
-bones/18/rotation = Quaternion(0.29057732, 0.045676053, -0.010763739, 0.9557001)
-bones/20/rotation = Quaternion(-0.08827205, -0.029051462, 0.9952764, -0.028089775)
-bones/21/rotation = Quaternion(-0.06369259, 0.083891876, -0.024478002, 0.9941359)
-bones/22/rotation = Quaternion(0.53056985, 0.03796968, 0.011754315, 0.8467088)
-bones/23/rotation = Quaternion(0.3114687, -0.04516539, 0.010195736, 0.9491278)
+bones/7/rotation = Quaternion(-0.7026996, -0.29740447, 0.5345046, -0.3634126)
+bones/8/rotation = Quaternion(0.45153293, 0.114721544, 0.033164535, 0.88422686)
+bones/9/rotation = Quaternion(-0.059933618, 0.0009795793, 0.03507059, 0.99758565)
+bones/11/rotation = Quaternion(0.70072454, -0.2942426, 0.55161655, 0.34369394)
+bones/12/rotation = Quaternion(0.38415807, -0.21354079, -0.031732153, 0.89767253)
+bones/13/rotation = Quaternion(-0.05834679, -0.00403499, -0.096804745, 0.99358356)
+bones/15/rotation = Quaternion(0.13471052, 0.080087624, 0.9849384, -0.07304456)
+bones/16/rotation = Quaternion(-0.16280414, -0.01677459, 0.034151655, 0.98592454)
+bones/17/rotation = Quaternion(0.51960677, -0.050126113, -0.04475483, 0.8517589)
+bones/18/rotation = Quaternion(0.29104298, 0.04566373, -0.010748791, 0.9555592)
+bones/20/rotation = Quaternion(-0.08871784, -0.021946657, 0.9954885, -0.025499359)
+bones/21/rotation = Quaternion(-0.07465645, 0.084482536, -0.026823705, 0.9932622)
+bones/22/rotation = Quaternion(0.5340827, 0.039839122, 0.014143969, 0.84437454)
+bones/23/rotation = Quaternion(0.31144306, -0.045173347, 0.010192812, 0.9491358)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=85425360]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996002, 0)
@@ -213,6 +213,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.758337, -30.361319)
 mesh = SubResource("BoxMesh_nobmo")
 
 [node name="ChessboardDeploy" type="MultiMeshInstance3D" parent="." index="5" unique_id=1115210200]
+process_priority = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05721593, 0.066443205, -0.06561661)
 top_level = true
 multimesh = SubResource("MultiMesh_8jnjb")
