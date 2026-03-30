@@ -53,6 +53,7 @@ func create_board(board_size: int) -> void:
 	var offset = (board_size - 1) * spacing / 2.0
 	for i: int in range(total_instances):
 		var x = i % board_size
+		@warning_ignore("integer_division")
 		var z = i / board_size
 		
 		# Local grid position relative to the calculated spawn_pos
