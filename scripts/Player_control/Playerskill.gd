@@ -10,7 +10,7 @@ var target_enemy: Node3D = null;
 var Armature: Node3D;
 var total_instances: int;
 var Board_Created: bool = false;
-var angel;
+var angle;
 #endregion
 
 func _ready() -> void:
@@ -39,7 +39,7 @@ func Caculate_board_POS() -> Vector3:
 	
 	Center.normalized()
 	
-	var shared_angle = atan2(Center.x, Center.z);
+	angle = atan2(Center.x, Center.z);
 	return Center;
 		
 #endregion
