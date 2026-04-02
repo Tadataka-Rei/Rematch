@@ -126,3 +126,6 @@ mesh_size = 32
 show_checkered = true
 top_level = true
 metadata/_edit_lock_ = true
+
+[node name="Monolith test2" parent="." unique_id=1676045070 groups=["Monolith"] instance=ExtResource("3_3mglk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8983145, 0.9672575, 49.124954)
