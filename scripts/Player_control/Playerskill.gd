@@ -6,6 +6,8 @@ extends MultiMeshInstance3D
 @export var spawn_distance: float = 5.0
 @export var lower_value: float = 10.0
 
+@onready var Player: CharacterBody3D = get_parent()
+
 var target_enemy: Node3D = null
 var armature: Node3D
 var total_instances: int
@@ -24,12 +26,16 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("Q"):
 			board_created = not board_created
 			if board_created:
+				Teleport_to_player()
 				var direction_vector = calculate_direction_vector()
 				create_board(12, direction_vector)
 			else:
 				destroy_board()
 #endregion
 
+func Teleport_to_player() -> void:
+	global_position = Player.global_position
+	pass
 #region ----------Caculate board XZ-------------------
 func calculate_direction_vector() -> Vector3:
 	if target_enemy == null:
@@ -46,6 +52,7 @@ func calculate_direction_vector() -> Vector3:
 		dir = Vector3(0, 0, sign(dir.z)) # forward/back
 
 	angle = atan2(dir.x, dir.z)
+	print_debug(dir.x, dir.z)
 	return dir
 
 #region ----------- Caculate Y spawn POS ---------
@@ -71,9 +78,11 @@ func create_board(board_size: int, direction_to_enemy: Vector3) -> void:
 	var half_extent = (board_size - 1) * spacing * 0.5
 	var starting_point = world_center - (right * half_extent) - (forward * half_extent)
 
-	var board_basis = Basis(right, up, forward).orthonormalized()
+	#var board_basis = Basis(right, up, forward).orthonormalized()
+	print_debug(angle)
 
 	for i: int in range(total_instances):
+		
 		var x = i % board_size
 		@warning_ignore("integer_division")
 		var z = i / board_size

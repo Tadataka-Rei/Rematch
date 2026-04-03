@@ -49,13 +49,13 @@ animation = &"Idle"
 animation = &"Walk"
 play_mode = 1
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cc4b3"]
+animation = &"Walk"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8fn1l"]
-animation = &"RightStrafeWalk"
+animation = &"Walk"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0i0k1"]
-animation = &"LeftstrafeWalki"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cc4b3"]
 animation = &"Walk"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_p42m1"]
@@ -63,12 +63,12 @@ blend_point_0/node = SubResource("AnimationNodeAnimation_ere1b")
 blend_point_0/pos = Vector2(0, 0)
 blend_point_1/node = SubResource("AnimationNodeAnimation_i6jpi")
 blend_point_1/pos = Vector2(0, -1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_8fn1l")
-blend_point_2/pos = Vector2(1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_0i0k1")
+blend_point_2/node = SubResource("AnimationNodeAnimation_cc4b3")
+blend_point_2/pos = Vector2(0, 1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_8fn1l")
 blend_point_3/pos = Vector2(-1, 0)
-blend_point_4/node = SubResource("AnimationNodeAnimation_cc4b3")
-blend_point_4/pos = Vector2(0, 1)
+blend_point_4/node = SubResource("AnimationNodeAnimation_0i0k1")
+blend_point_4/pos = Vector2(1, 0)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mte5d"]
 animation = &"fall"
@@ -116,6 +116,7 @@ transitions = ["Start", "WalkBlend", SubResource("AnimationNodeStateMachineTrans
 graph_offset = Vector2(261, -32)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_xclpl"]
+graph_offset = Vector2(-493.8129, 23.30127)
 nodes/output/position = Vector2(160, 120)
 nodes/locomotion_state_machine/node = SubResource("AnimationNodeStateMachine_tes8u")
 nodes/locomotion_state_machine/position = Vector2(-260, 60)
@@ -153,32 +154,32 @@ WalkStateName = "WalkBlend"
 RunStateName = "RunBlend"
 animationTree = NodePath("AnimationTree")
 
-[node name="Armature" parent="." index="0" unique_id=458754741]
+[node name="Armature" parent="." index="0" unique_id=1244083593]
 transform = Transform3D(-0.2, -1.7484556e-08, 7.642742e-16, 0, -8.742278e-09, -0.2, 1.7484556e-08, -0.2, 8.742278e-09, 0, 0, -0.012363)
 
-[node name="Skeleton3D" parent="Armature" index="0" unique_id=538243480]
-bones/0/position = Vector3(-0.00065898895, 0.13515179, -4.497577)
-bones/0/rotation = Quaternion(-0.727234, -0.054074433, 0.01627218, 0.68406284)
-bones/1/rotation = Quaternion(-0.0057868403, 0.011962652, 0.020864327, 0.999694)
-bones/2/rotation = Quaternion(0.0034392008, 0.0018693501, 0.014134361, 0.9998925)
-bones/3/rotation = Quaternion(0.0032335343, 0.0022787391, 0.014120302, 0.9998925)
-bones/4/rotation = Quaternion(0.08766643, -0.0011865228, 0.0027443478, 0.9961455)
-bones/5/rotation = Quaternion(-0.05544935, 0.009911034, -0.0014462537, 0.9984113)
-bones/6/rotation = Quaternion(1, 6.2879246e-10, -1.6238173e-06, -3.1470581e-06)
-bones/7/rotation = Quaternion(-0.7017339, -0.29899332, 0.5338921, -0.36487225)
-bones/8/rotation = Quaternion(0.4552364, 0.116854236, 0.030388812, 0.88214594)
-bones/9/rotation = Quaternion(-0.05992888, 0.0012465375, 0.03531243, 0.99757713)
-bones/11/rotation = Quaternion(0.70009273, -0.295651, 0.5507523, 0.34515616)
-bones/12/rotation = Quaternion(0.38662496, -0.21296935, -0.03252291, 0.8967204)
-bones/13/rotation = Quaternion(-0.058306705, -0.0042021717, -0.098434106, 0.99342513)
-bones/15/rotation = Quaternion(0.1343285, 0.08160647, 0.9848494, -0.07326669)
-bones/16/rotation = Quaternion(-0.16303994, -0.017741378, 0.03389771, 0.98587745)
-bones/17/rotation = Quaternion(0.5182864, -0.04991119, -0.044676926, 0.85257965)
-bones/18/rotation = Quaternion(0.29074216, 0.04567169, -0.010758449, 0.95565027)
-bones/20/rotation = Quaternion(-0.0885388, -0.023930797, 0.99545145, -0.025780156)
-bones/21/rotation = Quaternion(-0.08014545, 0.08425112, -0.026615676, 0.99285954)
-bones/22/rotation = Quaternion(0.5344812, 0.039223343, 0.013868684, 0.84415585)
-bones/23/rotation = Quaternion(0.31115565, -0.04517409, 0.010205867, 0.94922996)
+[node name="Skeleton3D" parent="Armature" index="0" unique_id=776714730]
+bones/0/position = Vector3(-0.00065898895, 0.1367835, -4.497242)
+bones/0/rotation = Quaternion(-0.72768056, -0.05161097, 0.0143310875, 0.6838216)
+bones/1/rotation = Quaternion(-0.0067297663, 0.013084445, 0.021247594, 0.99966604)
+bones/2/rotation = Quaternion(-0.0028574772, 0.0024238897, 0.0146206785, 0.99988616)
+bones/3/rotation = Quaternion(-0.0030774118, 0.0030616093, 0.014573224, 0.9998844)
+bones/4/rotation = Quaternion(0.093122944, -0.0018798232, 0.0026159263, 0.9956494)
+bones/5/rotation = Quaternion(-0.04712645, 0.008529182, -0.00257856, 0.9988492)
+bones/6/rotation = Quaternion(1, 6.307099e-10, -1.6238223e-06, -3.147065e-06)
+bones/7/rotation = Quaternion(-0.6956012, -0.31047222, 0.5267164, -0.3772476)
+bones/8/rotation = Quaternion(0.47564408, 0.11518386, 0.031542227, 0.8714932)
+bones/9/rotation = Quaternion(-0.05995972, 0.0026770874, 0.032804277, 0.997658)
+bones/11/rotation = Quaternion(0.69510853, -0.30665103, 0.5430631, 0.3575918)
+bones/12/rotation = Quaternion(0.405414, -0.21619852, -0.027288202, 0.8877799)
+bones/13/rotation = Quaternion(-0.058020957, -0.005446835, -0.10776616, 0.9924668)
+bones/15/rotation = Quaternion(0.13387686, 0.080822326, 0.98489434, -0.074350774)
+bones/16/rotation = Quaternion(-0.16362701, -0.0150791295, 0.030562194, 0.9859334)
+bones/17/rotation = Quaternion(0.51891005, -0.04912594, -0.04326973, 0.8523185)
+bones/18/rotation = Quaternion(0.29077017, 0.04567095, -0.01075755, 0.9556418)
+bones/20/rotation = Quaternion(-0.088333786, -0.021394901, 0.9955532, -0.024763681)
+bones/21/rotation = Quaternion(-0.08633953, 0.08458937, -0.0258158, 0.99233246)
+bones/22/rotation = Quaternion(0.5379683, 0.04122241, 0.012744087, 0.8418602)
+bones/23/rotation = Quaternion(0.31116182, -0.045173917, 0.010205667, 0.94922787)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=85425360]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996002, 0)
