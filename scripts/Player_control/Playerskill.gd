@@ -12,7 +12,6 @@ var target_enemy: Node3D = null
 var armature: Node3D
 var total_instances: int
 var board_created: bool = false
-var angle: float
 #endregion
 
 func _ready() -> void:
@@ -27,33 +26,35 @@ func _input(event: InputEvent) -> void:
 			board_created = not board_created
 			if board_created:
 				Teleport_to_player()
-				var direction_vector = calculate_direction_vector()
-				create_board(12, direction_vector)
+				var Foward_Vector = Caculate_Forawrd_Vector()
+				create_board(8, Foward_Vector)
 			else:
 				destroy_board()
 #endregion
 
+#region Teleport
 func Teleport_to_player() -> void:
 	global_position = Player.global_position
 	pass
+#endregion
 #region ----------Caculate board XZ-------------------
-func calculate_direction_vector() -> Vector3:
+func Caculate_Forawrd_Vector() -> Vector3:
 	if target_enemy == null:
 		return Vector3.FORWARD
-
-	var dir: Vector3 = (target_enemy.global_position - global_position)
-	dir.y = 0
-	dir = dir.normalized()
+		
+	# Vector BA = A-B
+	var Foward_Vector: Vector3 = ( global_position-target_enemy.global_position)
+	Foward_Vector.y = 0
+	Foward_Vector = Foward_Vector.normalized()
 
 	# Snap to closest axis (remove diagonals)
-	if abs(dir.x) > abs(dir.z):
-		dir = Vector3(sign(dir.x), 0, 0) # left/right
+	if abs(Foward_Vector.x) > abs(Foward_Vector.z):
+		Foward_Vector = Vector3(sign(Foward_Vector.x), 0, 0) # left/right
 	else:
-		dir = Vector3(0, 0, sign(dir.z)) # forward/back
+		Foward_Vector = Vector3(0, 0, sign(Foward_Vector.z)) # forward/back
 
-	angle = atan2(dir.x, dir.z)
-	print_debug(dir.x, dir.z)
-	return dir
+	print_debug(Foward_Vector.x, Foward_Vector.z)
+	return Foward_Vector
 
 #region ----------- Caculate Y spawn POS ---------
 func calculate_spawn_y() -> float:
@@ -78,9 +79,6 @@ func create_board(board_size: int, direction_to_enemy: Vector3) -> void:
 	var half_extent = (board_size - 1) * spacing * 0.5
 	var starting_point = world_center - (right * half_extent) - (forward * half_extent)
 
-	#var board_basis = Basis(right, up, forward).orthonormalized()
-	print_debug(angle)
-
 	for i: int in range(total_instances):
 		
 		var x = i % board_size
@@ -88,12 +86,18 @@ func create_board(board_size: int, direction_to_enemy: Vector3) -> void:
 		var z = i / board_size
 
 		var world_pos = starting_point + (right * x * spacing) + (forward * z * spacing)
+		
 		var local_pos = to_local(world_pos)
-
 		var xform = Transform3D(Basis(), local_pos)
 		multimesh.set_instance_transform(i, xform)
-
-		var color = Color.WHITE if (x + z) % 2 == 0 else Color.BLACK
+		var color
+		if( forward.x>1):
+			color = Color.WHITE if (x + z) % 2 == 0 else Color.BLACK
+		else:
+			color = Color.BLACK if (x + z) % 2 == 0 else Color.WHITE
+		
+		if(world_pos == starting_point):
+			color = Color.RED
 		multimesh.set_instance_color(i, color)
 #endregion
 #---------------- Board Destruction----------------
