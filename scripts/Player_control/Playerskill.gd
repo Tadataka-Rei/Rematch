@@ -1,106 +1,125 @@
 extends MultiMeshInstance3D
 
-#region -----variables-----
-@export_subgroup("setting")
+# =======================
+#        VARIABLES
+# =======================
+@export_subgroup("Settings")
 @export var spacing: float = 2.0
 @export var spawn_distance: float = 5.0
 @export var lower_value: float = 10.0
 
-@onready var Player: CharacterBody3D = get_parent()
+@onready var player: CharacterBody3D = get_parent()
+@onready var armature: Node3D = get_node_or_null("../Armature")
 
 var target_enemy: Node3D = null
-var armature: Node3D
-var total_instances: int
+var total_instances: int = 0
 var board_created: bool = false
-#endregion
 
+
+#region  -----READY-------
 func _ready() -> void:
-	armature = get_node("../Armature")
 	if armature == null:
 		print_debug("Armature node not found")
+#endregion
 
-#region ----------inputhandler-------------------
+
+#region  ----------INPUT---------
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		if event.is_action_pressed("Q"):
-			board_created = not board_created
-			if board_created:
-				Teleport_to_player()
-				var Foward_Vector = Caculate_Forawrd_Vector()
-				create_board(8, Foward_Vector)
-			else:
-				destroy_board()
+			toggle_board()
 #endregion
 
-#region Teleport
-func Teleport_to_player() -> void:
-	global_position = Player.global_position
-	pass
+func toggle_board() -> void:
+	board_created = !board_created
+
+	if board_created:
+		teleport_to_player()
+		var forward = calculate_forward_vector()
+		create_board(8, forward)
+	else:
+		destroy_board()
+
+
+#region   ------TELEPORT-------
+
+func teleport_to_player() -> void:
+	global_position = player.global_position
 #endregion
-#region ----------Caculate board XZ-------------------
-func Caculate_Forawrd_Vector() -> Vector3:
+
+#region     --------VECTOR CALCULATION------
+
+func calculate_forward_vector() -> Vector3:
 	if target_enemy == null:
 		return Vector3.FORWARD
-		
-	# Vector BA = A-B
-	var Foward_Vector: Vector3 = ( global_position-target_enemy.global_position)
-	Foward_Vector.y = 0
-	Foward_Vector = Foward_Vector.normalized()
 
-	# Snap to closest axis (remove diagonals)
-	if abs(Foward_Vector.x) > abs(Foward_Vector.z):
-		Foward_Vector = Vector3(sign(Foward_Vector.x), 0, 0) # left/right
+	var forward: Vector3 = global_position - target_enemy.global_position
+	forward.y = 0
+	forward = forward.normalized()
+
+	# Snap to axis (no diagonals)
+	if abs(forward.x) > abs(forward.z):
+		forward = Vector3(sign(forward.x), 0, 0)
 	else:
-		Foward_Vector = Vector3(0, 0, sign(Foward_Vector.z)) # forward/back
+		forward = Vector3(0, 0, sign(forward.z))
 
-	print_debug(Foward_Vector.x, Foward_Vector.z)
-	return Foward_Vector
+	print_debug(forward.x, forward.z)
+	return forward
 
-#region ----------- Caculate Y spawn POS ---------
+
 func calculate_spawn_y() -> float:
 	if target_enemy == null:
 		return global_position.y
+
 	return min(target_enemy.global_position.y, global_position.y) - lower_value
 #endregion
 
-#region ---------------- Board Creation----------------
-func create_board(board_size: int, direction_to_enemy: Vector3) -> void:
+#region   --HELPERS---
+func get_right_vector(forward: Vector3) -> Vector3:
+	return forward.cross(Vector3.UP).normalized()
+#endregion
+
+#region    ----------BOARD CREATION------
+func create_board(board_size: int, direction: Vector3) -> void:
 	total_instances = board_size * board_size
 	multimesh.instance_count = total_instances
 
-	var forward = direction_to_enemy.normalized()
-	var right = forward.cross(Vector3.UP).normalized()
-	var up = Vector3.UP
+	var forward = direction.normalized()
+	var right = get_right_vector(forward)
 
 	# Center on enemy
-	var world_center = target_enemy.global_position
-	world_center.y = 0
+	var center = target_enemy.global_position
+	center.y = 0
 
 	var half_extent = (board_size - 1) * spacing * 0.5
-	var starting_point = world_center - (right * half_extent) - (forward * half_extent)
+	var start = center - right * half_extent - forward * half_extent
 
-	for i: int in range(total_instances):
-		
+	for i in total_instances:
 		var x = i % board_size
 		@warning_ignore("integer_division")
 		var z = i / board_size
 
-		var world_pos = starting_point + (right * x * spacing) + (forward * z * spacing)
-		
+		var world_pos = start + right * x * spacing + forward * z * spacing
 		var local_pos = to_local(world_pos)
-		var xform = Transform3D(Basis(), local_pos)
-		multimesh.set_instance_transform(i, xform)
-		var color
-		if( forward.x>1):
-			color = Color.WHITE if (x + z) % 2 == 0 else Color.BLACK
-		else:
-			color = Color.BLACK if (x + z) % 2 == 0 else Color.WHITE
-		
-		if(world_pos == starting_point):
-			color = Color.RED
-		multimesh.set_instance_color(i, color)
+
+		multimesh.set_instance_transform(i, Transform3D(Basis(), local_pos))
+		multimesh.set_instance_color(i, get_tile_color(x, z, forward))
+
+
+func get_tile_color(x: int, z: int, forward: Vector3) -> Color:
+	var is_even = (x + z) % 2 == 0
+
+	if forward.x > 0 && forward.z <0:
+		return Color.WHITE if is_even else Color.BLACK
+	else:
+		return Color.BLACK if is_even else Color.WHITE
 #endregion
-#---------------- Board Destruction----------------
+
+
+#region  --------BOARD DESTRUCTION------
+
 func destroy_board() -> void:
-	for i in range(total_instances):
+	for i in total_instances:
 		multimesh.set_instance_transform(i, Transform3D(Basis(), Vector3(9999, 0, 9999)))
+#endregion
