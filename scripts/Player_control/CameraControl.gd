@@ -19,3 +19,4 @@ func _input(event: InputEvent) -> void:
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 #endregion
+# to do add ability to disable spring arm, and change to top down camera when on mode during match
