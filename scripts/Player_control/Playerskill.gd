@@ -1,7 +1,7 @@
 extends MultiMeshInstance3D
 
 # =======================
-#        VARIABLES
+#region        VARIABLES
 # =======================
 @export_subgroup("Settings")
 @export var spacing: float = 2.0
@@ -14,24 +14,30 @@ extends MultiMeshInstance3D
 var target_enemy: Node3D = null
 var total_instances: int = 0
 var board_created: bool = false
-
+#endregion
 
 #region  -----READY-------
 func _ready() -> void:
 	if armature == null:
 		print_debug("Armature node not found")
+	if global_position== null:
+		print_debug("wtf")
 #endregion
 
-
+#=================================
 #region  ----------INPUT---------
-
+#=================================
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		if event.is_action_pressed("Q"):
 			toggle_board()
 #endregion
 
+#=================================
 func toggle_board() -> void:
+	if(target_enemy == null):
+		print_debug("where's enemy")
+		pass
 	board_created = !board_created
 
 	if board_created:
@@ -41,17 +47,18 @@ func toggle_board() -> void:
 	else:
 		destroy_board()
 
-
+#=================================
 #region   ------TELEPORT-------
-
+#=================================
 func teleport_to_player() -> void:
 	global_position = player.global_position
 #endregion
-
+#=================================
 #region     --------VECTOR CALCULATION------
-
+#=================================
 func calculate_forward_vector() -> Vector3:
 	if target_enemy == null:
+		print_debug("no enemy")
 		return Vector3.FORWARD
 
 	var forward: Vector3 = global_position - target_enemy.global_position
@@ -67,20 +74,22 @@ func calculate_forward_vector() -> Vector3:
 	print_debug(forward.x, forward.z)
 	return forward
 
-
+#=================================
 func calculate_spawn_y() -> float:
 	if target_enemy == null:
 		return global_position.y
 
 	return min(target_enemy.global_position.y, global_position.y) - lower_value
 #endregion
-
+#=================================
 #region   --HELPERS---
+#=================================
 func get_right_vector(forward: Vector3) -> Vector3:
 	return forward.cross(Vector3.UP).normalized()
 #endregion
-
+#=================================
 #region    ----------BOARD CREATION------
+#=================================
 func create_board(board_size: int, direction: Vector3) -> void:
 	total_instances = board_size * board_size
 	multimesh.instance_count = total_instances

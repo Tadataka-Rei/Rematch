@@ -9,10 +9,7 @@ func _ready() -> void:
 #region Input Handler
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		# Rotate the pivot itself (horizontally)
 		rotate_y(-event.relative.x * cameraPanSpeed)
-		
-		# Rotate the spring arm (vertically)
 		springarm.rotate_x(-event.relative.y * cameraPanSpeed)
 		springarm.rotation.x = clamp(springarm.rotation.x, deg_to_rad(-70), deg_to_rad(30))
 		

@@ -32,6 +32,10 @@ folder_colors={
 "res://textures/": "yellow"
 }
 
+[global_group]
+
+Skill_Pivot=""
+
 [input]
 
 ui_cancel={

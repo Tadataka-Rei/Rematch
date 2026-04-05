@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://drtt85dj0fcnq"]
+
+[ext_resource type="Script" uid="uid://b2eyjoin7eyce" path="res://scripts/Player_control/CameraControl.gd" id="1_iflyj"]
+[ext_resource type="Script" uid="uid://dajshwieqvuvb" path="res://scripts/Player_control/Skill_Range.gd" id="2_nusbt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nobmo"]
+size = Vector3(9.494934, 6.551941, 37.66125)
+
+[node name="CameraPivot" type="Node3D" unique_id=1590433032]
+script = ExtResource("1_iflyj")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=1626407057]
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1098544421]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.26088762, 3.487861)
+
+[node name="Area3D" type="Area3D" parent="SpringArm3D/Camera3D" unique_id=1751495807]
+collision_layer = 2147483648
+collision_mask = 4
+script = ExtResource("2_nusbt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SpringArm3D/Camera3D/Area3D" unique_id=1699291839]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24636841, 2.7759705, -19.398365)
+shape = SubResource("BoxShape3D_nobmo")
