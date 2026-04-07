@@ -2,7 +2,9 @@ extends Node3D
 
 @export var cameraPanSpeed: float = 0.0015
 @onready var springarm: SpringArm3D = $SpringArm3D
-
+@onready var Camera: Camera3D  = $SpringArm3D/Camera3D
+enum CameraStates {ThirdPov, TopDownPOV}
+@onready var CameraMode: CameraStates
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -18,5 +20,13 @@ func _input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			
+	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
+		if not event.echo:
+			Camera_State()
 #endregion
+
+func Camera_State() -> void:
+	
+	pass
 # to do add ability to disable spring arm, and change to top down camera when on mode during match
