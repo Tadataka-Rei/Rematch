@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c4b76phc17cfh"]
 
-[ext_resource type="PackedScene" uid="uid://dthiw4j1bpkru" path="res://models/characters/player/player_loco.tscn" id="1_8ri1i"]
+[ext_resource type="PackedScene" uid="uid://dthiw4j1bpkru" path="res://entities/Player/player_loco.tscn" id="1_8ri1i"]
 [ext_resource type="PackedScene" uid="uid://dwl65stnblj20" path="res://entities/test_enemy/Test_dummy.tscn" id="3_3mglk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ri1i"]
