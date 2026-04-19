@@ -4,7 +4,7 @@ extends MultiMeshInstance3D
 #region        VARIABLES
 # =======================
 @export_subgroup("Settings")
-@export var spacing: float = 2.0
+@export var spacing: float = 5.0
 @export var spawn_distance: float = 5.0
 @export var lower_value: float = 10.0
 

@@ -3,7 +3,7 @@ shader_type spatial;
 uniform float speed = 2.0;
 uniform float strength =  0.5;
 void vertex() {
-	VERTEX.y += sin(TIME * speed ) * strength;
+	//VERTEX.y += sin(TIME * speed ) * strength;
 }
 
 void fragment() {

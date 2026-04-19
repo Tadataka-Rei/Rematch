@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c88n7tcnja4pk"]
+
+[ext_resource type="PackedScene" uid="uid://ctwp1lu4l4ean" path="res://models/characters/player/Player_loco_model.glb" id="1_nwgu8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nwgu8"]
+cull_mode = 2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_en83w"]
+radius = 0.28466797
+height = 1.9832382
+
+[node name="Player_loco_model" unique_id=97771248 instance=ExtResource("1_nwgu8")]
+collision_mask = 5
+
+[node name="Base_Cube" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(1654044732) index="0" unique_id=176453972]
+surface_material_override/0 = SubResource("StandardMaterial3D_nwgu8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=538752767]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996002, 0)
+shape = SubResource("CapsuleShape3D_en83w")
