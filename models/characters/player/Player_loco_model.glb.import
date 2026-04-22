@@ -4152,11 +4152,11 @@ _subresources={
 "slices/amount": 0
 },
 "Jump": {
-"save_to_file/enabled": false,
-"save_to_file/fallback_path": "",
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://models/characters/player/Animation/Jump.res",
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "",
-"settings/loop_mode": 1,
+"save_to_file/path": "uid://uwirt50tfe72",
+"settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
 "slice_1/name": "",

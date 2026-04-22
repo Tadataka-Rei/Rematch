@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c4b76phc17cfh"]
 
-[ext_resource type="PackedScene" uid="uid://ctwp1lu4l4ean" path="res://models/characters/player/Player_loco_model.glb" id="2_c3lgt"]
+[ext_resource type="PackedScene" uid="uid://c88n7tcnja4pk" path="res://entities/Player/player_loco_model.tscn" id="2_c3lgt"]
 [ext_resource type="PackedScene" uid="uid://dwl65stnblj20" path="res://entities/test_enemy/Test_dummy.tscn" id="3_3mglk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ri1i"]
@@ -126,6 +126,4 @@ metadata/_edit_lock_ = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8983145, 0.9672575, 49.124954)
 top_level = true
 
-[node name="Player_loco_model2" parent="." unique_id=97771248 instance=ExtResource("2_c3lgt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19261837, 4.7683716e-07, 10.858234)
-slide_on_ceiling = false
+[node name="Player_loco_model" parent="." unique_id=1731599990 instance=ExtResource("2_c3lgt")]
