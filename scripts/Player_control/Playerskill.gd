@@ -12,7 +12,7 @@ extends MultiMeshInstance3D
 @onready var armature: Node3D = get_node_or_null("../Armature")
 
 var target_enemy: Node3D = null
-var total_instances: int = 0
+var total_instances: int = 100
 var board_created: bool = false
 #endregion
 
@@ -22,6 +22,7 @@ func _ready() -> void:
 		print_debug("Armature node not found")
 	if global_position== null:
 		print_debug("wtf")
+	multimesh.instance_count = total_instances
 #endregion
 
 #=================================
@@ -92,7 +93,6 @@ func get_right_vector(forward: Vector3) -> Vector3:
 #=================================
 func create_board(board_size: int, direction: Vector3) -> void:
 	total_instances = board_size * board_size
-	multimesh.instance_count = total_instances
 
 	var forward = direction.normalized()
 	var right = get_right_vector(forward)

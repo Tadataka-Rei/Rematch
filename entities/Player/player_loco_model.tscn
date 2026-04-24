@@ -184,10 +184,33 @@ RunStateName = "RunBlend"
 animationTree = NodePath("AnimationTree")
 transitionSpeed = 2.0
 
-[node name="Armature" parent="." index="0" unique_id=75507306]
+[node name="Armature" parent="." index="0" unique_id=248108526]
 transform = Transform3D(-0.4, -6.039832e-08, 2.6400945e-15, 0, -1.7484556e-08, -0.4, 6.039832e-08, -0.4, 1.7484556e-08, 0, 0, 0)
 
-[node name="Base_Cube" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(1404323732) index="0" unique_id=1556900601]
+[node name="Skeleton3D" parent="Armature" index="0" unique_id=223141235]
+bones/0/position = Vector3(0.024941511, 0.032244056, -2.1173427)
+bones/0/rotation = Quaternion(-0.72781074, -0.05195127, 0.012997507, 0.68368393)
+bones/1/rotation = Quaternion(0.009394797, 0.01194375, 0.020627407, 0.9996718)
+bones/2/rotation = Quaternion(0.009670551, 0.0020616192, 0.013464087, 0.99986047)
+bones/3/rotation = Quaternion(0.009449645, 0.0022892645, 0.013510076, 0.99986154)
+bones/4/rotation = Quaternion(0.06816406, -0.0011232327, 0.0042116414, 0.9976647)
+bones/5/rotation = Quaternion(-0.06491283, 0.011408305, -0.0019155157, 0.9978239)
+bones/7/rotation = Quaternion(-0.71766055, -0.2755196, 0.53631455, -0.34845245)
+bones/8/rotation = Quaternion(0.379537, 0.12189759, 0.05179708, 0.91564715)
+bones/9/rotation = Quaternion(-0.056159563, -0.000518182, 0.017429166, 0.99826956)
+bones/11/rotation = Quaternion(0.71411395, -0.2731093, 0.55504775, 0.32768083)
+bones/12/rotation = Quaternion(0.31145287, -0.21428412, -0.06684934, 0.9233692)
+bones/13/rotation = Quaternion(-0.056382496, 0.0013521179, -0.061027072, 0.9965415)
+bones/15/rotation = Quaternion(0.13348778, 0.088470556, 0.9841637, -0.07599911)
+bones/16/rotation = Quaternion(-0.16892552, -0.015073771, 0.038687993, 0.98475397)
+bones/17/rotation = Quaternion(0.51461834, -0.027861558, -0.060021017, 0.8548622)
+bones/18/rotation = Quaternion(0.28752646, 0.007950174, -0.0014134172, 0.95773876)
+bones/20/rotation = Quaternion(-0.089478895, -0.024698585, 0.9953654, -0.02512714)
+bones/21/rotation = Quaternion(-0.0796773, 0.08394277, -0.028321167, 0.9928762)
+bones/22/rotation = Quaternion(0.53885394, 0.019606074, 0.02516012, 0.8417952)
+bones/23/rotation = Quaternion(0.30478573, -0.008662648, 0.0012658925, 0.9523808)
+
+[node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=1328622473]
 surface_material_override/0 = SubResource("StandardMaterial3D_nwgu8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=538752767]
@@ -206,5 +229,6 @@ parameters/locomotion_state_machine/WalkBlend/blend_position = Vector2(-0.007363
 [node name="ChessboardDeploy" type="MultiMeshInstance3D" parent="." index="5" unique_id=1762747795 groups=["Skill_Pivot"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.059128523, 0.039432287, -0.06561661)
 top_level = true
+cast_shadow = 0
 multimesh = SubResource("MultiMesh_1xpwc")
 script = ExtResource("5_crw8l")
