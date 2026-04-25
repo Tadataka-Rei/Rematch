@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://nhbbso06pvj0"]
+
+[ext_resource type="Terrain3DMaterial" uid="uid://cuo1srgb5pjhm" path="res://terrain/EinSof_Terrain/terrain_3d_material.tres" id="1_lrpnj"]
+[ext_resource type="Terrain3DAssets" uid="uid://bx728yrrjlr4t" path="res://terrain/EinSof_Terrain/terrain_3d_assets.tres" id="2_2omel"]
+
+[node name="EinSof" type="Node3D" unique_id=365125349]
+
+[node name="Terrain3D" type="Terrain3D" parent="." unique_id=1532506371]
+data_directory = "res://terrain/EinSof_Terrain"
+material = ExtResource("1_lrpnj")
+assets = ExtResource("2_2omel")
+save_16_bit = true
+show_checkered = true
