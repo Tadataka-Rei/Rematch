@@ -1,3 +1,90 @@
 [gd_scene format=3 uid="uid://nhbbso06pvj0"]
 
+[ext_resource type="Shader" uid="uid://dk8gasrnwcfhm" path="res://materials/Shader/Float_updown.gdshader" id="1_d3j3j"]
+[ext_resource type="Script" uid="uid://b28uomeaop25p" path="res://scripts/multimeshinstances/create_in_area.gd" id="1_uo7tr"]
+[ext_resource type="PackedScene" uid="uid://c88n7tcnja4pk" path="res://entities/Player/player_loco_model.tscn" id="1_x205g"]
+[ext_resource type="PackedScene" uid="uid://bpr5bak5c54hw" path="res://models/chess_pieces/King.glb" id="2_xpi87"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d3j3j"]
+
+[sub_resource type="Sky" id="Sky_00267"]
+sky_material = SubResource("ProceduralSkyMaterial_d3j3j")
+
+[sub_resource type="Environment" id="Environment_wa5fr"]
+background_mode = 2
+sky = SubResource("Sky_00267")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uo7tr"]
+metallic = 0.5
+roughness = 0.0
+emission = Color(0.24666235, 0.66853315, 0.6850845, 1)
+emission_energy_multiplier = 0.45
+clearcoat_roughness = 0.0
+refraction_scale = 0.01
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_d3j3j"]
+material = SubResource("StandardMaterial3D_uo7tr")
+size = Vector2(20, 20)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_bb26a"]
+data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0, -10, 10, 0, -10)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_00267"]
+render_priority = 0
+shader = ExtResource("1_d3j3j")
+shader_parameter/speed = 0.6
+shader_parameter/strength = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_uo7tr"]
+lightmap_size_hint = Vector2i(-1, 0)
+material = SubResource("ShaderMaterial_00267")
+
+[sub_resource type="MultiMesh" id="MultiMesh_d3j3j"]
+transform_format = 1
+mesh = SubResource("BoxMesh_uo7tr")
+
 [node name="Keter" type="Node3D" unique_id=365125349]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=169895813]
+environment = SubResource("Environment_wa5fr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=95184389]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_color = Color(0.999999, 0.9982186, 0.79960567, 1)
+shadow_enabled = true
+
+[node name="World" type="Node3D" parent="." unique_id=576172619]
+
+[node name="ground" type="Node" parent="World" unique_id=567038236]
+
+[node name="Ground1" type="MeshInstance3D" parent="World/ground" unique_id=157192750]
+transform = Transform3D(3.5999877, 0.0007881885, 0.0018405918, -0.0028171556, 1.0020423, -0.0022086836, -0.006600931, 0.0022012654, 1.0047587, -19, 0, 0)
+mesh = SubResource("PlaneMesh_d3j3j")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/ground/Ground1" unique_id=1883357938]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/ground/Ground1/StaticBody3D" unique_id=286349216]
+shape = SubResource("ConcavePolygonShape3D_bb26a")
+
+[node name="ground2" type="MeshInstance3D" parent="World/ground" unique_id=205035967]
+transform = Transform3D(3.6537952, 0.0016075494, 0.016271878, -0.0057038167, 1.0192441, -0.019541603, -0.013405503, 0.0044766595, 4.4433765, -91.46979, 0, 1)
+mesh = SubResource("PlaneMesh_d3j3j")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/ground/ground2" unique_id=1302025576]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/ground/ground2/StaticBody3D" unique_id=1031659817]
+shape = SubResource("ConcavePolygonShape3D_bb26a")
+
+[node name="floatingcubes" type="Node" parent="World" unique_id=2097434913]
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="World/floatingcubes" unique_id=468655174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9, 0)
+multimesh = SubResource("MultiMesh_d3j3j")
+script = ExtResource("1_uo7tr")
+
+[node name="Player_loco_model" parent="." unique_id=1731599990 instance=ExtResource("1_x205g")]
+transform = Transform3D(0.9999999, 0, 1.5893264e-08, 0, 1, 0, -1.5893264e-08, 0, 0.9999999, 2.8038802, 0.25053528, 1.7427268)
+
+[node name="King" parent="." unique_id=213811983 instance=ExtResource("2_xpi87")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -139, 0, 0)
