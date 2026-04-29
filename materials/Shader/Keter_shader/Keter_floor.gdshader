@@ -12,7 +12,5 @@ void fragment() {
     METALLIC = 0.1; 
     float fresnel = pow(1.0 - dot(NORMAL, VIEW), edge_clarity);
     
-    // 3. Transparency
-    // The edges stay crisp and opaque, while the center is clear
     ALPHA = mix(ice_color.a, 1.0, fresnel);
 }
