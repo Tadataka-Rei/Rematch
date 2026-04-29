@@ -184,33 +184,33 @@ RunStateName = "RunBlend"
 animationTree = NodePath("AnimationTree")
 transitionSpeed = 2.0
 
-[node name="Armature" parent="." index="0" unique_id=28133278]
+[node name="Armature" parent="." index="0" unique_id=1144429123]
 transform = Transform3D(-0.4, -6.039832e-08, 2.6400945e-15, 0, -1.7484556e-08, -0.4, 6.039832e-08, -0.4, 1.7484556e-08, 0, 0, 0)
 
-[node name="Skeleton3D" parent="Armature" index="0" unique_id=2107712377]
-bones/0/position = Vector3(0.028414696, 0.03368868, -2.1174128)
-bones/0/rotation = Quaternion(-0.72677666, -0.055617083, 0.015464983, 0.68444383)
-bones/1/rotation = Quaternion(0.007942677, 0.010646326, 0.01977226, 0.99971634)
-bones/2/rotation = Quaternion(0.0059592775, 0.0015033828, 0.013416341, 0.99989116)
-bones/3/rotation = Quaternion(0.005739867, 0.0017761226, 0.013412087, 0.999892)
-bones/4/rotation = Quaternion(0.069617085, -0.0015754604, 0.0057162787, 0.9975562)
-bones/5/rotation = Quaternion(-0.058052335, 0.01095377, -0.0032819943, 0.9982481)
-bones/7/rotation = Quaternion(-0.71338946, -0.28402355, 0.5323566, -0.3563742)
-bones/8/rotation = Quaternion(0.3928453, 0.1290561, 0.04510834, 0.90938574)
-bones/9/rotation = Quaternion(-0.056267004, -0.0004545794, 0.030153753, 0.9979602)
-bones/11/rotation = Quaternion(0.7089528, -0.28281188, 0.55272937, 0.33450532)
-bones/12/rotation = Quaternion(0.32111412, -0.21722896, -0.0670605, 0.9193477)
-bones/13/rotation = Quaternion(-0.05642807, 0.0010699828, -0.06574275, 0.9962393)
-bones/15/rotation = Quaternion(0.1334651, 0.088522926, 0.98408747, -0.07695865)
-bones/16/rotation = Quaternion(-0.16680025, -0.018775985, 0.0368243, 0.98512393)
-bones/17/rotation = Quaternion(0.5156183, -0.027205791, -0.058793247, 0.85436577)
-bones/18/rotation = Quaternion(0.2875908, 0.007951213, -0.0014127193, 0.9577193)
-bones/20/rotation = Quaternion(-0.0885481, -0.02489876, 0.9954501, -0.024872169)
-bones/21/rotation = Quaternion(-0.078331895, 0.084589146, -0.027068675, 0.99296325)
-bones/22/rotation = Quaternion(0.5345195, 0.016429797, 0.026532495, 0.8445798)
-bones/23/rotation = Quaternion(0.30492416, -0.00845703, 0.0013545683, 0.9523382)
+[node name="Skeleton3D" parent="Armature" index="0" unique_id=1036864474]
+bones/0/position = Vector3(0.039753564, 0.03290063, -2.0873806)
+bones/0/rotation = Quaternion(-0.71230286, -0.020180095, -0.039178103, 0.7004873)
+bones/1/rotation = Quaternion(-0.008766672, -0.011221896, 0.02110218, 0.99967587)
+bones/2/rotation = Quaternion(0.0064704274, -7.797168e-05, 0.051904794, 0.9986311)
+bones/3/rotation = Quaternion(0.0065426384, 0.004470856, 0.051302884, 0.9986517)
+bones/4/rotation = Quaternion(0.028921122, -0.002112086, -0.018952034, 0.99939984)
+bones/5/rotation = Quaternion(0.013458615, 0.0057180873, -0.07090637, 0.9973758)
+bones/7/rotation = Quaternion(-0.6892262, -0.3279413, 0.53284967, -0.365367)
+bones/8/rotation = Quaternion(0.50836754, -0.032635245, -0.09193119, 0.85559696)
+bones/9/rotation = Quaternion(-0.056738462, 0.006894518, 0.12920813, 0.989969)
+bones/11/rotation = Quaternion(0.6386582, -0.36879998, 0.5884074, 0.33148006)
+bones/12/rotation = Quaternion(0.3821775, 0.02499653, 0.038012233, 0.9229684)
+bones/13/rotation = Quaternion(-0.05655885, -0.008549868, -0.15542175, 0.98619074)
+bones/15/rotation = Quaternion(0.11577088, 0.15585013, 0.97433776, -0.1139024)
+bones/16/rotation = Quaternion(-0.25095132, -0.07741469, 0.036134604, 0.9642224)
+bones/17/rotation = Quaternion(0.5411158, -0.05514306, -0.06338177, 0.83674103)
+bones/18/rotation = Quaternion(0.25029203, 0.0073468704, -0.001813075, 0.9681408)
+bones/20/rotation = Quaternion(-0.038273174, -0.007394612, 0.9952157, -0.08958891)
+bones/21/rotation = Quaternion(-0.10694053, 0.04590927, 0.026146382, 0.99286073)
+bones/22/rotation = Quaternion(0.5744219, -0.039536126, -0.05728087, 0.8155951)
+bones/23/rotation = Quaternion(0.24898018, -0.007763982, 0.0018850568, 0.9684757)
 
-[node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=1240378006]
+[node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=1263754925]
 surface_material_override/0 = SubResource("StandardMaterial3D_nwgu8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=538752767]
