@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dpmrcnugj2f4x"]
+
+[ext_resource type="PackedScene" uid="uid://bpr5bak5c54hw" path="res://models/chess_pieces/King.glb" id="1_fysap"]
+
+[node name="King" unique_id=213811983 instance=ExtResource("1_fysap")]
+
+[node name="Cylinder" parent="." index="0" unique_id=992053006]
+cast_shadow = 0

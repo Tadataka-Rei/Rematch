@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c44xwrt8q473j"]
+
+[ext_resource type="PackedScene" uid="uid://dlhabirn2vy5k" path="res://models/Map_elements/Keter/pillars/Pillar.fbx" id="1_cce8r"]
+[ext_resource type="Shader" uid="uid://dvyvr8ofcks4x" path="res://materials/Shader/Keter_shader/pillar_brick.gdshader" id="2_wan7f"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wan7f"]
+noise_type = 2
+frequency = 0.02
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2oxag"]
+noise = SubResource("FastNoiseLite_wan7f")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cce8r"]
+render_priority = 0
+shader = ExtResource("2_wan7f")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/crack_color = Color(0, 0, 0, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_2oxag")
+shader_parameter/crack_threshold = 0.3450000163875
+shader_parameter/crack_width = 0.0050000002375
+
+[node name="Pillar" unique_id=2118164864 instance=ExtResource("1_cce8r")]
+
+[node name="Pllar4BrickDirty" parent="." index="0" unique_id=1827487230]
+surface_material_override/0 = SubResource("ShaderMaterial_cce8r")

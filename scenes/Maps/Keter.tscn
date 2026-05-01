@@ -4,9 +4,15 @@
 [ext_resource type="Shader" uid="uid://dk8gasrnwcfhm" path="res://materials/Shader/Float_updown.gdshader" id="1_d3j3j"]
 [ext_resource type="Script" uid="uid://b28uomeaop25p" path="res://scripts/multimeshinstances/create_in_area.gd" id="1_uo7tr"]
 [ext_resource type="PackedScene" uid="uid://c88n7tcnja4pk" path="res://entities/Player/player_loco_model.tscn" id="1_x205g"]
-[ext_resource type="PackedScene" uid="uid://bpr5bak5c54hw" path="res://models/chess_pieces/King.glb" id="2_xpi87"]
+[ext_resource type="PackedScene" uid="uid://dpmrcnugj2f4x" path="res://models/king.tscn" id="6_23c0g"]
+[ext_resource type="PackedScene" uid="uid://c44xwrt8q473j" path="res://models/Map_elements/Keter/pillars/pillar.tscn" id="6_wa5fr"]
+[ext_resource type="PackedScene" uid="uid://c45axjutpwijf" path="res://models/Map_elements/Keter/pillars/half_broken_pillar.tscn" id="7_23c0g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d3j3j"]
+sky_top_color = Color(0.4421896, 0.45331138, 0.4310807, 1)
+sky_horizon_color = Color(0.13707149, 0.14066091, 0.14784753, 1)
+ground_bottom_color = Color(0.32209077, 0.27660552, 0.22547722, 1)
+ground_horizon_color = Color(0.4896952, 0.49797904, 0.51455766, 1)
 
 [sub_resource type="Sky" id="Sky_00267"]
 sky_material = SubResource("ProceduralSkyMaterial_d3j3j")
@@ -15,18 +21,20 @@ sky_material = SubResource("ProceduralSkyMaterial_d3j3j")
 background_mode = 2
 sky = SubResource("Sky_00267")
 tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 5.0
 fog_enabled = true
 fog_mode = 1
-fog_light_color = Color(0.54230464, 0.5595268, 0.49779004, 1)
+fog_light_color = Color(0.80257386, 0.8164481, 0.7730809, 1)
 fog_density = 1.0
 fog_depth_curve = 1.4142135
-fog_depth_begin = 20.0
-fog_depth_end = 150.0
+fog_depth_begin = 30.0
+fog_depth_end = 300.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wa5fr"]
 render_priority = 0
 shader = ExtResource("1_00267")
-shader_parameter/ice_color = Color(0.23921569, 0.65882355, 1, 0.5019608)
+shader_parameter/ice_color = Color(0.21793753, 0.6494447, 0.9999985, 0.5019608)
 shader_parameter/roughness = 0.05
 shader_parameter/specular_intensity = 0.8
 shader_parameter/edge_clarity = 3.0
@@ -58,8 +66,7 @@ mesh = SubResource("BoxMesh_uo7tr")
 environment = SubResource("Environment_wa5fr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=95184389]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-light_color = Color(0.999999, 0.9982186, 0.79960567, 1)
+transform = Transform3D(-0.54516494, -0.35033768, -0.7616158, -0.68061364, -0.34544963, 0.64608777, -0.4894488, 0.8705906, -0.050117593, 0, 11.107306, 0)
 shadow_enabled = true
 
 [node name="World" type="Node3D" parent="." unique_id=576172619]
@@ -67,7 +74,7 @@ shadow_enabled = true
 [node name="ground" type="Node" parent="World" unique_id=567038236]
 
 [node name="Ground1" type="MeshInstance3D" parent="World/ground" unique_id=157192750]
-transform = Transform3D(8.874609, 0.000795174, 0.00830511, -0.006944789, 1.0109231, -0.009966012, -0.016272467, 0.0022207745, 4.533668, -19.237495, -0.11175728, 2.348112)
+transform = Transform3D(8.881119, 0.00079447526, 0.00498308, -0.006949883, 1.0100348, -0.005979624, -0.016284402, 0.0022188232, 2.7202084, -19.237495, -0.11175728, 2.348112)
 mesh = SubResource("PlaneMesh_d3j3j")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="World/ground/Ground1" unique_id=1883357938]
@@ -77,14 +84,30 @@ shape = SubResource("ConcavePolygonShape3D_bb26a")
 
 [node name="floatingcubes" type="Node" parent="World" unique_id=2097434913]
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="World/floatingcubes" unique_id=468655174]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9, 0)
+[node name="Floatingcubes" type="MultiMeshInstance3D" parent="World/floatingcubes" unique_id=468655174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.601593, 2.494072, 125.5202)
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_d3j3j")
 script = ExtResource("1_uo7tr")
+cube_count = 100
+
+[node name="Floatingcubes2" type="MultiMeshInstance3D" parent="World/floatingcubes" unique_id=939998608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63.183598, 2.494072, 45.3153)
+cast_shadow = 0
+multimesh = SubResource("MultiMesh_d3j3j")
+script = ExtResource("1_uo7tr")
+cube_count = 100
 
 [node name="Player_loco_model" parent="." unique_id=1731599990 instance=ExtResource("1_x205g")]
-transform = Transform3D(0.9999999, 0, 1.5893264e-08, 0, 1, 0, -1.5893264e-08, 0, 0.9999999, 2.8038802, 0.25053528, 1.7427268)
+transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, 48.4479, 0.25053528, -0.2572732)
 
-[node name="King" parent="." unique_id=213811983 instance=ExtResource("2_xpi87")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -139, 0, 0)
+[node name="Map_elements" type="Node" parent="." unique_id=191513972]
+
+[node name="Pillar" parent="." unique_id=1999642059 instance=ExtResource("6_wa5fr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.808956, -0.105924875, 8.185932)
+
+[node name="King" parent="." unique_id=213811983 instance=ExtResource("6_23c0g")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -167.008, 0, 0)
+
+[node name="half_broken_pillar" parent="." unique_id=833513381 instance=ExtResource("7_23c0g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.43311, -0.06984745, -8.09137)
