@@ -4,9 +4,12 @@
 [ext_resource type="Shader" uid="uid://dk8gasrnwcfhm" path="res://materials/Shader/Float_updown.gdshader" id="1_d3j3j"]
 [ext_resource type="Script" uid="uid://b28uomeaop25p" path="res://scripts/multimeshinstances/create_in_area.gd" id="1_uo7tr"]
 [ext_resource type="PackedScene" uid="uid://c88n7tcnja4pk" path="res://entities/Player/player_loco_model.tscn" id="1_x205g"]
+[ext_resource type="PackedScene" uid="uid://bbeutjylar612" path="res://models/Map_elements/Keter/pillars/prefabs/halfpillar.tscn" id="5_wa5fr"]
 [ext_resource type="PackedScene" uid="uid://dpmrcnugj2f4x" path="res://models/king.tscn" id="6_23c0g"]
-[ext_resource type="PackedScene" uid="uid://c44xwrt8q473j" path="res://models/Map_elements/Keter/pillars/pillar.tscn" id="6_wa5fr"]
-[ext_resource type="PackedScene" uid="uid://c45axjutpwijf" path="res://models/Map_elements/Keter/pillars/half_broken_pillar.tscn" id="7_23c0g"]
+[ext_resource type="PackedScene" uid="uid://dx6y4vj5pq65n" path="res://models/Map_elements/Keter/monolith/prefab/spawn_platform.tscn" id="7_23c0g"]
+[ext_resource type="PackedScene" uid="uid://dqy30qml4kdqd" path="res://models/Map_elements/Keter/pillars/prefabs/pillars_sf.tscn" id="8_nlbei"]
+[ext_resource type="PackedScene" uid="uid://djlkenja0xhkq" path="res://models/Map_elements/Keter/walls/prefabs/tower.tscn" id="9_hlfde"]
+[ext_resource type="PackedScene" uid="uid://tr12mve573p7" path="res://models/Map_elements/Keter/walls/prefabs/wall.tscn" id="10_tsmhn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d3j3j"]
 sky_top_color = Color(0.4421896, 0.45331138, 0.4310807, 1)
@@ -19,10 +22,12 @@ sky_material = SubResource("ProceduralSkyMaterial_d3j3j")
 
 [sub_resource type="Environment" id="Environment_wa5fr"]
 background_mode = 2
+background_energy_multiplier = 0.9
 sky = SubResource("Sky_00267")
 tonemap_mode = 2
 glow_enabled = true
-glow_intensity = 5.0
+glow_intensity = 2.0
+glow_bloom = 0.09
 fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.80257386, 0.8164481, 0.7730809, 1)
@@ -34,7 +39,7 @@ fog_depth_end = 300.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wa5fr"]
 render_priority = 0
 shader = ExtResource("1_00267")
-shader_parameter/ice_color = Color(0.21793753, 0.6494447, 0.9999985, 0.5019608)
+shader_parameter/ice_color = Color(0.44260406, 0.73430365, 1, 0.5019608)
 shader_parameter/roughness = 0.05
 shader_parameter/specular_intensity = 0.8
 shader_parameter/edge_clarity = 3.0
@@ -51,6 +56,11 @@ render_priority = 0
 shader = ExtResource("1_d3j3j")
 shader_parameter/speed = 0.6
 shader_parameter/strength = 1.0
+shader_parameter/rotation_speed = 0.5
+shader_parameter/ice_color = Color(0.9, 0.95, 1, 0.4)
+shader_parameter/roughness = 0.3
+shader_parameter/specular_intensity = 0.6
+shader_parameter/edge_clarity = 3.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_uo7tr"]
 lightmap_size_hint = Vector2i(-1, 0)
@@ -67,6 +77,7 @@ environment = SubResource("Environment_wa5fr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=95184389]
 transform = Transform3D(-0.54516494, -0.35033768, -0.7616158, -0.68061364, -0.34544963, 0.64608777, -0.4894488, 0.8705906, -0.050117593, 0, 11.107306, 0)
+light_energy = 0.5
 shadow_enabled = true
 
 [node name="World" type="Node3D" parent="." unique_id=576172619]
@@ -99,15 +110,40 @@ script = ExtResource("1_uo7tr")
 cube_count = 100
 
 [node name="Player_loco_model" parent="." unique_id=1731599990 instance=ExtResource("1_x205g")]
-transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, 48.4479, 0.25053528, -0.2572732)
+transform = Transform3D(0.017487304, 0, 0.999847, 0, 1, 0, -0.999847, 0, 0.017487304, 48.4479, 2.2505352, -0.2572732)
 
 [node name="Map_elements" type="Node" parent="." unique_id=191513972]
 
-[node name="Pillar" parent="." unique_id=1999642059 instance=ExtResource("6_wa5fr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.808956, -0.105924875, 8.185932)
+[node name="Halfpillar" parent="Map_elements" unique_id=1766484665 instance=ExtResource("5_wa5fr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.10515, 0, -8)
+
+[node name="pillarsSF" parent="Map_elements" unique_id=1574485671 instance=ExtResource("8_nlbei")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.96064, -0.16871426, 8.009342)
+
+[node name="Halfpillar2" parent="Map_elements" unique_id=1122179802 instance=ExtResource("5_wa5fr")]
+transform = Transform3D(-1.1313341e-08, 0.25881907, -0.9659258, -1, -4.371139e-08, 0, -4.222196e-08, 0.9659258, 0.25881907, 41, 0, -8)
+
+[node name="walls" type="Node" parent="Map_elements" unique_id=188892448]
+
+[node name="tower2" parent="Map_elements/walls" unique_id=150629182 instance=ExtResource("9_hlfde")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 67.873566, 0.3952847, 27.141495)
+
+[node name="tower3" parent="Map_elements/walls/tower2" unique_id=2104450718 instance=ExtResource("9_hlfde")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.497246, 0.02635765, 0.20425224)
+
+[node name="Node3D" parent="Map_elements/walls/tower2" unique_id=440698944 instance=ExtResource("10_tsmhn")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -18.434677, 1.261692, 1.1074524)
 
 [node name="King" parent="." unique_id=213811983 instance=ExtResource("6_23c0g")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -167.008, 0, 0)
 
-[node name="half_broken_pillar" parent="." unique_id=833513381 instance=ExtResource("7_23c0g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.43311, -0.06984745, -8.09137)
+[node name="spawn_platform" parent="." unique_id=1171272760 instance=ExtResource("7_23c0g")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 41.573906, 4.532362, -4.953382)
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="." unique_id=1096863693]
+
+[node name="tower2" parent="." unique_id=2051437271 instance=ExtResource("9_hlfde")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 67.873566, 0.3952847, -22.949043)
+
+[node name="tower3" parent="tower2" unique_id=58671238 instance=ExtResource("9_hlfde")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.497246, 0.02635765, 0.20425224)

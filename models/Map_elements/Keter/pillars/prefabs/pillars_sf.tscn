@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dqy30qml4kdqd"]
+
+[ext_resource type="PackedScene" uid="uid://b14klu3cqlo1j" path="res://models/Map_elements/Keter/pillars/pillarsSF.fbx" id="1_a5yhr"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ge8og"]
+height = 0.06313938
+radius = 0.0065343105
+
+[node name="pillarsSF" unique_id=1574485671 instance=ExtResource("1_a5yhr")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Pillar2_003" parent_id_path=PackedInt32Array(324095594) index="0" unique_id=1329636798]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -4.4403598e-05, 0.00036603678, 0.03156969)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pillar2_003/StaticBody3D" index="0" unique_id=1108812673]
+shape = SubResource("CylinderShape3D_ge8og")

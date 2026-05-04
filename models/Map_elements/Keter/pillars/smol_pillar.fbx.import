@@ -3,17 +3,17 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c27hrfbxqn7l8"
-path="res://.godot/imported/half_broken_pillar.fbx-47c202241b07fbf2c7968fef94e58fec.scn"
+uid="uid://58pcqw3ce5ke"
+path="res://.godot/imported/smol_pillar.fbx-6f1470680c69d3498ed5ecf48e4908bb.scn"
 
 [deps]
 
-source_file="res://models/Map_elements/Keter/pillars/half_broken_pillar.fbx"
-dest_files=["res://.godot/imported/half_broken_pillar.fbx-47c202241b07fbf2c7968fef94e58fec.scn"]
+source_file="res://models/Map_elements/Keter/pillars/smol_pillar.fbx"
+dest_files=["res://.godot/imported/smol_pillar.fbx-6f1470680c69d3498ed5ecf48e4908bb.scn"]
 
 [params]
 
-nodes/root_type="Node3D"
+nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
 nodes/apply_root_scale=true

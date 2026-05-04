@@ -3,17 +3,17 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dlhabirn2vy5k"
-path="res://.godot/imported/Pillar.fbx-6daa4b3e21ea4cbe51f8b3d3bcb4aa8d.scn"
+uid="uid://bqvxnbmi4y4dm"
+path="res://.godot/imported/tower.fbx-c36fbdaf1956e2ff708b6c1e131e11b8.scn"
 
 [deps]
 
-source_file="res://models/Map_elements/Keter/pillars/Pillar.fbx"
-dest_files=["res://.godot/imported/Pillar.fbx-6daa4b3e21ea4cbe51f8b3d3bcb4aa8d.scn"]
+source_file="res://models/Map_elements/Keter/walls/models/tower.fbx"
+dest_files=["res://.godot/imported/tower.fbx-c36fbdaf1956e2ff708b6c1e131e11b8.scn"]
 
 [params]
 
-nodes/root_type="Node3D"
+nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
 nodes/apply_root_scale=true
@@ -37,19 +37,7 @@ import_script/path=""
 materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
-_subresources={
-"meshes": {
-"Cube_030": {
-"generate/lightmap_uv": 0,
-"generate/lods": 0,
-"generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 20.0,
-"save_to_file/enabled": false,
-"save_to_file/fallback_path": "res://models/Map_elements/Keter/pillar.tres",
-"save_to_file/path": "uid://cdg5m0i0rrjf6"
-}
-}
-}
+_subresources={}
 fbx/importer=0
 fbx/allow_geometry_helper_nodes=false
 fbx/embedded_image_handling=1

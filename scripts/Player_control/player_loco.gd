@@ -43,11 +43,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var raw_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	#why negative? Idk either WHERE IS LEFT AND WHERE IS RIGHT?!?! WHY IS IT GOIN BACK WARD AAAAAAAAAAAAAAAAAAAAA
-	var target_blend = Vector2(raw_input.x, -raw_input.y)
+	var target_blend = Vector2(raw_input.x, raw_input.y)
 	
 	blend_input = blend_input.move_toward(target_blend, transitionSpeed * delta)
-
-
 	var active_path = loco_Run_BlendPath if running else loco_Walk_BlendPath
 	var target_fov = 85.0 if running else 75.0
 	
@@ -106,7 +104,7 @@ func _handle_movement(delta: float) -> void:
 		velocity.z = move_dir.z * target_speed
 		
 		# Rotate armature brrr
-		var target_rotation = atan2(move_dir.x, move_dir.z)
+		var target_rotation = atan2(-move_dir.z, move_dir.x)
 		armature.rotation.y = lerp_angle(armature.rotation.y, target_rotation, rotation_speed * delta)
 	else:
 		velocity.x = move_toward(velocity.x, 0, target_speed)

@@ -1,23 +1,20 @@
 shader_type spatial;
 
-uniform vec3 base_color : source_color = vec3(0.95, 0.95, 1.0); // Off-white
-uniform vec3 crack_color : source_color = vec3(0.3, 0.3, 0.4); // Darker gray for deep cracks
-uniform sampler2D noise_texture : repeat_enable;
-
-uniform float crack_threshold : hint_range(0.0, 1.0) = 0.6;
-uniform float crack_width : hint_range(0.0, 0.1) = 0.02;
+uniform vec3 base_color : source_color = vec3(0.9, 0.9, 0.85);
+uniform sampler2D noise_tex; // Use a fast noise texture here
+uniform float grain_strength : hint_range(0.0, 1.0) = 0.5;
 
 void fragment() {
-    // Sample the noise texture
-    float noise_val = texture(noise_texture, UV).r;
+    // 1. Generate high-frequency grain
+    float noise_val = texture(noise_tex, UV * 20.0).r; 
     
-    float crack_mask = smoothstep(crack_threshold - crack_width, crack_threshold, noise_val) -
-                       smoothstep(crack_threshold, crack_threshold + crack_width, noise_val);
+    // 2. Adjust the color slightly for "weathering"
+    ALBEDO = base_color * (0.95 + noise_val * 0.05);
     
-    ALBEDO = mix(base_color, crack_color, crack_mask);
+    // 3. Make it look rough and non-metallic
+    ROUGHNESS = mix(0.6, 1.0, noise_val);
     METALLIC = 0.0;
-    ROUGHNESS = 0.8;
     
-    // Add depth to cracks by pushing the normals slightly
-    NORMAL = normalize(mix(NORMAL, vec3(0.0, 0.0, 1.0), crack_mask * 0.5));
+    // 4. Apply grain to the Normal to catch the light
+    NORMAL_MAP = vec3(0.5, 0.5, 1.0) + (noise_val * grain_strength * 0.1);
 }

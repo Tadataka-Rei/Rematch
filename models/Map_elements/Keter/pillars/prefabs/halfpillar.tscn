@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bbeutjylar612"]
+
+[ext_resource type="PackedScene" uid="uid://dhvpep6hfmfs7" path="res://models/Map_elements/Keter/pillars/Halfpillar.fbx" id="1_4c5va"]
+[ext_resource type="Shader" uid="uid://dvyvr8ofcks4x" path="res://materials/Shader/Keter_shader/pillar_brick.gdshader" id="2_m8x0p"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3inac"]
+noise_type = 3
+frequency = 0.0388
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kwhjf"]
+noise = SubResource("FastNoiseLite_3inac")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yguxy"]
+render_priority = 0
+shader = ExtResource("2_m8x0p")
+shader_parameter/base_color = Color(0.87329835, 0.87329847, 0.87329817, 1)
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_kwhjf")
+shader_parameter/grain_strength = 0.50000002375
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m8x0p"]
+height = 0.014041201
+radius = 0.002866045
+
+[node name="Halfpillar" unique_id=1766484665 instance=ExtResource("1_4c5va")]
+
+[node name="BrokenPillar_001" parent="." index="0" unique_id=1617385409]
+surface_material_override/0 = SubResource("ShaderMaterial_yguxy")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="BrokenPillar_001" index="0" unique_id=1413906865]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.0005132351, 9.465311e-05, 0.006996031)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BrokenPillar_001/StaticBody3D" index="0" unique_id=1137365731]
+shape = SubResource("CylinderShape3D_m8x0p")

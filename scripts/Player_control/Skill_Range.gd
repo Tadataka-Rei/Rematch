@@ -6,7 +6,6 @@ func _ready() -> void:
 	self.body_entered.connect(_on_area_3d_body_entered)
 	self.body_exited.connect(_on_area_3d_body_exited)
 	if Skill_pivot:
-		print("Found Skill_Pivot!")
 		Skill_pivot.set_process_input(false)
 	else:
 		print("Error: Skill_Pivot node not found in group!")
