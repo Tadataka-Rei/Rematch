@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cky8sh7xqd7f6"]
+
+[ext_resource type="PackedScene" uid="uid://ctbiebb4bnq6q" path="res://models/Map_elements/Keter/monolith/prefab/monolith.tscn" id="1_u8m1c"]
+
+[node name="Node3D" type="Node3D" unique_id=470032431]
+
+[node name="monolith" parent="." unique_id=1742792751 instance=ExtResource("1_u8m1c")]

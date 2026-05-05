@@ -7,9 +7,11 @@ extends MultiMeshInstance3D
 @export var spacing: float = 5.0
 @export var spawn_distance: float = 5.0
 @export var lower_value: float = 10.0
+@export var Skill_field: MeshInstance3D;
 
 @onready var player: CharacterBody3D = get_parent()
 @onready var armature: Node3D = get_node_or_null("../Armature")
+
 
 var target_enemy: Node3D = null
 var total_instances: int = 100
@@ -22,6 +24,7 @@ func _ready() -> void:
 		print_debug("Armature node not found")
 	if global_position== null:
 		print_debug("wtf")
+	
 	multimesh.instance_count = total_instances
 #endregion
 
@@ -39,13 +42,16 @@ func toggle_board() -> void:
 	if(target_enemy == null):
 		print_debug("where's enemy")
 		pass
+		
 	board_created = !board_created
-
-	if board_created:
+	
+	if board_created and target_enemy:
+		Skill_field.ball()
 		teleport_to_player()
 		var forward = calculate_forward_vector()
 		create_board(8, forward)
 	else:
+		Skill_field.orchiectomy()
 		destroy_board()
 
 #=================================
@@ -58,10 +64,6 @@ func teleport_to_player() -> void:
 #region     --------VECTOR CALCULATION------
 #=================================
 func calculate_forward_vector() -> Vector3:
-	if target_enemy == null:
-		print_debug("no enemy")
-		return Vector3.FORWARD
-
 	var forward: Vector3 = global_position - target_enemy.global_position
 	forward.y = 0
 	forward = forward.normalized()

@@ -104,8 +104,13 @@ func _handle_movement(delta: float) -> void:
 		velocity.z = move_dir.z * target_speed
 		
 		# Rotate armature brrr
-		var target_rotation = atan2(-move_dir.z, move_dir.x)
-		armature.rotation.y = lerp_angle(armature.rotation.y, target_rotation, rotation_speed * delta)
+		var target_rotation = atan2(move_dir.x, move_dir.z)
+		
+		var current_rot = armature.global_rotation.y
+		var new_rot = lerp_angle(current_rot, target_rotation, rotation_speed * delta)
+		var global_rot = armature.global_rotation
+		global_rot.y = new_rot
+		armature.global_rotation = global_rot
 	else:
 		velocity.x = move_toward(velocity.x, 0, target_speed)
 		velocity.z = move_toward(velocity.z, 0, target_speed)

@@ -110,7 +110,7 @@ mesh = SubResource("BoxMesh_8ri1i")
 shape = SubResource("ConcavePolygonShape3D_3mglk")
 
 [node name="Monolith test" parent="." unique_id=1617229400 groups=["Monolith"] instance=ExtResource("3_3mglk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8983145, 0.9672575, -13.199508)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34499073, 0.967257, -20.393677)
 
 [node name="Terrain3D" type="Terrain3D" parent="." unique_id=757347114 groups=["Floor_Group"]]
 data_directory = "res://terrain/testmap_terrain"
@@ -127,3 +127,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8983145, 0.9672575, 49.1249
 top_level = true
 
 [node name="Player_loco_model" parent="." unique_id=1731599990 instance=ExtResource("2_c3lgt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.418571, 0, 0)

@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dqy30qml4kdqd" path="res://models/Map_elements/Keter/pillars/prefabs/pillars_sf.tscn" id="8_nlbei"]
 [ext_resource type="PackedScene" uid="uid://djlkenja0xhkq" path="res://models/Map_elements/Keter/walls/prefabs/tower.tscn" id="9_hlfde"]
 [ext_resource type="PackedScene" uid="uid://tr12mve573p7" path="res://models/Map_elements/Keter/walls/prefabs/wall.tscn" id="10_tsmhn"]
+[ext_resource type="PackedScene" uid="uid://deat88bnhsa50" path="res://models/Map_elements/Keter/walls/prefabs/gate.tscn" id="11_j6yly"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d3j3j"]
 sky_top_color = Color(0.4421896, 0.45331138, 0.4310807, 1)
@@ -39,9 +40,9 @@ fog_depth_end = 300.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wa5fr"]
 render_priority = 0
 shader = ExtResource("1_00267")
-shader_parameter/ice_color = Color(0.44260406, 0.73430365, 1, 0.5019608)
-shader_parameter/roughness = 0.05
-shader_parameter/specular_intensity = 0.8
+shader_parameter/ice_color = Color(0.59208596, 0.7910436, 1, 0.56078434)
+shader_parameter/roughness = 0.3
+shader_parameter/specular_intensity = 0.6
 shader_parameter/edge_clarity = 3.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_d3j3j"]
@@ -70,6 +71,19 @@ material = SubResource("ShaderMaterial_00267")
 transform_format = 1
 mesh = SubResource("BoxMesh_uo7tr")
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_j6yly"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j6yly"]
+render_priority = 0
+shader = ExtResource("1_00267")
+shader_parameter/ice_color = Color(0.53417015, 0.7624795, 1, 0.4)
+shader_parameter/roughness = 0.3
+shader_parameter/specular_intensity = 0.6
+shader_parameter/edge_clarity = 3.0
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_j6yly"]
+points = PackedVector3Array(-1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
 [node name="Keter" type="Node3D" unique_id=365125349]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=169895813]
@@ -85,12 +99,23 @@ shadow_enabled = true
 [node name="ground" type="Node" parent="World" unique_id=567038236]
 
 [node name="Ground1" type="MeshInstance3D" parent="World/ground" unique_id=157192750]
-transform = Transform3D(8.881119, 0.00079447526, 0.00498308, -0.006949883, 1.0100348, -0.005979624, -0.016284402, 0.0022188232, 2.7202084, -19.237495, -0.11175728, 2.348112)
+transform = Transform3D(4.280098, 0.0007941903, 0.0049789166, -0.003349373, 1.0096725, -0.005974628, -0.007847979, 0.0022180274, 2.7179353, 30.74649, -0.11175728, 2.348112)
+cast_shadow = 0
 mesh = SubResource("PlaneMesh_d3j3j")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="World/ground/Ground1" unique_id=1883357938]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/ground/Ground1/StaticBody3D" unique_id=286349216]
+shape = SubResource("ConcavePolygonShape3D_bb26a")
+
+[node name="Ground2" type="MeshInstance3D" parent="World/ground" unique_id=1701989810]
+transform = Transform3D(4.2589083, 0.00079890084, 0.018421935, -0.0033327912, 1.0156611, -0.022106055, -0.007809126, 0.002231183, 10.05633, -67.32173, 2.673111, 2.348112)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_d3j3j")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/ground/Ground2" unique_id=1237339160]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/ground/Ground2/StaticBody3D" unique_id=1049118546]
 shape = SubResource("ConcavePolygonShape3D_bb26a")
 
 [node name="floatingcubes" type="Node" parent="World" unique_id=2097434913]
@@ -110,7 +135,7 @@ script = ExtResource("1_uo7tr")
 cube_count = 100
 
 [node name="Player_loco_model" parent="." unique_id=1731599990 instance=ExtResource("1_x205g")]
-transform = Transform3D(0.017487304, 0, 0.999847, 0, 1, 0, -0.999847, 0, 0.017487304, 48.4479, 2.2505352, -0.2572732)
+transform = Transform3D(0.017487304, 0, 0.999847, 0, 1, 0, -0.999847, 0, 0.017487304, 48.4479, 1.4819438, -0.2572732)
 
 [node name="Map_elements" type="Node" parent="." unique_id=191513972]
 
@@ -131,8 +156,39 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 67.873566, 0.3952847, 27.1414
 [node name="tower3" parent="Map_elements/walls/tower2" unique_id=2104450718 instance=ExtResource("9_hlfde")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.497246, 0.02635765, 0.20425224)
 
-[node name="Node3D" parent="Map_elements/walls/tower2" unique_id=440698944 instance=ExtResource("10_tsmhn")]
+[node name="walls" parent="Map_elements/walls/tower2" unique_id=440698944 instance=ExtResource("10_tsmhn")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -18.434677, 1.261692, 1.1074524)
+
+[node name="walls" parent="Map_elements/walls/tower2/walls" unique_id=2006512752 instance=ExtResource("10_tsmhn")]
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, -2.9322662, 0.38220787, -88.3888)
+
+[node name="walls" parent="Map_elements/walls/tower2/walls/walls" unique_id=1908917703 instance=ExtResource("10_tsmhn")]
+transform = Transform3D(0.010084519, 0, -0.99276197, 0, 0.99999976, 0, 0.6030752, 0, 0.0166008, 66.99697, -0.27242613, 42.948864)
+
+[node name="tower3" parent="Map_elements/walls" unique_id=2051437271 instance=ExtResource("9_hlfde")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 67.873566, 0.3952847, -22.949043)
+
+[node name="tower3" parent="Map_elements/walls/tower3" unique_id=58671238 instance=ExtResource("9_hlfde")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.497246, 0.02635765, 0.20425224)
+
+[node name="gate" parent="Map_elements/walls" unique_id=1474996257 instance=ExtResource("11_j6yly")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -11.068119, 0.6363301, 1.3487926)
+
+[node name="walls" parent="Map_elements/walls/gate" unique_id=1407311397 instance=ExtResource("10_tsmhn")]
+transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 34.116337, 1.0039587, 0.14521265)
+
+[node name="walls2" parent="Map_elements/walls/gate" unique_id=749805582 instance=ExtResource("10_tsmhn")]
+transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, -34.207577, 1.0039587, 0.14521551)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map_elements/walls" unique_id=945088973]
+transform = Transform3D(6.322941, 0.46866834, 0, -1.3815143, 2.14501, 0, 0, 0, 3.0191317, -18.26466, 1.3106773, 1.4122577)
+mesh = SubResource("PlaneMesh_j6yly")
+surface_material_override/0 = SubResource("ShaderMaterial_j6yly")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map_elements/walls/MeshInstance3D" unique_id=1395541223]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map_elements/walls/MeshInstance3D/StaticBody3D" unique_id=450801518]
+shape = SubResource("ConvexPolygonShape3D_j6yly")
 
 [node name="King" parent="." unique_id=213811983 instance=ExtResource("6_23c0g")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -167.008, 0, 0)
@@ -141,9 +197,3 @@ transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -167.008, 0, 0)
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 41.573906, 4.532362, -4.953382)
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="." unique_id=1096863693]
-
-[node name="tower2" parent="." unique_id=2051437271 instance=ExtResource("9_hlfde")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 67.873566, 0.3952847, -22.949043)
-
-[node name="tower3" parent="tower2" unique_id=58671238 instance=ExtResource("9_hlfde")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.497246, 0.02635765, 0.20425224)
