@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drtt85dj0fcnq"]
 
-[ext_resource type="Script" uid="uid://b2eyjoin7eyce" path="res://scripts/Player_control/CameraControl.gd" id="1_iflyj"]
-[ext_resource type="Script" uid="uid://dajshwieqvuvb" path="res://scripts/Player_control/Skill_Range.gd" id="2_nusbt"]
+[ext_resource type="Script" uid="uid://b2eyjoin7eyce" path="res://scripts/Player_control/Control/CameraControl.gd" id="1_iflyj"]
+[ext_resource type="Script" uid="uid://dajshwieqvuvb" path="res://scripts/Player_control/skill/Skill_Range.gd" id="2_nusbt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nobmo"]
 size = Vector3(9.494934, 6.551941, 37.66125)

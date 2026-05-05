@@ -18,11 +18,16 @@ extends CharacterBody3D
 @export var speed: float = 5.0
 @export var rotation_speed: float = 10.0
 @export var JUMP_VELOCITY: float = 4.5
+@export var levitate_height: float = 2.0
+@export var levitate_duration: float = 1.5
 
 @onready var armature: Node3D = $Armature
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var camera: Camera3D = $CameraPivot/SpringArm3D/Camera3D
 @onready var playback: AnimationNodeStateMachinePlayback = animationTree.get(loco_PlaybackPath)
+
+@onready var gravity: bool = true
+
 
 var blend_input: Vector2 = Vector2.ZERO
 var falling: bool = false
@@ -42,7 +47,7 @@ func _ready() -> void:
 #region ---------visuals & FOV----------
 func _process(delta: float) -> void:
 	var raw_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	#why negative? Idk either WHERE IS LEFT AND WHERE IS RIGHT?!?! WHY IS IT GOIN BACK WARD AAAAAAAAAAAAAAAAAAAAA
+	#genius solution just keep switching back and forth, fuck math, i'm doing meth
 	var target_blend = Vector2(raw_input.x, raw_input.y)
 	
 	blend_input = blend_input.move_toward(target_blend, transitionSpeed * delta)
@@ -55,11 +60,11 @@ func _process(delta: float) -> void:
 
 #region  ------------physics & movement----------
 func _physics_process(delta: float) -> void:
-	_handle_gravity(delta)
+	if gravity:
+		_handle_gravity(delta)
 	_handle_movement(delta)
 	move_and_slide()
 	
-	# State check AFTER movement to ensure accurate is_on_floor()
 	_update_state()
 
 # ------------------------- GRAVITY-
@@ -117,4 +122,20 @@ func _handle_movement(delta: float) -> void:
 
 func Execute_Jump() -> void:
 	velocity.y = JUMP_VELOCITY
+#endregion
+
+#levy
+func levitate_player() -> void:
+	Toggle_gravity()
+	velocity = Vector3.ZERO # Stop current momentum so it doesn't look janky
+	
+	var target_y = global_position.y + levitate_height
+	var tween = create_tween()
+	
+	tween.tween_property(self, "global_position:y", target_y, levitate_duration)\
+	.set_trans(Tween.TRANS_SINE)\
+	.set_ease(Tween.EASE_IN_OUT)
+
+func Toggle_gravity() -> void:
+	gravity = !gravity
 #endregion

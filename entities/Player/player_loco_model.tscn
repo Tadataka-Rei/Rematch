@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://c88n7tcnja4pk"]
 
 [ext_resource type="PackedScene" uid="uid://ctwp1lu4l4ean" path="res://models/characters/player/Player_loco_model.glb" id="1_nwgu8"]
-[ext_resource type="Script" uid="uid://dblrujvrq4kdw" path="res://scripts/Player_control/player_loco.gd" id="2_3ilg6"]
+[ext_resource type="Script" uid="uid://dblrujvrq4kdw" path="res://scripts/Player_control/Control/player_loco.gd" id="2_3ilg6"]
 [ext_resource type="PackedScene" uid="uid://drtt85dj0fcnq" path="res://entities/Player/camera_pivot.tscn" id="2_en83w"]
 [ext_resource type="Shader" uid="uid://dy36gnw5v1s6i" path="res://materials/Shader/Chesstiles.gdshader" id="4_p0qwn"]
-[ext_resource type="Script" uid="uid://dx77wntwq1s1l" path="res://scripts/Player_control/Playerskill.gd" id="5_crw8l"]
-[ext_resource type="Script" uid="uid://bemepenyufwjd" path="res://scripts/Player_control/grow_ball.gd" id="6_crw8l"]
+[ext_resource type="Script" uid="uid://dx77wntwq1s1l" path="res://scripts/Player_control/skill/Playerskill.gd" id="5_crw8l"]
+[ext_resource type="Script" uid="uid://bemepenyufwjd" path="res://scripts/Player_control/skill/grow_ball.gd" id="6_crw8l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nwgu8"]
 cull_mode = 2
@@ -162,8 +162,9 @@ node_connections = [&"output", 0, &"locomotion_state_machine"]
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wxnt1"]
 render_priority = 0
 shader = ExtResource("4_p0qwn")
-shader_parameter/speed = 2.0
+shader_parameter/speed = 3.0
 shader_parameter/strength = 0.5
+shader_parameter/upto = 19.5
 
 [sub_resource type="BoxMesh" id="BoxMesh_1ildo"]
 material = SubResource("ShaderMaterial_wxnt1")
@@ -195,27 +196,27 @@ transitionSpeed = 2.0
 transform = Transform3D(-0.4, -6.039832e-08, 2.6400945e-15, 0, -1.7484556e-08, -0.4, 6.039832e-08, -0.4, 1.7484556e-08, 0, 0, 0)
 
 [node name="Skeleton3D" parent="Armature" index="0" unique_id=1036864474]
-bones/0/position = Vector3(0.028172465, 0.030409498, -2.11683)
-bones/0/rotation = Quaternion(-0.7277377, -0.053424176, 0.013773971, 0.68363297)
-bones/1/rotation = Quaternion(0.009991558, 0.012237713, 0.02098761, 0.99965495)
-bones/2/rotation = Quaternion(0.006877765, 0.0022454914, 0.013860813, 0.9998778)
-bones/3/rotation = Quaternion(0.0066571757, 0.0025847494, 0.01382098, 0.99987906)
-bones/4/rotation = Quaternion(0.07037189, -0.00096618076, 0.0029509, 0.99751604)
-bones/5/rotation = Quaternion(-0.061434172, 0.010699498, -0.0014980952, 0.99805266)
-bones/7/rotation = Quaternion(-0.7149851, -0.2813247, 0.5333051, -0.35389036)
-bones/8/rotation = Quaternion(0.38925537, 0.12090853, 0.053460088, 0.91159385)
-bones/9/rotation = Quaternion(-0.056174323, 0.00025257308, 0.017698914, 0.99826413)
-bones/11/rotation = Quaternion(0.71170557, -0.2788209, 0.5520328, 0.3331574)
-bones/12/rotation = Quaternion(0.32047847, -0.21734068, -0.060348395, 0.920008)
-bones/13/rotation = Quaternion(-0.05643814, 0.0013458927, -0.07058116, 0.9959073)
-bones/15/rotation = Quaternion(0.13435398, 0.087939285, 0.9840139, -0.07702227)
-bones/16/rotation = Quaternion(-0.17204438, -0.016353661, 0.036548506, 0.98427516)
-bones/17/rotation = Quaternion(0.5145998, -0.027276615, -0.059092954, 0.85495687)
-bones/18/rotation = Quaternion(0.28772187, 0.007953327, -0.0014113007, 0.95768)
-bones/20/rotation = Quaternion(-0.08881864, -0.021742925, 0.99551153, -0.024398137)
-bones/21/rotation = Quaternion(-0.0820078, 0.08432512, -0.028039074, 0.9926621)
-bones/22/rotation = Quaternion(0.53808963, 0.018334785, 0.026074978, 0.84228474)
-bones/23/rotation = Quaternion(0.30468822, -0.008661088, 0.0012669881, 0.952412)
+bones/0/position = Vector3(0.025683165, 0.03257749, -2.1165538)
+bones/0/rotation = Quaternion(-0.7276544, -0.051175084, 0.012697386, 0.6839145)
+bones/1/rotation = Quaternion(0.009533659, 0.011769353, 0.020619892, 0.9996727)
+bones/2/rotation = Quaternion(0.009939135, 0.00208644, 0.01356066, 0.99985653)
+bones/3/rotation = Quaternion(0.009718657, 0.0023260822, 0.013551215, 0.9998583)
+bones/4/rotation = Quaternion(0.06806271, -0.0009285952, 0.0038410032, 0.9976733)
+bones/5/rotation = Quaternion(-0.06570058, 0.011616876, -0.00172284, 0.9977703)
+bones/7/rotation = Quaternion(-0.7180894, -0.27497187, 0.53634655, -0.34795177)
+bones/8/rotation = Quaternion(0.37846556, 0.11967637, 0.053966783, 0.9162581)
+bones/9/rotation = Quaternion(-0.056160446, -0.00046529606, 0.017476272, 0.9982687)
+bones/11/rotation = Quaternion(0.71421015, -0.27268726, 0.55526125, 0.32746077)
+bones/12/rotation = Quaternion(0.3111196, -0.21526968, -0.06512719, 0.92337537)
+bones/13/rotation = Quaternion(-0.056378063, 0.0013689141, -0.06036575, 0.99658203)
+bones/15/rotation = Quaternion(0.13401368, 0.08582509, 0.98441255, -0.07487618)
+bones/16/rotation = Quaternion(-0.16485047, -0.013491178, 0.03845284, 0.98547643)
+bones/17/rotation = Quaternion(0.5155578, -0.027457085, -0.059273448, 0.85436106)
+bones/18/rotation = Quaternion(0.28796834, 0.007957306, -0.0014086334, 0.9576059)
+bones/20/rotation = Quaternion(-0.08922153, -0.020821761, 0.99550116, -0.024156336)
+bones/21/rotation = Quaternion(-0.08208104, 0.08472516, -0.028971778, 0.99259514)
+bones/22/rotation = Quaternion(0.5390316, 0.020562464, 0.026184157, 0.8416273)
+bones/23/rotation = Quaternion(0.30508327, -0.008667405, 0.0012625478, 0.95228547)
 
 [node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=1263754925]
 surface_material_override/0 = SubResource("StandardMaterial3D_nwgu8")
@@ -234,6 +235,7 @@ parameters/locomotion_state_machine/RunBlend/blend_position = Vector2(-0.5434462
 parameters/locomotion_state_machine/WalkBlend/blend_position = Vector2(-0.0073637962, 0.0047392845)
 
 [node name="ChessboardDeploy" type="MultiMeshInstance3D" parent="." index="5" unique_id=1762747795 node_paths=PackedStringArray("Skill_field") groups=["Skill_Pivot"]]
+physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.059128523, 0.039432287, -0.06561661)
 top_level = true
 cast_shadow = 0
@@ -249,3 +251,5 @@ mesh = SubResource("SphereMesh_p0qwn")
 script = ExtResource("6_crw8l")
 target_scale = Vector3(150, 150, 150)
 duration = 3.0
+
+[node name="GameControl" type="Node" parent="." index="7" unique_id=958140189]
