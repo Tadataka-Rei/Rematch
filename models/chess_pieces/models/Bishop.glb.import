@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bpr5bak5c54hw"
-path="res://.godot/imported/King.glb-8b65272eef67a429554ad2b778b83983.scn"
+uid="uid://bqmb5c3ic5wfd"
+path="res://.godot/imported/Bishop.glb-e95e60db6647c448beb653e740ce9627.scn"
 
 [deps]
 
-source_file="res://models/chess_pieces/King.glb"
-dest_files=["res://.godot/imported/King.glb-8b65272eef67a429554ad2b778b83983.scn"]
+source_file="res://models/chess_pieces/models/Bishop.glb"
+dest_files=["res://.godot/imported/Bishop.glb-e95e60db6647c448beb653e740ce9627.scn"]
 
 [params]
 

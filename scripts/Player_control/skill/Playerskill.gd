@@ -121,7 +121,9 @@ func create_board(board_size: int, direction: Vector3) -> void:
 		
 		multimesh.set_instance_transform(i, Transform3D(Basis(), local_pos))
 		multimesh.set_instance_color(i, get_tile_color(x, z, forward))
-
+		if Match_Controller:
+			var notation = Match_Controller._coords_to_notation(x, z)
+			Match_Controller.update_board_geometry(notation, world_pos)
 
 func get_tile_color(x: int, z: int, forward: Vector3) -> Color:
 	var is_even = (x + z) % 2 == 0

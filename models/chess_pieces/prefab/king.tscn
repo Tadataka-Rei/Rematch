@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cj7fqrjdp4qdp"]
+
+[ext_resource type="PackedScene" uid="uid://bpr5bak5c54hw" path="res://models/chess_pieces/models/King.glb" id="1_q4mi1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q4mi1"]
+size = Vector3(1.7016182, 1.7085729, 4.1289268)
+
+[node name="King" unique_id=2047792623 instance=ExtResource("1_q4mi1")]
+
+[node name="Area3D" type="Area3D" parent="Cylinder" parent_id_path=PackedInt32Array(1512195832) index="0" unique_id=1551435913]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cylinder/Area3D" index="0" unique_id=175992904]
+transform = Transform3D(1, 0, -7.1054274e-15, 0, 1, 2.4424907e-15, 0, 2.8865799e-15, 1, -0.0033779147, -0.0010486246, -2.0873253)
+shape = SubResource("BoxShape3D_q4mi1")
