@@ -49,7 +49,7 @@ func toggle_board() -> void:
 	if board_created and target_enemy:
 		Skill_field.ball()
 		teleport_to_player()
-		var forward = calculate_forward_vector()
+		var forward = cal_forward_vector()
 		player.levitate_player()
 		#await get_tree().create_timer(3.0).timeout
 		create_board(8, forward)
@@ -68,11 +68,10 @@ func teleport_to_player() -> void:
 #=================================
 #region     --------VECTOR CALCULATION------
 #=================================
-func calculate_forward_vector() -> Vector3:
+func cal_forward_vector() -> Vector3:
 	var forward: Vector3 = global_position - target_enemy.global_position
 	forward.y = 0
 	forward = forward.normalized()
-
 	if abs(forward.x) > abs(forward.z):
 		forward = Vector3(sign(forward.x), 0, 0)
 	else:
@@ -122,8 +121,9 @@ func create_board(board_size: int, direction: Vector3) -> void:
 		multimesh.set_instance_transform(i, Transform3D(Basis(), local_pos))
 		multimesh.set_instance_color(i, get_tile_color(x, z, forward))
 		if Match_Controller:
-			var notation = Match_Controller._coords_to_notation(x, z)
-			Match_Controller.update_board_geometry(notation, world_pos)
+			var notation = Match_Controller.Cords_to_notation(x, z)
+			Match_Controller.update_board_geo(notation, world_pos)
+	Match_Controller.test_spawn_starting_board()
 
 func get_tile_color(x: int, z: int, forward: Vector3) -> Color:
 	var is_even = (x + z) % 2 == 0
