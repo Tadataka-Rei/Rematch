@@ -91,7 +91,7 @@ func spawn_piece(type: String, square: String) -> void:
 	add_child(piece_instance)
 	
 	piece_instance.global_position = board_to_cord[square]
-	piece_instance.global_position.y+=20 # same as in plyerskill script
+	piece_instance.global_position.y += 20 # same as in plyerskill script
 	put_material(piece_instance, is_white)
 	
 	piece_nodes[square] = piece_instance

@@ -1,15 +1,26 @@
 extends Node3D
 
-@export var cameraPanSpeed: float = 0.0015
+enum CameraStates {ThirdPov, TopDownPOV}
+
 @onready var springarm: SpringArm3D = $SpringArm3D
 @onready var Camera: Camera3D  = $SpringArm3D/Camera3D
-enum CameraStates {ThirdPov, TopDownPOV}
 @onready var CameraMode: CameraStates
+@onready var is_dragging = false
+
+@export_category("topdown setting")
+@export var drag_sensitivity = 0.05
+@export var zoom_speed = 0.1
+@export var min_fov = 20.0
+@export var max_fov = 90.0
+
+@export_category("thirdPOV setting")
+@export var cameraPanSpeed: float = 0.0015
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-#region Input Handler
-func _input(event: InputEvent) -> void:
+	CameraMode= CameraStates.ThirdPov
+	
+func thirdPOV(event: InputEvent) ->void:
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * cameraPanSpeed)
 		springarm.rotate_x(-event.relative.y * cameraPanSpeed)
@@ -20,13 +31,51 @@ func _input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			
-	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
-		if not event.echo:
-			Camera_State()
+
+
+func topdownPov(event: InputEvent) -> void:
+	# DRAG DETECTION
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		is_dragging = event.is_pressed()
+		
+		# Panning
+	if is_dragging and event is InputEventMouseMotion:
+		global_translate(Vector3(-event.relative.x * drag_sensitivity, 0, -event.relative.y * drag_sensitivity))
+	
+	# ZOOM (Mouse Wheel)
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			Camera.fov = clamp(Camera.fov - zoom_speed, min_fov, max_fov)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			Camera.fov = clamp(Camera.fov + zoom_speed, min_fov, max_fov)
+#region Input Handler
+func _input(event: InputEvent) -> void:
+	if(CameraMode == CameraStates.ThirdPov):
+		thirdPOV(event)
+	else:
+		topdownPov(event)
 #endregion
 
-func Camera_State() -> void:
-	
+func Camera_state_toggle() -> void:
+	if (CameraMode == CameraStates.ThirdPov):# current is 3rd pov so change to top down
+		Change_to_topdown()
+	else:
+		Change_to_thirdPOV()
+
+func Change_to_topdown() -> void:
+	springarm.spring_length = 0
+	Camera.top_level = true
+	top_level =true
+	Camera.rotation.x = deg_to_rad(-90)
+	Camera.rotation.y = 0
+	Camera.rotation.z = 0
+	position.y += 50
+	CameraMode = CameraStates.TopDownPOV
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	pass
-# to do add ability to disable spring arm, and change to top down camera when on mode during match
+	
+func Change_to_thirdPOV() -> void:
+	Camera.set_as_top_level(false)
+	springarm.spring_length = 3
+	Camera.rotation = Vector3.ZERO
+	CameraMode = CameraStates.ThirdPov

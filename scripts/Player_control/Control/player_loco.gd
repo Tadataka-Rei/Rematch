@@ -139,3 +139,6 @@ func levitate_player() -> void:
 func Toggle_gravity() -> void:
 	gravity = !gravity
 #endregion
+func toggle_cam_state() -> void:
+	camera_pivot.Camera_state_toggle()
+	

@@ -124,6 +124,7 @@ func create_board(board_size: int, direction: Vector3) -> void:
 			var notation = Match_Controller.Cords_to_notation(x, z)
 			Match_Controller.update_board_geo(notation, world_pos)
 	Match_Controller.test_spawn_starting_board()
+	player.toggle_cam_state()
 
 func get_tile_color(x: int, z: int, forward: Vector3) -> Color:
 	var is_even = (x + z) % 2 == 0
