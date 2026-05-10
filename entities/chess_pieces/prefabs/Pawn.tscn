@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://shgfpfqp8mbe"]
+
+[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/enemy/Enemy_Base.gd" id="1_7mbgv"]
+[ext_resource type="ArrayMesh" uid="uid://t6ju38iq44h5" path="res://models/chess_pieces/mesh/Pawn.tres" id="1_an7vh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_an7vh"]
+size = Vector3(1.2844696, 1.2844672, 2.204047)
+
+[node name="Staticbody3d" type="StaticBody3D" unique_id=1829614027]
+script = ExtResource("1_7mbgv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2019532076]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = ExtResource("1_an7vh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=581128251]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 6.1035156e-05, 1.1314334, -5.374566e-06)
+shape = SubResource("BoxShape3D_an7vh")

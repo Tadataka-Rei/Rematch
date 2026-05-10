@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cr5543o8mw27t"]
+
+[ext_resource type="ArrayMesh" uid="uid://dr5kgexouby30" path="res://models/chess_pieces/mesh/Rook.tres" id="1_ax7qu"]
+[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/enemy/Enemy_Base.gd" id="1_bsy6r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ax7qu"]
+size = Vector3(1.393219, 1.3932228, 2.54826)
+
+[node name="Rook" type="StaticBody3D" unique_id=1410199774]
+script = ExtResource("1_bsy6r")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1552339673]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = ExtResource("1_ax7qu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=813325155]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.0001487732, 1.2755598, -3.236917e-05)
+shape = SubResource("BoxShape3D_ax7qu")
