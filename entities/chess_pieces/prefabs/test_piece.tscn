@@ -7,15 +7,13 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_h3bwc"]
 size = Vector3(0.99886733, 0.9999998, 0.99886733)
 
-[node name="TestPiece" type="Node3D" unique_id=1884451013]
+[node name="TestPiece" type="StaticBody3D" unique_id=1077619798]
 script = ExtResource("1_h3bwc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1865386156]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48682106, 0)
 mesh = SubResource("SphereMesh_koj7g")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1889544410]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=693694118]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.058651805, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=693694118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54547286, 0)
 shape = SubResource("BoxShape3D_h3bwc")

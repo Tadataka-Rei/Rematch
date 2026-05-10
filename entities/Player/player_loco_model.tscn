@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bemepenyufwjd" path="res://scripts/Player_control/skill/grow_ball.gd" id="6_crw8l"]
 [ext_resource type="Script" uid="uid://b7mrxon5lcx83" path="res://scripts/Player_control/board_control/Match_controller.gd" id="7_wxnt1"]
 [ext_resource type="PackedScene" uid="uid://b5xn37e5glm2k" path="res://entities/chess_pieces/prefabs/test_piece.tscn" id="8_1xpwc"]
+[ext_resource type="PackedScene" uid="uid://cc8r3v1pd302h" path="res://entities/chess_pieces/prefabs/indicator.tscn" id="9_vl3pd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nwgu8"]
 cull_mode = 2
@@ -185,7 +186,10 @@ material = SubResource("StandardMaterial3D_p0qwn")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xpwc"]
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(0.7919991, 0.79199916, 0.7919991, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vl3pd"]
+albedo_color = Color(0.20871013, 0.20871016, 0.20871013, 1)
 
 [node name="Player_loco_model" unique_id=229839048 node_paths=PackedStringArray("animationTree") instance=ExtResource("1_nwgu8")]
 collision_mask = 5
@@ -202,27 +206,27 @@ transitionSpeed = 2.0
 transform = Transform3D(-0.4, -6.039832e-08, 2.6400945e-15, 0, -1.7484556e-08, -0.4, 6.039832e-08, -0.4, 1.7484556e-08, 0, 0, 0)
 
 [node name="Skeleton3D" parent="Armature" index="0" unique_id=1036864474]
-bones/0/position = Vector3(0.025385156, 0.03239562, -2.1155472)
-bones/0/rotation = Quaternion(-0.7275129, -0.051841248, 0.01388176, 0.68399185)
-bones/1/rotation = Quaternion(0.008435912, 0.012484689, 0.02156494, 0.99965394)
-bones/2/rotation = Quaternion(-0.0021141993, 0.0025757863, 0.014595568, 0.999888)
-bones/3/rotation = Quaternion(-0.0022939038, 0.003151673, 0.014526159, 0.99988693)
-bones/4/rotation = Quaternion(0.07754987, -0.0017191067, 0.002670675, 0.9969834)
-bones/5/rotation = Quaternion(-0.047891106, 0.0092180725, -0.0026489566, 0.9988066)
-bones/7/rotation = Quaternion(-0.7053578, -0.29939827, 0.52439535, -0.3712689)
-bones/8/rotation = Quaternion(0.41937497, 0.12025253, 0.054754667, 0.8981458)
-bones/9/rotation = Quaternion(-0.05622682, 0.0021845368, 0.020321393, 0.9982089)
-bones/11/rotation = Quaternion(0.7034966, -0.2963976, 0.54240245, 0.35077152)
-bones/12/rotation = Quaternion(0.34755448, -0.22328953, -0.05294758, 0.90914476)
-bones/13/rotation = Quaternion(-0.05658966, 0.00072448415, -0.08786504, 0.9945234)
-bones/15/rotation = Quaternion(0.13406627, 0.08433259, 0.9842434, -0.07860792)
-bones/16/rotation = Quaternion(-0.1677728, -0.015407119, 0.031944267, 0.98518753)
-bones/17/rotation = Quaternion(0.51391333, -0.026233459, -0.058083747, 0.8554713)
-bones/18/rotation = Quaternion(0.2908182, 0.008426159, -0.0011353006, 0.95674056)
-bones/20/rotation = Quaternion(-0.08857079, -0.018377516, 0.9956491, -0.022368731)
-bones/21/rotation = Quaternion(-0.087328866, 0.084841296, -0.026347905, 0.9922104)
-bones/22/rotation = Quaternion(0.54025024, 0.017976386, 0.024827631, 0.840946)
-bones/23/rotation = Quaternion(0.3048806, -0.008664164, 0.0012648263, 0.9523503)
+bones/0/position = Vector3(0.026654063, 0.032695368, -2.1178272)
+bones/0/rotation = Quaternion(-0.72712815, -0.054550283, 0.014792025, 0.68417114)
+bones/1/rotation = Quaternion(0.008078135, 0.010677646, 0.020008195, 0.9997102)
+bones/2/rotation = Quaternion(0.0074343593, 0.001601827, 0.013440236, 0.9998808)
+bones/3/rotation = Quaternion(0.0072144074, 0.0018590561, 0.0134413615, 0.9998819)
+bones/4/rotation = Quaternion(0.06894944, -0.0014421724, 0.005335725, 0.99760485)
+bones/5/rotation = Quaternion(-0.060156666, 0.010936678, -0.0029981132, 0.9981246)
+bones/7/rotation = Quaternion(-0.7150671, -0.28081235, 0.533667, -0.353586)
+bones/8/rotation = Quaternion(0.38762814, 0.12845986, 0.046142593, 0.9116542)
+bones/9/rotation = Quaternion(-0.05624377, -0.0006504042, 0.027990451, 0.9980245)
+bones/11/rotation = Quaternion(0.7108251, -0.2793388, 0.5535494, 0.33208528)
+bones/12/rotation = Quaternion(0.31664476, -0.21604007, -0.06790371, 0.92111444)
+bones/13/rotation = Quaternion(-0.056407113, 0.0011887325, -0.06359507, 0.99637973)
+bones/15/rotation = Quaternion(0.13338023, 0.08896861, 0.98405933, -0.07695173)
+bones/16/rotation = Quaternion(-0.16826819, -0.01841428, 0.037788928, 0.9848445)
+bones/17/rotation = Quaternion(0.51525044, -0.02775092, -0.05972742, 0.8545054)
+bones/18/rotation = Quaternion(0.2875527, 0.007950597, -0.0014131323, 0.9577308)
+bones/20/rotation = Quaternion(-0.08913048, -0.025771124, 0.9953639, -0.025343051)
+bones/21/rotation = Quaternion(-0.07466728, 0.08397368, -0.02717469, 0.9932949)
+bones/22/rotation = Quaternion(0.53654325, 0.017002404, 0.025568103, 0.8433141)
+bones/23/rotation = Quaternion(0.30496356, -0.00866549, 0.0012638943, 0.95232385)
 
 [node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=1263754925]
 surface_material_override/0 = SubResource("StandardMaterial3D_nwgu8")
@@ -259,7 +263,7 @@ script = ExtResource("6_crw8l")
 target_scale = Vector3(150, 150, 150)
 duration = 3.0
 
-[node name="GameControl" type="Node" parent="." index="7" unique_id=958140189]
+[node name="GameControl" type="Node" parent="." index="7" unique_id=958140189 groups=["controller"]]
 script = ExtResource("7_wxnt1")
 pawn_scene = ExtResource("8_1xpwc")
 rook_scene = ExtResource("8_1xpwc")
@@ -268,4 +272,5 @@ bishop_scene = ExtResource("8_1xpwc")
 queen_scene = ExtResource("8_1xpwc")
 king_scene = ExtResource("8_1xpwc")
 white_material = SubResource("StandardMaterial3D_1xpwc")
-black_material = SubResource("StandardMaterial3D_1xpwc")
+black_material = SubResource("StandardMaterial3D_vl3pd")
+indicator_mesh = ExtResource("9_vl3pd")

@@ -35,6 +35,8 @@ folder_colors={
 [global_group]
 
 Skill_Pivot=""
+controller=""
+pieces=""
 
 [input]
 

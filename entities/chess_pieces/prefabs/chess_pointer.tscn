@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://djy27dorwk74w"]
+
+[ext_resource type="Script" uid="uid://b6j6qvr8a1rkc" path="res://scripts/chess_pointer.gd" id="1_k2x1t"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_plppi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k2x1t"]
+size = Vector3(0.99886733, 0.9999998, 0.99886733)
+
+[node name="ChessPointer" type="StaticBody3D" unique_id=705760467]
+script = ExtResource("1_k2x1t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1489115006]
+mesh = SubResource("SphereMesh_plppi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2131870260]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -8.940697e-08, 0)
+shape = SubResource("BoxShape3D_k2x1t")

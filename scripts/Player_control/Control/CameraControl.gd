@@ -100,6 +100,14 @@ func select_piece(event):
 		var result = space.intersect_ray(ray_query)
 		
 		if result:
-			print(result.collider)
-			if result.collider.has_method("die"):
-				result.collider.die()
+			var collider = result.collider
+			# 1. Check if we clicked a piece
+			if collider.has_method("on_clicked"):
+				collider.on_clicked()
+				
+				# 2. Check if we clicked a move indicator
+			elif collider.has_meta("target_square"):
+				var target = collider.get_meta("target_square")
+				var controller = get_tree().get_first_node_in_group("controller")
+				controller.perform_move(controller.selected_square, target)
+				controller.is_player_turn = false # Pass turn to AI
