@@ -1,4 +1,4 @@
-extends Node
+extends "res://scripts/Player_control/board_control/board_helper_func.gd"
 
 @export_group("Piece Templates")
 @export var pawn_scene: PackedScene
@@ -17,24 +17,12 @@ extends Node
 	"P": pawn_scene, "R": rook_scene, "N": knight_scene,
 	"B": bishop_scene, "Q": queen_scene, "K": king_scene
 }
-# note to self: store {"a1": Vector3(x, y, z), "b1": ... }
-var board_to_cord: Dictionary = {} # square name to corrd
-var piece_placement: Dictionary = {} # for pieces pos but in FEN
-var piece_nodes: Dictionary = {} # reference to the node using FEN I'll have hemmoroid after this
-#region Helper functions
-#Convert global cord to board cord
-func Cords_to_notation(x: int, z: int) -> String:
-	var files = "abcdefgh"
-	return files[x] + str(z + 1)
-# add into the DICK
-func update_board_geo(square_name: String, global_pos: Vector3):
-	board_to_cord[square_name] = global_pos
-#endregion
+
 #region INNIT FUNCTIONS
 func gen_fen(pieces_on_board: Dictionary) -> String:
 	var fen = ""
 	
-	# starts from Rank 8(7) down to 1(0)
+	# starts from Rank 8(7) down to 1(0)... don't question me
 	for z in range(7, -1, -1):
 		var empty_count = 0
 		for x in range(8): # this need change, later board will have dynamic size
@@ -55,7 +43,7 @@ func gen_fen(pieces_on_board: Dictionary) -> String:
 			fen += "/"
 	
 	#  active color, castling
-	fen += " w - - 0 1" # do i even need a half move clock
+	fen += " w - - 0 1" # do i even need a halfmove clock?
 	return fen
 #endregion
 
@@ -82,9 +70,7 @@ func get_legal_moves(square: String) -> Array:
 
 
 func spawn_piece(type: String, square: String) -> void:
-	var is_white = false
-	if type == type.to_upper():
-		is_white = true
+	var white = is_white(type)
 	var piece_key = type.to_upper()
 	
 	var piece_instance = scene_map[piece_key].instantiate() as Node3D
@@ -92,13 +78,12 @@ func spawn_piece(type: String, square: String) -> void:
 	
 	piece_instance.global_position = board_to_cord[square]
 	piece_instance.global_position.y += 20 # same as in plyerskill script
-	put_material(piece_instance, is_white)
+	put_material(piece_instance, white)
 	
 	piece_nodes[square] = piece_instance
 
-func put_material(node: Node3D, is_white: bool):
-	var mat = white_material if is_white else black_material
-	
+func put_material(node: Node3D, white: bool):
+	var mat = white_material if white else black_material
 	node.get_child(0).set_surface_override_material(0, mat)
 		
 func clear_board() -> void:

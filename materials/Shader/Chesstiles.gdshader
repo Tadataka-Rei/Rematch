@@ -1,6 +1,6 @@
 shader_type spatial;
 
-uniform float speed = 4.0;
+uniform float speed = 7;
 uniform float strength =  1;
 uniform float upto = 19;
 void vertex() {

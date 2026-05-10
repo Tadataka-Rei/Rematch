@@ -16,6 +16,8 @@ enum CameraStates {ThirdPov, TopDownPOV}
 @export_category("thirdPOV setting")
 @export var cameraPanSpeed: float = 0.0015
 
+@onready var mouse : Vector2
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	CameraMode= CameraStates.ThirdPov
@@ -54,6 +56,7 @@ func _input(event: InputEvent) -> void:
 		thirdPOV(event)
 	else:
 		topdownPov(event)
+		select_piece(event)
 #endregion
 
 func Camera_state_toggle() -> void:
@@ -69,13 +72,34 @@ func Change_to_topdown() -> void:
 	Camera.rotation.x = deg_to_rad(-90)
 	Camera.rotation.y = 0
 	Camera.rotation.z = 0
-	position.y += 50
+	position.y += 20
 	CameraMode = CameraStates.TopDownPOV
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	pass
 	
+
 func Change_to_thirdPOV() -> void:
 	Camera.set_as_top_level(false)
 	springarm.spring_length = 3
 	Camera.rotation = Vector3.ZERO
 	CameraMode = CameraStates.ThirdPov
+
+@onready var camera = self
+func select_piece(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var mouse_pos = get_viewport().get_mouse_position()
+		
+		var ray_length = 1000
+		var from = Camera.project_ray_origin(mouse_pos)
+		var to = from + Camera.project_ray_normal(mouse_pos) * ray_length
+		
+		var space = get_world_3d().direct_space_state
+		var ray_query = PhysicsRayQueryParameters3D.new()
+		ray_query.from = from
+		ray_query.to = to
+		var result = space.intersect_ray(ray_query)
+		
+		if result:
+			print(result.collider)
+			if result.collider.has_method("die"):
+				result.collider.die()

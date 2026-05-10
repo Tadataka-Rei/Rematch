@@ -1,8 +1,21 @@
 [gd_scene format=3 uid="uid://b5xn37e5glm2k"]
 
+[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/enemy/Enemy_Base.gd" id="1_h3bwc"]
+
 [sub_resource type="SphereMesh" id="SphereMesh_koj7g"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_h3bwc"]
+size = Vector3(0.99886733, 0.9999998, 0.99886733)
+
 [node name="TestPiece" type="Node3D" unique_id=1884451013]
+script = ExtResource("1_h3bwc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1865386156]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48682106, 0)
 mesh = SubResource("SphereMesh_koj7g")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1889544410]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=693694118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.058651805, 0)
+shape = SubResource("BoxShape3D_h3bwc")

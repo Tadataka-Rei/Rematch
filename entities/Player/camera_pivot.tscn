@@ -14,6 +14,8 @@ spring_length = 3.0
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1098544421]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.26088762, 3.487861)
+current = true
+far = 2000.0
 
 [node name="Area3D" type="Area3D" parent="SpringArm3D/Camera3D" unique_id=1751495807]
 collision_layer = 2147483648
