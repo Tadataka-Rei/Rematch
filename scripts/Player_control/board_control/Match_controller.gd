@@ -84,18 +84,18 @@ func spawn_piece(type: String, square: String) -> void:
 	piece_instance.global_position = board_to_cord[square]
 	piece_instance.global_position.y += 19.7
 	
-	var face_dir : Vector3
+	var face_dir: Vector3
 	if (white):
-		face_dir= board_forward_vector
+		face_dir = board_forward_vector
 	else:
-		face_dir =-board_forward_vector
+		face_dir = - board_forward_vector
 		
-	face_dir.y = 0 
+	face_dir.y = 0
 	if face_dir != Vector3.ZERO:
 		piece_instance.look_at(piece_instance.global_position + face_dir, Vector3.UP)
 		
-	piece_instance.square_notation = square 
-	piece_instance.add_to_group("pieces") 
+	piece_instance.square_notation = square
+	piece_instance.add_to_group("pieces")
 	
 	put_material(piece_instance, white)
 	piece_nodes[square] = piece_instance
@@ -114,11 +114,11 @@ func get_legal_moves(square: String) -> Array:
 
 	match type:
 		"P": moves = get_pawn_moves(x, z, white)
-		"N": moves = get_stepping_moves(x, z, white, [Vector2(1,2), Vector2(1,-2), Vector2(-1,2), Vector2(-1,-2), Vector2(2,1), Vector2(2,-1), Vector2(-2,1), Vector2(-2,-1)])
-		"K": moves = get_stepping_moves(x, z, white, [Vector2(1,1), Vector2(1,0), Vector2(1,-1), Vector2(0,1), Vector2(0,-1), Vector2(-1,1), Vector2(-1,0), Vector2(-1,-1)])
-		"R": moves = get_sliding_moves(x, z, white, [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1)])
-		"B": moves = get_sliding_moves(x, z, white, [Vector2(1,1), Vector2(1,-1), Vector2(-1,1), Vector2(-1,-1)])
-		"Q": moves = get_sliding_moves(x, z, white, [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1), Vector2(1,1), Vector2(1,-1), Vector2(-1,1), Vector2(-1,-1)])
+		"N": moves = get_stepping_moves(x, z, white, [Vector2(1, 2), Vector2(1, -2), Vector2(-1, 2), Vector2(-1, -2), Vector2(2, 1), Vector2(2, -1), Vector2(-2, 1), Vector2(-2, -1)])
+		"K": moves = get_stepping_moves(x, z, white, [Vector2(1, 1), Vector2(1, 0), Vector2(1, -1), Vector2(0, 1), Vector2(0, -1), Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)])
+		"R": moves = get_sliding_moves(x, z, white, [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)])
+		"B": moves = get_sliding_moves(x, z, white, [Vector2(1, 1), Vector2(1, -1), Vector2(-1, 1), Vector2(-1, -1)])
+		"Q": moves = get_sliding_moves(x, z, white, [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1), Vector2(1, 1), Vector2(1, -1), Vector2(-1, 1), Vector2(-1, -1)])
 
 	return moves
 
@@ -253,7 +253,7 @@ func calculate_best_move(depth: int):
 		# Simulate move
 		var temp_state = piece_placement.duplicate()
 		simulate_move(move.from, move.to)
-		var score = -minimax(depth - 1, -10000, 10000, true)
+		var score = - minimax(depth - 1, -10000, 10000, true)
 		piece_placement = temp_state # Undo
 		
 		if score > best_score:
@@ -330,7 +330,7 @@ func perform_move(from: String, to: String):
 	if piece_nodes.has(from):
 		var node = piece_nodes[from]
 		node.global_position = board_to_cord[to]
-		node.global_position.y += 19.7 
+		node.global_position.y += 19.7
 		
 		# Re-index the node in the dictionary
 		node.square_notation = to
