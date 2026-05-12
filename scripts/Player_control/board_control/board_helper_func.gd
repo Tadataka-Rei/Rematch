@@ -81,3 +81,13 @@ func notation_to_index(notation: String) -> int:
 	var x = files.find(notation[0])
 	var z = notation[1].to_int() - 1
 	return z * 16 + x
+	
+func is_on_board(x: int, z: int) -> bool:
+	return x >= 0 and x < 8 and z >= 0 and z < 8
+
+func notation_to_coords(notation: String) -> Vector2:
+	var files = "abcdefgh"
+	var x = files.find(notation[0])
+	var z = notation[1].to_int() - 1
+#	var z = 8 - notation[1].to_int()
+	return Vector2(x, z)

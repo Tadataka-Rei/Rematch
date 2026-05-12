@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://isuorg4ulqet"]
+
+[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/Chess_pieces/Piece_base.gd" id="1_arhu0"]
+[ext_resource type="ArrayMesh" uid="uid://bh4iyv2qr52u4" path="res://models/chess_pieces/mesh/Queen.tres" id="1_o0dyq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o0dyq"]
+size = Vector3(1.4697533, 1.4757605, 3.46031)
+
+[node name="Queen" type="StaticBody3D" unique_id=472393276]
+script = ExtResource("1_arhu0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=427941825]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = ExtResource("1_o0dyq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1653453295]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.0010528564, 1.7226932, -0.0001719437)
+shape = SubResource("BoxShape3D_o0dyq")

@@ -15,10 +15,11 @@ extends "res://scripts/Player_control/board_control/board_helper_func.gd"
 # Penis
 
 @export var indicator_mesh: PackedScene # A simple glowing circle or sphere
-var move_indicators: Array = []
-var selected_square: String = ""
+@onready var move_indicators: Array = []
+@onready var selected_square: String = ""
 var is_player_turn: bool = true
 
+@onready var board_forward_vector: Vector3 = Vector3.FORWARD
 
 @onready var scene_map = {
 	"P": pawn_scene, "R": rook_scene, "N": knight_scene,
@@ -34,7 +35,7 @@ func _ready():
 func gen_fen(pieces_on_board: Dictionary) -> String:
 	var fen = ""
 	
-	# starts from Rank 8(7) down to 1(0)... don't question me
+	# starts from Rank 8(7) down to 1(0), i'm dumb at math so the board is created upside down
 	for z in range(7, -1, -1):
 		var empty_count = 0
 		for x in range(8): # this need change, later board will have dynamic size
@@ -74,7 +75,7 @@ func fen_to_board(fen: String):
 				x += 1
 
 func spawn_piece(type: String, square: String) -> void:
-	var white = is_white(type)
+	var white = is_white(type) # everytime i call this function, i feel racist
 	var piece_key = type.to_upper()
 	
 	var piece_instance = scene_map[piece_key].instantiate()
@@ -83,19 +84,29 @@ func spawn_piece(type: String, square: String) -> void:
 	piece_instance.global_position = board_to_cord[square]
 	piece_instance.global_position.y += 19.7
 	
+	var face_dir : Vector3
+	if (white):
+		face_dir= board_forward_vector
+	else:
+		face_dir =-board_forward_vector
+		
+	face_dir.y = 0 
+	if face_dir != Vector3.ZERO:
+		piece_instance.look_at(piece_instance.global_position + face_dir, Vector3.UP)
+		
 	piece_instance.square_notation = square 
 	piece_instance.add_to_group("pieces") 
 	
 	put_material(piece_instance, white)
 	piece_nodes[square] = piece_instance
 	
-# Simplified move logic using 0x88 logic (testing)
+#  0x88 logic (testing)
 func get_legal_moves(square: String) -> Array:
 	var moves = []
 	var piece = piece_placement.get(square)
 	if piece == null: return []
 
-	var coords = notation_to_coords(square) # We need a Vector2 version
+	var coords = notation_to_coords(square)
 	var x = coords.x
 	var z = coords.y
 	var white = is_white(piece)
@@ -148,7 +159,7 @@ func get_pawn_moves(x: int, z: int, white: bool) -> Array:
 	var dir = -1 if white else 1
 	var start_rank = 6 if white else 1
 
-	# 1. Forward move
+	# Forward move
 	var f1 = Cords_to_notation(x, z + dir)
 	if is_on_board(x, z + dir) and not piece_placement.has(f1):
 		moves.append(f1)
@@ -156,8 +167,8 @@ func get_pawn_moves(x: int, z: int, white: bool) -> Array:
 		var f2 = Cords_to_notation(x, z + (dir * 2))
 		if z == start_rank and not piece_placement.has(f2):
 			moves.append(f2)
-
-	# 3. Captures
+			
+	# Captures
 	for side in [-1, 1]:
 		var cap_x = x + side
 		var cap_z = z + dir
@@ -166,18 +177,6 @@ func get_pawn_moves(x: int, z: int, white: bool) -> Array:
 			if piece_placement.has(cap_sq) and is_white(piece_placement[cap_sq]) != white:
 				moves.append(cap_sq)
 	return moves
-
-# --- HELPERS ---
-
-func is_on_board(x: int, z: int) -> bool:
-	return x >= 0 and x < 8 and z >= 0 and z < 8
-
-func notation_to_coords(notation: String) -> Vector2:
-	var files = "abcdefgh"
-	var x = files.find(notation[0])
-	var z = notation[1].to_int() - 1
-#	var z = 8 - notation[1].to_int()
-	return Vector2(x, z)
 
 func put_material(node: Node3D, white: bool):
 	var mat = white_material if white else black_material
@@ -198,7 +197,7 @@ func load_pieces_from_dict(placement: Dictionary):
 		spawn_piece(type, square)
 
 func test_spawn_starting_board():
-	var starting_fen = "RNBQKBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbqkbnr"
+	var starting_fen = "RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr"
 
 	fen_to_board(starting_fen)
 	for square in piece_placement:
@@ -309,31 +308,37 @@ func evaluate_board() -> float:
 # --- HELPER UTILITIES ---
 
 func simulate_move(from: String, to: String):
-	piece_placement[to] = piece_placement[from]
-	piece_placement.erase(from)
+	var new_board = piece_placement.duplicate()
+	new_board[to] = new_board[from]
+	new_board.erase(from)
+	return new_board
 
 func perform_move(from: String, to: String):
-	# 1. Handle Captures (Delete the victim's node)
+	# 1. Logic Update: Move the piece character in the placement dict
+	var piece_char = piece_placement[from]
+	piece_placement[to] = piece_char
+	piece_placement.erase(from)
+
+	# 2. Capture Logic: Remove victim node if it exists
 	if piece_nodes.has(to):
 		var victim = piece_nodes[to]
 		if is_instance_valid(victim):
 			victim.queue_free()
 		piece_nodes.erase(to)
 
-	# 2. Update Dictionary
-	var type = piece_placement[from]
-	piece_placement[to] = type
-	piece_placement.erase(from)
-	
-	# 3. Update 3D Node Position
-	var node = piece_nodes[from]
-	node.global_position = board_to_cord[to]
-	node.global_position.y += 19.7 # Keep your height offset
-	node.square_notation = to # Tell the piece its new home
-	
-	piece_nodes[to] = node
-	piece_nodes.erase(from)
-	
+	# 3. Visual Update: Move the 3D Node
+	if piece_nodes.has(from):
+		var node = piece_nodes[from]
+		node.global_position = board_to_cord[to]
+		node.global_position.y += 19.7 
+		
+		# Re-index the node in the dictionary
+		node.square_notation = to
+		piece_nodes[to] = node
+		piece_nodes.erase(from)
+	else:
+		print("Error: No node found at ", from)
+
 	hide_indicators()
 
 func hide_indicators():

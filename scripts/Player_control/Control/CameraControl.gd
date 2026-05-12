@@ -15,12 +15,13 @@ enum CameraStates {ThirdPov, TopDownPOV}
 
 @export_category("thirdPOV setting")
 @export var cameraPanSpeed: float = 0.0015
-
+var controller: Node
 @onready var mouse : Vector2
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	CameraMode= CameraStates.ThirdPov
+	controller = get_tree().get_first_node_in_group("controller")
 	
 func thirdPOV(event: InputEvent) ->void:
 	if event is InputEventMouseMotion:
@@ -107,7 +108,7 @@ func select_piece(event):
 				
 				# 2. Check if we clicked a move indicator
 			elif collider.has_meta("target_square"):
+				# Now call AI or wait for input
 				var target = collider.get_meta("target_square")
-				var controller = get_tree().get_first_node_in_group("controller")
 				controller.perform_move(controller.selected_square, target)
 				controller.is_player_turn = false # Pass turn to AI

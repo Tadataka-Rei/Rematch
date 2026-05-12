@@ -123,6 +123,7 @@ func create_board(board_size: int, direction: Vector3) -> void:
 		if Match_Controller:
 			var notation = Match_Controller.Cords_to_notation(x, z)
 			Match_Controller.update_board_geo(notation, world_pos)
+	Match_Controller.board_forward_vector = direction
 	Match_Controller.test_spawn_starting_board()
 	player.toggle_cam_state()
 

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b5xn37e5glm2k"]
 
-[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/enemy/Enemy_Base.gd" id="1_h3bwc"]
+[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/Chess_pieces/Piece_base.gd" id="1_h3bwc"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_koj7g"]
 

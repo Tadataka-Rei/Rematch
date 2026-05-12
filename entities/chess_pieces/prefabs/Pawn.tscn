@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://shgfpfqp8mbe"]
 
-[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/enemy/Enemy_Base.gd" id="1_7mbgv"]
-[ext_resource type="ArrayMesh" uid="uid://t6ju38iq44h5" path="res://models/chess_pieces/mesh/Pawn.tres" id="1_an7vh"]
+[ext_resource type="Script" uid="uid://bpbajx5pmq66k" path="res://scripts/Chess_pieces/Piece_base.gd" id="1_7mbgv"]
+[ext_resource type="ArrayMesh" uid="uid://dis6l5yilam1y" path="res://models/chess_pieces/mesh/Pawn.tres" id="1_an7vh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_an7vh"]
 size = Vector3(1.2844696, 1.2844672, 2.204047)
