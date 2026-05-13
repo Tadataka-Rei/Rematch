@@ -62,6 +62,7 @@ var RAYS = [
 
 	15,  0,  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0, 17
 	];
+var piece_values = {"P": 10, "N": 30, "B": 30, "R": 50, "Q": 90, "K": 900}
 # note to self: store {"a1": Vector3(x, y, z), "b1": ... }
 var board_to_cord: Dictionary = {} # square name to corrd
 var piece_placement: Dictionary = {} # for pieces pos but in FEN

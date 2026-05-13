@@ -11,7 +11,7 @@ extends "res://scripts/Player_control/board_control/board_helper_func.gd"
 @export_group("Materials")
 @export var white_material: StandardMaterial3D
 @export var black_material: StandardMaterial3D
-
+@export var capture_material: StandardMaterial3D
 # Penis
 
 @export var indicator_mesh: PackedScene # A simple glowing circle or sphere
@@ -20,13 +20,12 @@ extends "res://scripts/Player_control/board_control/board_helper_func.gd"
 var is_player_turn: bool = true
 
 @onready var board_forward_vector: Vector3 = Vector3.FORWARD
-
+var highlighted_capture_pieces: Array[String] = []
 @onready var scene_map = {
 	"P": pawn_scene, "R": rook_scene, "N": knight_scene,
 	"B": bishop_scene, "Q": queen_scene, "K": king_scene
 }
 
-var piece_values = {"P": 10, "N": 30, "B": 30, "R": 50, "Q": 90, "K": 900}
 
 #region INNIT FUNCTIONS
 func _ready():
@@ -100,7 +99,6 @@ func spawn_piece(type: String, square: String) -> void:
 	put_material(piece_instance, white)
 	piece_nodes[square] = piece_instance
 	
-#  0x88 logic (testing)
 func get_legal_moves(square: String) -> Array:
 	var moves = []
 	var piece = piece_placement.get(square)
@@ -217,21 +215,41 @@ func prepare_indicators():
 func handle_piece_selection(square: String):
 	if not is_player_turn: return
 	
+	if highlighted_capture_pieces.has(square):
+		perform_move(selected_square, square)
+		is_player_turn = false # Or trigger AI
+		return
+
 	var type = piece_placement.get(square, "")
 	if type == "": return
 	
-	# Only show indicators for Player (White) to move
-	hide_indicators()
+	# Check if it's the player's piece (White)
+	# Assuming White is uppercase in your FEN logic
+	if not is_white(type): 
+		return 
+
+	hide_indicators() # This will now also reset materials
 	selected_square = square
 	var moves = get_legal_moves(square)
 	
 	for i in range(moves.size()):
-		if i < move_indicators.size():
-			move_indicators[i].global_position = board_to_cord[moves[i]]
+		var target_sq = moves[i]
+		
+		# If there is an enemy piece here, highlight the piece instead of showing a circle
+		if piece_placement.has(target_sq):
+			highlight_piece_for_capture(target_sq)
+		elif i < move_indicators.size():
+			move_indicators[i].global_position = board_to_cord[target_sq]
 			move_indicators[i].global_position.y += 20
 			move_indicators[i].visible = true
-			move_indicators[i].set_meta("target_square", moves[i])
+			move_indicators[i].set_meta("target_square", target_sq)
 
+func highlight_piece_for_capture(square: String):
+	if piece_nodes.has(square):
+		var piece_node = piece_nodes[square]
+		# Apply the red/highlight material
+		piece_node.get_child(0).set_surface_override_material(0, capture_material)
+		highlighted_capture_pieces.append(square)
 # --- AI & MINIMAX LOGIC ---
 
 func _input(event):
@@ -338,11 +356,20 @@ func perform_move(from: String, to: String):
 		piece_nodes.erase(from)
 	else:
 		print("Error: No node found at ", from)
-
+	selected_square = ""
 	hide_indicators()
 
 func hide_indicators():
-	for ind in move_indicators: ind.visible = false
+	for ind in move_indicators: 
+		ind.visible = false
+	
+	# Reset highlighted piece
+	for sq in highlighted_capture_pieces:
+		if piece_nodes.has(sq):
+			var type = piece_placement.get(sq, "")
+			put_material(piece_nodes[sq], is_white(type))
+	
+	highlighted_capture_pieces.clear()
 
 func get_all_valid_moves(white: bool) -> Array:
 	var all_moves = []
