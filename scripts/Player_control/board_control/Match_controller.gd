@@ -299,9 +299,9 @@ func handle_piece_selection(square: String):
 func highlight_piece_for_capture(square: String):
 	if piece_nodes.has(square):
 		var piece_node = piece_nodes[square]
-		# Apply the red/highlight material
 		piece_node.get_child(0).set_surface_override_material(0, capture_material)
 		highlighted_capture_pieces.append(square)
+
 # --- AI & MINIMAX LOGIC ---
 
 func _input(event):
@@ -309,70 +309,94 @@ func _input(event):
 		execute_ai_turn()
 
 func execute_ai_turn():
-	var best_move = calculate_best_move(2) # Depth 2
+	var best_move = calculate_best_move(3) # Depth 3
 	if best_move:
 		perform_move(best_move.from, best_move.to)
 	is_player_turn = true
 
 func calculate_best_move(depth: int):
-	var best_score = -99999
+	var best_score = 99999  # Start high for Black
+	var alpha = -100000
+	var beta = 100000
 	var best_move = null
-	var possible_moves = get_all_valid_moves(false) # Black moves
+	
+	var possible_moves = get_all_valid_moves(false) # Black's moves
 	
 	for move in possible_moves:
-		# Simulate move
 		var temp_state = piece_placement.duplicate()
-		simulate_move(move.from, move.to)
-		var score = - minimax(depth - 1, -10000, 10000, true)
-		piece_placement = temp_state # Undo
+		# Use the move! (See Point #2 below)
+		apply_simulated_move(move.from, move.to) 
 		
-		if score > best_score:
+		var score = minimax(depth - 1, alpha, beta, true) # Next turn is White (maximizing)
+		
+		piece_placement = temp_state 
+		
+		if score < best_score: # Black wants the LOWEST score
 			best_score = score
 			best_move = move
+		
+		beta = min(beta, best_score)
+		
 	return best_move
-
+	
 func minimax(depth: int, alpha: float, beta: float, is_maximizing: bool) -> float:
 	if depth == 0:
+		# evaluate_board() returns positive for White, negative for Black
 		return evaluate_board()
 	
-	var moves = get_all_valid_moves(!is_maximizing)
-	if is_maximizing:
+	var moves = get_all_valid_moves(is_maximizing) # Get moves for current player
+	
+	if is_maximizing: # White's Turn
 		var max_eval = -99999
 		for m in moves:
 			var temp = piece_placement.duplicate()
-			simulate_move(m.from, m.to)
-			var eval = minimax(depth - 1, alpha, beta, false)
-			piece_placement = temp
+			apply_simulated_move(m.from, m.to) # Actually move the piece
+			var eval = minimax(depth - 1, alpha, beta, !is_maximizing)
+			piece_placement = temp # Undo the move
+			
 			max_eval = max(max_eval, eval)
 			alpha = max(alpha, eval)
-			if beta <= alpha: break
+			if beta <= alpha:
+				break # Beta Cut-off
 		return max_eval
-	else:
+	else: # Black's Turn (AI)
 		var min_eval = 99999
 		for m in moves:
 			var temp = piece_placement.duplicate()
 			simulate_move(m.from, m.to)
 			var eval = minimax(depth - 1, alpha, beta, true)
 			piece_placement = temp
+			
 			min_eval = min(min_eval, eval)
 			beta = min(beta, eval)
-			if beta <= alpha: break
+			if beta <= alpha:
+				break # Alpha Cut-off
 		return min_eval
 
 func evaluate_board() -> float:
 	var score = 0.0
+	
 	for sq in piece_placement:
 		var p = piece_placement[sq]
+		var coords = notation_to_coords(sq)
+		var x = int(coords.x)
+		var z = int(coords.y)
+		
 		var val = piece_values.get(p.to_upper(), 0)
 		
-		# Add position bonus from your ATTACKS array (0x88 index style)
+		# 2. Positional Bonus
+		var pos_bonus = get_piece_stats_value(p, x, z)
+		
 		var idx = notation_to_index(sq)
-		var pos_bonus = ATTACKS[idx] if ATTACKS.size() > idx else 0
+		var attack_bonus = ATTACKS[idx] if idx < ATTACKS.size() else 0
+		
+		var total_val = val + pos_bonus + (attack_bonus* 0.1)
 		
 		if is_white(p):
-			score += (val + pos_bonus)
+			score += total_val
 		else:
-			score -= (val + pos_bonus)
+			score -= total_val
+			
 	return score
 
 # --- HELPER UTILITIES ---
