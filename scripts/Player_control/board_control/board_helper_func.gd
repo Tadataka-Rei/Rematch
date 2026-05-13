@@ -70,7 +70,11 @@ var piece_nodes: Dictionary = {} # reference to the node using FEN I'll have hem
 
 func is_white(type: String) -> bool:
 	return type == type.to_upper()
-func Cords_to_notation(x: int, z: int) -> String:#Convert global cord to board cord
+func Cords_to_notation(x: int, z: int) -> String:
+	# Ensure x is between 0 and 7 before accessing the string index
+	if x < 0 or x > 7 or z < 0 or z > 7:
+		return "" # Return empty if out of bounds
+	
 	var files = "abcdefgh"
 	return files[x] + str(z + 1)
 

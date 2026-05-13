@@ -18,6 +18,7 @@ extends "res://scripts/Player_control/board_control/board_helper_func.gd"
 @onready var move_indicators: Array = []
 @onready var selected_square: String = ""
 var is_player_turn: bool = true
+var moved_pieces: Dictionary = {} # Tracks if a square has been moved from: {"e1": true}
 
 @onready var board_forward_vector: Vector3 = Vector3.FORWARD
 var highlighted_capture_pieces: Array[String] = []
@@ -98,6 +99,31 @@ func spawn_piece(type: String, square: String) -> void:
 	
 	put_material(piece_instance, white)
 	piece_nodes[square] = piece_instance
+
+func is_square_attacked(target_x: int, target_z: int, attackers_are_white: bool) -> bool:
+	var target_sq = Cords_to_notation(target_x, target_z)
+	
+	for sq in piece_placement:
+		var piece = piece_placement[sq]
+		if is_white(piece) == attackers_are_white:
+			var coords = notation_to_coords(sq)
+			var type = piece.to_upper()
+			
+			# We check "pseudo-legal" moves for the attacker
+			var possible_attacks = []
+			match type:
+				"P": # Pawns attack diagonally
+					var dir = 1 if attackers_are_white else -1
+					possible_attacks = [Cords_to_notation(coords.x - 1, coords.y + dir), Cords_to_notation(coords.x + 1, coords.y + dir)]
+				"N": possible_attacks = get_stepping_moves(coords.x, coords.y, attackers_are_white, [Vector2(1, 2), Vector2(1, -2), Vector2(-1, 2), Vector2(-1, -2), Vector2(2, 1), Vector2(2, -1), Vector2(-2, 1), Vector2(-2, -1)])
+				"K": possible_attacks = get_stepping_moves(coords.x, coords.y, attackers_are_white, [Vector2(1, 1), Vector2(1, 0), Vector2(1, -1), Vector2(0, 1), Vector2(0, -1), Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)])
+				"R": possible_attacks = get_sliding_moves(coords.x, coords.y, attackers_are_white, [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)])
+				"B": possible_attacks = get_sliding_moves(coords.x, coords.y, attackers_are_white, [Vector2(1, 1), Vector2(1, -1), Vector2(-1, 1), Vector2(-1, -1)])
+				"Q": possible_attacks = get_sliding_moves(coords.x, coords.y, attackers_are_white, [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1), Vector2(1, 1), Vector2(1, -1), Vector2(-1, 1), Vector2(-1, -1)])
+			
+			if possible_attacks.has(target_sq):
+				return true
+	return false
 	
 func get_legal_moves(square: String) -> Array:
 	var moves = []
@@ -113,7 +139,33 @@ func get_legal_moves(square: String) -> Array:
 	match type:
 		"P": moves = get_pawn_moves(x, z, white)
 		"N": moves = get_stepping_moves(x, z, white, [Vector2(1, 2), Vector2(1, -2), Vector2(-1, 2), Vector2(-1, -2), Vector2(2, 1), Vector2(2, -1), Vector2(-2, 1), Vector2(-2, -1)])
-		"K": moves = get_stepping_moves(x, z, white, [Vector2(1, 1), Vector2(1, 0), Vector2(1, -1), Vector2(0, 1), Vector2(0, -1), Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)])
+		"K":
+			moves = get_stepping_moves(x, z, white, [Vector2(1, 1), Vector2(1, 0), Vector2(1, -1), Vector2(0, 1), Vector2(0, -1), Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)])
+			
+			# CASTLING LOGIC (King starts at x=3)
+			if not moved_pieces.has(square):
+				if not is_square_attacked(x, z, !white):
+					# --- KINGSIDE (Towards H-File, x=7) ---
+					var rook_h_sq = Cords_to_notation(7, z)
+					if piece_placement.has(rook_h_sq) and not moved_pieces.has(rook_h_sq):
+						# Path: squares at x=4, 5, 6 must be empty
+						if not piece_placement.has(Cords_to_notation(4, z)) and \
+						not piece_placement.has(Cords_to_notation(5, z)) and \
+						not piece_placement.has(Cords_to_notation(6, z)):
+							# King crosses x=4 and ends at x=5
+							if not is_square_attacked(4, z, !white) and not is_square_attacked(5, z, !white):
+								moves.append(Cords_to_notation(5, z))
+								
+					# --- QUEENSIDE (Towards A-File, x=0) ---
+					var rook_a_sq = Cords_to_notation(0, z)
+					if piece_placement.has(rook_a_sq) and not moved_pieces.has(rook_a_sq):
+						# Path: squares at x=1, 2 must be empty
+						if not piece_placement.has(Cords_to_notation(1, z)) and \
+						not piece_placement.has(Cords_to_notation(2, z)):
+							# King crosses x=2 and ends at x=1
+							if not is_square_attacked(2, z, !white) and not is_square_attacked(1, z, !white):
+								moves.append(Cords_to_notation(1, z))
+		
 		"R": moves = get_sliding_moves(x, z, white, [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)])
 		"B": moves = get_sliding_moves(x, z, white, [Vector2(1, 1), Vector2(1, -1), Vector2(-1, 1), Vector2(-1, -1)])
 		"Q": moves = get_sliding_moves(x, z, white, [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1), Vector2(1, 1), Vector2(1, -1), Vector2(-1, 1), Vector2(-1, -1)])
@@ -332,30 +384,58 @@ func simulate_move(from: String, to: String):
 	return new_board
 
 func perform_move(from: String, to: String):
-	# 1. Logic Update: Move the piece character in the placement dict
 	var piece_char = piece_placement[from]
+	var from_coords = notation_to_coords(from)
+	var to_coords = notation_to_coords(to)
+	
+	# --- Detect Castling (King starts x=3, moves 2 steps) ---
+	if piece_char.to_upper() == "K" and abs(from_coords.x - to_coords.x) == 2:
+		var rank = from_coords.y
+		var is_kingside = to_coords.x > from_coords.x # Moving right
+		
+		var rook_from: String
+		var rook_to: String
+		
+		if is_kingside:
+			rook_from = Cords_to_notation(7, rank)
+			rook_to = Cords_to_notation(4, rank) # Rook jumps to the left of King (x=5)
+		else:
+			rook_from = Cords_to_notation(0, rank)
+			rook_to = Cords_to_notation(2, rank) # Rook jumps to the right of King (x=1)
+			
+			# Move the Rook logically
+		if piece_placement.has(rook_from):
+			piece_placement[rook_to] = piece_placement[rook_from]
+			piece_placement.erase(rook_from)
+			
+			# Move the Rook visually
+			if piece_nodes.has(rook_from):
+				var rook_node = piece_nodes[rook_from]
+				rook_node.global_position = board_to_cord[rook_to]
+				rook_node.global_position.y += 19.7
+				rook_node.square_notation = rook_to
+				piece_nodes[rook_to] = rook_node
+				piece_nodes.erase(rook_from)
+				
+				# Mark as moved
+	moved_pieces[from] = true
 	piece_placement[to] = piece_char
 	piece_placement.erase(from)
 
-	# 2. Capture Logic: Remove victim node if it exists
 	if piece_nodes.has(to):
 		var victim = piece_nodes[to]
 		if is_instance_valid(victim):
 			victim.queue_free()
 		piece_nodes.erase(to)
 
-	# 3. Visual Update: Move the 3D Node
 	if piece_nodes.has(from):
 		var node = piece_nodes[from]
 		node.global_position = board_to_cord[to]
 		node.global_position.y += 19.7
-		
-		# Re-index the node in the dictionary
 		node.square_notation = to
 		piece_nodes[to] = node
 		piece_nodes.erase(from)
-	else:
-		print("Error: No node found at ", from)
+	
 	selected_square = ""
 	hide_indicators()
 
