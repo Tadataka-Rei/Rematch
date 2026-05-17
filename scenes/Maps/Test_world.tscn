@@ -128,5 +128,3 @@ top_level = true
 
 [node name="Player_loco_model" parent="." unique_id=1731599990 instance=ExtResource("2_c3lgt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.418571, 0, 0)
-levitate_height = 20.0
-levitate_duration = 2.0

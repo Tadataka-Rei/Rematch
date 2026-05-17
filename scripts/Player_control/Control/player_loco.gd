@@ -2,9 +2,9 @@ extends CharacterBody3D
 
 #region --- var stuff ---
 @export_group("Animation Paths")
-@export var loco_Walk_BlendPath: String = "parameters/Walk/blend_position"
-@export var loco_Run_BlendPath: String = "parameters/Run/blend_position"
-@export var loco_PlaybackPath: String = "parameters/playback"
+@export var loco_Walk_BlendPath: String = "parameters/locomotion_state_machine/WalkBlend/blend_position"
+@export var loco_Run_BlendPath: String = "parameters/locomotion_state_machine/RunBlend/blend_position"
+@export var loco_PlaybackPath: String = "parameters/locomotion_state_machine/playback"
 
 @export_group("State Names")
 @export var JumpStateName: String = "Jump"
@@ -27,53 +27,56 @@ extends CharacterBody3D
 @onready var playback: AnimationNodeStateMachinePlayback = animationTree.get(loco_PlaybackPath)
 
 @onready var gravity: bool = true
-
+var CanMove: bool = true
 
 var blend_input: Vector2 = Vector2.ZERO
 var falling: bool = false
 var running: bool = false
 
-var fall_buffer: float = 0.0 # timer prevent flicker go awa-aawawawaw
+var fall_buffer: float = 0.1 # timer prevent flicker go awa-aawawawaw
 const FALL_THRESHOLD: float = 0.3
 #endregion
 
 # ----------------------------------------bweh---------
 
 func _ready() -> void:
-	if not animationTree:
+	if !animationTree:
 		set_physics_process(false) # Disable movement if all hell break lose
 		push_error("AnimationTree missing!")
 
-#region ---------visuals & FOV----------
 func _process(delta: float) -> void:
 	var raw_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	#genius solution just keep switching back and forth, fuck math, i'm doing meth
-	var target_blend = Vector2(raw_input.x, raw_input.y)
 	
-	blend_input = blend_input.move_toward(target_blend, transitionSpeed * delta)
+	# genius solution just keep switching back and forth, fuck math, i'm doing meth
+	blend_input = blend_input.move_toward(raw_input, transitionSpeed * delta)
 	var active_path = loco_Run_BlendPath if running else loco_Walk_BlendPath
 	var target_fov = 85.0 if running else 75.0
 	
 	animationTree.set(active_path, blend_input)
 	camera.fov = lerp(camera.fov, target_fov, delta * 5.0)
-#endregion
-
-#region  ------------physics & movement----------
-func _physics_process(delta: float) -> void:
+	
 	if gravity:
 		_handle_gravity(delta)
-	_handle_movement(delta)
+
+	if CanMove:
+		_handle_movement(raw_input, delta)
+	else:
+		var target_speed = speed * (1.5 if running else 1.0)
+		velocity.x = move_toward(velocity.x, 0, target_speed)
+		velocity.z = move_toward(velocity.z, 0, target_speed)
+		
 	move_and_slide()
-	
 	_update_state()
+
+#region  ------------physics & movement----------
 
 # ------------------------- GRAVITY-
 func _handle_gravity(delta: float) -> void:
-	if not is_on_floor():
+	if !is_on_floor():
 		velocity += get_gravity() * delta
 		
 		fall_buffer += delta
-		if not falling and fall_buffer > FALL_THRESHOLD:
+		if !falling && fall_buffer > FALL_THRESHOLD:
 			falling = true
 			playback.travel(FallStateName)
 	else:
@@ -95,9 +98,7 @@ func _update_state() -> void:
 func _sync_animation_state() -> void:
 	playback.travel(RunStateName if running else WalkStateName)
 
-func _handle_movement(delta: float) -> void:
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	
+func _handle_movement(input_dir: Vector2, delta: float) -> void:
 	var move_dir = (camera_pivot.global_basis * Vector3(input_dir.x, 0, input_dir.y))
 	move_dir.y = 0
 	move_dir = move_dir.normalized()
@@ -110,12 +111,8 @@ func _handle_movement(delta: float) -> void:
 		
 		# Rotate armature brrr
 		var target_rotation = atan2(move_dir.x, move_dir.z)
-		
 		var current_rot = armature.global_rotation.y
-		var new_rot = lerp_angle(current_rot, target_rotation, rotation_speed * delta)
-		var global_rot = armature.global_rotation
-		global_rot.y = new_rot
-		armature.global_rotation = global_rot
+		armature.global_rotation.y = lerp_angle(current_rot, target_rotation, rotation_speed * delta)
 	else:
 		velocity.x = move_toward(velocity.x, 0, target_speed)
 		velocity.z = move_toward(velocity.z, 0, target_speed)
@@ -139,6 +136,6 @@ func levitate_player() -> void:
 func Toggle_gravity() -> void:
 	gravity = !gravity
 #endregion
+
 func toggle_cam_state() -> void:
 	camera_pivot.Camera_state_toggle()
-	
