@@ -13,14 +13,16 @@ func _ready() -> void:
 #region --------AREA3d----------------
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if (body.is_in_group("Monolith")):
+		print_debug("ented")
 		Skill_pivot.set_process_input(true)
-		Skill_pivot.target_enemy = body;
+		Skill_pivot.target_monolith = body;
 	pass # Replace with function body.
 
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
 	if (body.is_in_group("Monolith")):
-		Skill_pivot.target_enemy = null;
+		print_debug("outted")
+		Skill_pivot.target_monolith = null;
 		Skill_pivot.set_process_input(false)
 	pass # Replace with function body.
 	
