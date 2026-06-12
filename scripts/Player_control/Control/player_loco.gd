@@ -40,7 +40,7 @@ const FALL_THRESHOLD: float = 0.3
 # ----------------------------------------bweh---------
 
 func _ready() -> void:
-	if !animationTree:
+	if (!animationTree):
 		set_physics_process(false) # Disable movement if all hell break lose
 		push_error("AnimationTree missing!")
 
@@ -55,10 +55,10 @@ func _process(delta: float) -> void:
 	animationTree.set(active_path, blend_input)
 	camera.fov = lerp(camera.fov, target_fov, delta * 5.0)
 	
-	if gravity:
+	if (gravity):
 		_handle_gravity(delta)
 
-	if CanMove:
+	if (CanMove):
 		_handle_movement(raw_input, delta)
 	else:
 		var target_speed = speed * (1.5 if running else 1.0)
@@ -72,11 +72,11 @@ func _process(delta: float) -> void:
 
 # ------------------------- GRAVITY-
 func _handle_gravity(delta: float) -> void:
-	if !is_on_floor():
+	if (!is_on_floor()):
 		velocity += get_gravity() * delta
 		
 		fall_buffer += delta
-		if !falling && fall_buffer > FALL_THRESHOLD:
+		if (!falling && (fall_buffer > FALL_THRESHOLD)):
 			falling = true
 			playback.travel(FallStateName)
 	else:
@@ -87,12 +87,12 @@ func _handle_gravity(delta: float) -> void:
 
 func _update_state() -> void:
 	var move_pressed = Input.is_action_pressed("Shift")
-	if running != move_pressed:
+	if (running != move_pressed):
 		running = move_pressed
 		if is_on_floor():
 			_sync_animation_state()
 
-	if is_on_floor() and Input.is_action_just_pressed("ui_accept"):
+	if (is_on_floor() && Input.is_action_just_pressed("ui_accept")):
 		playback.travel(JumpStateName)
 
 func _sync_animation_state() -> void:
@@ -105,7 +105,7 @@ func _handle_movement(input_dir: Vector2, delta: float) -> void:
 	
 	var target_speed = speed * (1.5 if running else 1.0)
 
-	if move_dir:
+	if (move_dir):
 		velocity.x = move_dir.x * target_speed
 		velocity.z = move_dir.z * target_speed
 		
