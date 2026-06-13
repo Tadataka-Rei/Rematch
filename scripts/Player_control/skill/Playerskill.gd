@@ -25,6 +25,7 @@ func _ready() -> void:
 		print_debug("Armature not found")
 	if global_position== null:
 		print_debug("wtf")
+	add_to_group("player_skill")
 	
 	multimesh.instance_count = total_instances
 #endregion
@@ -145,4 +146,12 @@ func get_tile_color(x: int, z: int, forward: Vector3) -> Color:
 func destroy_board() -> void:
 	for i in total_instances:
 		multimesh.set_instance_transform(i, Transform3D(Basis(), Vector3(9999, -99, 9999)))
+	player.gravity = true
 #endregion
+
+func force_destroy_board() -> void:
+	if board_created:
+		board_created = false
+		Skill_field.orchiectomy()
+		destroy_board()
+		player.toggle_cam_state() # Returns the camera back to normal

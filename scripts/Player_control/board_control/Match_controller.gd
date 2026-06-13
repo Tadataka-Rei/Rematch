@@ -145,10 +145,8 @@ func get_legal_moves(square: String) -> Array:
 			# CASTLING LOGIC (King starts at x=3)
 			if not moved_pieces.has(square):
 				if not is_square_attacked(x, z, !white):
-					# --- KINGSIDE (Towards H-File, x=7) ---
 					var rook_h_sq = Cords_to_notation(7, z)
 					if piece_placement.has(rook_h_sq) and not moved_pieces.has(rook_h_sq):
-						# Path: squares at x=4, 5, 6 must be empty
 						if not piece_placement.has(Cords_to_notation(4, z)) and \
 						not piece_placement.has(Cords_to_notation(5, z)) and \
 						not piece_placement.has(Cords_to_notation(6, z)):
@@ -208,23 +206,23 @@ func get_pawn_moves(x: int, z: int, white: bool) -> Array:
 	var moves = []
 	var dir = -1 if white else 1
 	var start_rank = 6 if white else 1
-
-	# Forward move
+	
 	var f1 = Cords_to_notation(x, z + dir)
 	if is_on_board(x, z + dir) and not piece_placement.has(f1):
 		moves.append(f1)
-		# 2. Double move from start
 		var f2 = Cords_to_notation(x, z + (dir * 2))
 		if z == start_rank and not piece_placement.has(f2):
 			moves.append(f2)
 			
-	# Captures
 	for side in [-1, 1]:
 		var cap_x = x + side
 		var cap_z = z + dir
 		if is_on_board(cap_x, cap_z):
 			var cap_sq = Cords_to_notation(cap_x, cap_z)
+			# Normal capture
 			if piece_placement.has(cap_sq) and is_white(piece_placement[cap_sq]) != white:
+				moves.append(cap_sq)# En Passant capture check
+			elif cap_sq == en_passant_square:
 				moves.append(cap_sq)
 	return moves
 
@@ -277,8 +275,8 @@ func handle_piece_selection(square: String):
 	
 	# Check if it's the player's piece (White)
 	# Assuming White is uppercase in your FEN logic
-	if not is_white(type): 
-		return 
+	if not is_white(type):
+		return
 
 	hide_indicators() # This will now also reset materials
 	selected_square = square
@@ -315,29 +313,36 @@ func execute_ai_turn():
 	is_player_turn = true
 
 func calculate_best_move(depth: int):
-	var best_score = 99999  # Start high for Black
+	var best_score = 99999  # Start high for Black (minimizing)
 	var alpha = -100000
 	var beta = 100000
-	var best_move = null
+	var best_moves: Array = [] # Change this to an array to hold tied moves
 	
 	var possible_moves = get_all_valid_moves(false) # Black's moves
 	
 	for move in possible_moves:
 		var temp_state = piece_placement.duplicate()
-		# Use the move! (See Point #2 below)
+		var temp_ep = en_passant_square
+		
 		apply_simulated_move(move.from, move.to) 
 		
-		var score = minimax(depth - 1, alpha, beta, true) # Next turn is White (maximizing)
+		var score = minimax(depth - 1, alpha, beta, true)
+		score += randf_range(-0.05, 0.05)
 		
 		piece_placement = temp_state 
+		en_passant_square = temp_ep
 		
-		if score < best_score: # Black wants the LOWEST score
+		if score < best_score:
 			best_score = score
-			best_move = move
-		
-		beta = min(beta, best_score)
-		
-	return best_move
+			best_moves = [move]
+		elif abs(score - best_score) < 0.1: 
+			best_moves.append(move) # Move is essentially equal, add to choices
+			
+			beta = min(beta, best_score)
+			
+	if best_moves.size() > 0:
+		return best_moves.pick_random() # Pick a random move from the best options!
+	return null
 	
 func minimax(depth: int, alpha: float, beta: float, is_maximizing: bool) -> float:
 	if depth == 0:
@@ -357,20 +362,24 @@ func minimax(depth: int, alpha: float, beta: float, is_maximizing: bool) -> floa
 			max_eval = max(max_eval, eval)
 			alpha = max(alpha, eval)
 			if beta <= alpha:
-				break # Beta Cut-off
+				break
 		return max_eval
 	else: # Black's Turn (AI)
 		var min_eval = 99999
 		for m in moves:
 			var temp = piece_placement.duplicate()
-			simulate_move(m.from, m.to)
+			var temp_ep = en_passant_square
+			
+			apply_simulated_move(m.from, m.to)
 			var eval = minimax(depth - 1, alpha, beta, true)
+			
 			piece_placement = temp
+			en_passant_square = temp_ep
 			
 			min_eval = min(min_eval, eval)
 			beta = min(beta, eval)
 			if beta <= alpha:
-				break # Alpha Cut-off
+				break
 		return min_eval
 
 func evaluate_board() -> float:
@@ -390,7 +399,7 @@ func evaluate_board() -> float:
 		var idx = notation_to_index(sq)
 		var attack_bonus = ATTACKS[idx] if idx < ATTACKS.size() else 0
 		
-		var total_val = val + pos_bonus + (attack_bonus* 0.1)
+		var total_val = val + (pos_bonus * 0.5) + (attack_bonus * 0.1)
 		
 		if is_white(p):
 			score += total_val
@@ -411,28 +420,26 @@ func perform_move(from: String, to: String):
 	var piece_char = piece_placement[from]
 	var from_coords = notation_to_coords(from)
 	var to_coords = notation_to_coords(to)
+	var white = is_white(piece_char)
 	
-	# --- Detect Castling (King starts x=3, moves 2 steps) ---
+	# --- Detect Castling ---
 	if piece_char.to_upper() == "K" and abs(from_coords.x - to_coords.x) == 2:
 		var rank = from_coords.y
-		var is_kingside = to_coords.x > from_coords.x # Moving right
-		
+		var is_kingside = to_coords.x > from_coords.x
 		var rook_from: String
 		var rook_to: String
 		
 		if is_kingside:
 			rook_from = Cords_to_notation(7, rank)
-			rook_to = Cords_to_notation(4, rank) # Rook jumps to the left of King (x=5)
+			rook_to = Cords_to_notation(4, rank)
 		else:
 			rook_from = Cords_to_notation(0, rank)
-			rook_to = Cords_to_notation(2, rank) # Rook jumps to the right of King (x=1)
+			rook_to = Cords_to_notation(2, rank)
 			
-			# Move the Rook logically
 		if piece_placement.has(rook_from):
 			piece_placement[rook_to] = piece_placement[rook_from]
 			piece_placement.erase(rook_from)
 			
-			# Move the Rook visually
 			if piece_nodes.has(rook_from):
 				var rook_node = piece_nodes[rook_from]
 				rook_node.global_position = board_to_cord[rook_to]
@@ -441,17 +448,57 @@ func perform_move(from: String, to: String):
 				piece_nodes[rook_to] = rook_node
 				piece_nodes.erase(rook_from)
 				
-				# Mark as moved
+	# --- En Passant ---
+	if piece_char.to_upper() == "P" and to == en_passant_square:
+		var victim_sq = Cords_to_notation(int(to_coords.x), int(from_coords.y))
+		
+		piece_placement.erase(victim_sq)
+		
+		if piece_nodes.has(victim_sq):
+			var victim_node = piece_nodes[victim_sq]
+			if is_instance_valid(victim_node):
+				victim_node.queue_free()
+			piece_nodes.erase(victim_sq)
+
+	# ---------------------------------------------------------
+	# FIX: Check the victim type BEFORE updating piece_placement
+	# ---------------------------------------------------------
+	var victim_type = piece_placement.get(to, "").to_upper()
+	
 	moved_pieces[from] = true
 	piece_placement[to] = piece_char
 	piece_placement.erase(from)
-
+	
+	# --- Capture Handling + King Destruction ---
 	if piece_nodes.has(to):
+		# If the captured piece was a King
+		if victim_type == "K":
+			print("King has been captured! Destroying the domain...")
+			var victim = piece_nodes[to]
+			if is_instance_valid(victim):
+				victim.queue_free()
+			piece_nodes.erase(to)
+			clear_board()
+			
+			# Tell the board owner to destroy the MultiMesh/grid
+			var player_skill = get_tree().get_nodes_in_group("player_skill")
+			if not player_skill.is_empty():
+				player_skill[0].force_destroy_board()
+			elif get_parent() != null and get_parent().has_method("force_destroy_board"):
+				get_parent().force_destroy_board()
+			
+			# Clean up UI highlights leftover before cutting execution short
+			selected_square = ""
+			hide_indicators()
+			return
+		
+		# Regular capture logic
 		var victim = piece_nodes[to]
 		if is_instance_valid(victim):
 			victim.queue_free()
 		piece_nodes.erase(to)
 
+	# Move piece node
 	if piece_nodes.has(from):
 		var node = piece_nodes[from]
 		node.global_position = board_to_cord[to]
@@ -460,11 +507,36 @@ func perform_move(from: String, to: String):
 		piece_nodes[to] = node
 		piece_nodes.erase(from)
 	
+	# en passant target
+	if piece_char.to_upper() == "P" and abs(from_coords.y - to_coords.y) == 2:
+		var dir = 1 if white else -1
+		en_passant_square = Cords_to_notation(int(from_coords.x), int(from_coords.y + dir))
+	else:
+		en_passant_square = ""
+	
+	# Promotion
+	if piece_char.to_upper() == "P":
+		if (white and to_coords.y == 7) or (not white and to_coords.y == 0):
+			promote_pawn(to, white)
+	
 	selected_square = ""
 	hide_indicators()
 
+func promote_pawn(square: String, white: bool):
+	if piece_nodes.has(square):
+		var pawn_node = piece_nodes[square]
+		if is_instance_valid(pawn_node):
+			pawn_node.queue_free()
+		piece_nodes.erase(square)
+	
+	var promo_char = "Q" if white else "q"
+	piece_placement[square] = promo_char
+	
+	spawn_piece(promo_char, square)
+	print("Pawn promoted to Queen at: ", square)
+
 func hide_indicators():
-	for ind in move_indicators: 
+	for ind in move_indicators:
 		ind.visible = false
 	
 	# Reset highlighted piece

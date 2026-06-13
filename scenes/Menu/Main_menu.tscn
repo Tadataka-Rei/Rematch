@@ -2,6 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://c8ps1xhwx0xwj" path="res://scenes/Menu/Checker_Board.gdshader" id="1_jifmr"]
 [ext_resource type="Script" uid="uid://dm681yqhqs6l6" path="res://scenes/Menu/main_menu.gd" id="1_us5si"]
+[ext_resource type="PackedScene" uid="uid://nhbbso06pvj0" path="res://scenes/Maps/Keter.tscn" id="2_rlhro"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_us5si"]
 shader = ExtResource("1_jifmr")
@@ -33,6 +34,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_us5si")
+game_scene = ExtResource("2_rlhro")
 
 [node name="Panel" type="Panel" parent="." unique_id=1177206840]
 material = SubResource("ShaderMaterial_us5si")
@@ -40,6 +42,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -142.0
+offset_top = -1.0
+offset_right = -142.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -67,22 +73,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_jifmr")
 text = "New Match
 "
 
-[node name="Continue" type="Button" parent="VBoxContainer" unique_id=1506693586]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = SubResource("StyleBoxFlat_rlhro")
-text = "Continue"
-
-[node name="Setting" type="Button" parent="VBoxContainer" unique_id=1475612124]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = SubResource("StyleBoxFlat_jifmr")
-text = "Setting"
-
 [node name="Quit" type="Button" parent="VBoxContainer" unique_id=1923860909]
 layout_mode = 2
 size_flags_vertical = 3
@@ -107,6 +97,4 @@ theme_override_font_sizes/font_size = 100
 text = "Re-Match"
 
 [connection signal="pressed" from="VBoxContainer/New_game" to="." method="_on_new_game_pressed"]
-[connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="VBoxContainer/Setting" to="." method="_on_setting_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

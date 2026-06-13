@@ -22,7 +22,7 @@ enum CameraStates {ThirdPov, TopDownPOV}
 
 @export_category("thirdPOV setting")
 @export var cameraPanSpeed: float = 0.0015
-
+# ? heh
 var controller: Node
 var CameraMode: CameraStates = CameraStates.ThirdPov
 var topdown_pan_offset: Vector2 = Vector2.ZERO

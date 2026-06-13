@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://djlkenja0xhkq" path="res://models/Map_elements/Keter/walls/prefabs/tower.tscn" id="9_hlfde"]
 [ext_resource type="PackedScene" uid="uid://tr12mve573p7" path="res://models/Map_elements/Keter/walls/prefabs/wall.tscn" id="10_tsmhn"]
 [ext_resource type="PackedScene" uid="uid://deat88bnhsa50" path="res://models/Map_elements/Keter/walls/prefabs/gate.tscn" id="11_j6yly"]
+[ext_resource type="PackedScene" uid="uid://dwl65stnblj20" path="res://entities/test_enemy/Test_dummy.tscn" id="12_8hroh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d3j3j"]
 sky_top_color = Color(0.4421896, 0.45331138, 0.4310807, 1)
@@ -197,3 +198,6 @@ transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -167.008, 0, 0)
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 41.573906, 4.532362, -4.953382)
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="." unique_id=1096863693]
+
+[node name="Monolith test" parent="." unique_id=1676045070 groups=["Monolith"] instance=ExtResource("12_8hroh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34499073, 0.967257, 1.2510567)
