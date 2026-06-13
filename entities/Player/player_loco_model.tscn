@@ -170,7 +170,7 @@ node_connections = [&"output", 0, &"locomotion_state_machine"]
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wxnt1"]
 render_priority = 0
 shader = ExtResource("4_p0qwn")
-shader_parameter/speed = 3.0
+shader_parameter/speed = 10.0
 shader_parameter/strength = 0.5
 shader_parameter/upto = 19.5
 
@@ -207,33 +207,33 @@ RunStateName = "RunBlend"
 animationTree = NodePath("AnimationTree")
 transitionSpeed = 2.0
 
-[node name="Armature" parent="." index="0" unique_id=919717545]
+[node name="Armature" parent="." index="0" unique_id=416541502]
 transform = Transform3D(-0.4, -6.039832e-08, 2.6400945e-15, 0, -1.7484556e-08, -0.4, 6.039832e-08, -0.4, 1.7484556e-08, 0, 0, 0)
 
-[node name="Skeleton3D" parent="Armature" index="0" unique_id=1825067089]
-bones/0/position = Vector3(0.027159527, 0.03295364, -2.1163545)
-bones/0/rotation = Quaternion(-0.7269058, -0.05405152, 0.014399955, 0.68445534)
-bones/1/rotation = Quaternion(0.00794817, 0.009670537, 0.019965969, 0.9997223)
-bones/2/rotation = Quaternion(0.007262561, 0.0013142576, 0.013430515, 0.9998826)
-bones/3/rotation = Quaternion(0.0070431908, 0.0015733019, 0.013430849, 0.99988383)
-bones/4/rotation = Quaternion(0.06894368, -0.0013745169, 0.0053491206, 0.9976053)
-bones/5/rotation = Quaternion(-0.060000625, 0.01122798, -0.002937216, 0.99813086)
-bones/7/rotation = Quaternion(-0.71516114, -0.2808913, 0.5332629, -0.35394245)
-bones/8/rotation = Quaternion(0.38693997, 0.12608409, 0.048197538, 0.9121717)
-bones/9/rotation = Quaternion(-0.05625896, -0.0007187117, 0.030161463, 0.99796027)
-bones/11/rotation = Quaternion(0.71040744, -0.27992877, 0.55366033, 0.3322973)
-bones/12/rotation = Quaternion(0.3168386, -0.21752787, -0.0653112, 0.92088515)
-bones/13/rotation = Quaternion(-0.056406245, 0.0011256053, -0.0626456, 0.99644005)
-bones/15/rotation = Quaternion(0.13412356, 0.08441104, 0.9843945, -0.076506786)
-bones/16/rotation = Quaternion(-0.1656101, -0.016948203, 0.037494387, 0.9853326)
-bones/17/rotation = Quaternion(0.51632375, -0.02728333, -0.05946772, 0.8538906)
-bones/18/rotation = Quaternion(0.28990483, 0.0080043115, -0.0013768114, 0.95702106)
-bones/20/rotation = Quaternion(-0.08881957, -0.021613825, 0.99551046, -0.02455393)
-bones/21/rotation = Quaternion(-0.074730955, 0.084890105, -0.027581561, 0.993201)
-bones/22/rotation = Quaternion(0.53535765, 0.017403375, 0.02650505, 0.84403)
-bones/23/rotation = Quaternion(0.30520335, -0.008669325, 0.0012611988, 0.9522469)
+[node name="Skeleton3D" parent="Armature" index="0" unique_id=392051013]
+bones/0/position = Vector3(0.028405523, 0.034066435, -2.1170545)
+bones/0/rotation = Quaternion(-0.7270892, -0.0550064, 0.015304974, 0.68416476)
+bones/1/rotation = Quaternion(0.007107543, 0.0127666425, 0.020413226, 0.9996849)
+bones/2/rotation = Quaternion(-0.0037681258, 0.0024651438, 0.014288278, 0.9998879)
+bones/3/rotation = Quaternion(-0.003995486, 0.0030870663, 0.014223408, 0.9998861)
+bones/4/rotation = Quaternion(0.07792483, -0.00198117, 0.004372444, 0.9969477)
+bones/5/rotation = Quaternion(-0.043992594, 0.010268242, -0.003790331, 0.9989719)
+bones/7/rotation = Quaternion(-0.7021167, -0.30436555, 0.523452, -0.3746889)
+bones/8/rotation = Quaternion(0.4264549, 0.12061296, 0.054702774, 0.8947605)
+bones/9/rotation = Quaternion(-0.056175936, 0.0028539055, 0.014628282, 0.99830973)
+bones/11/rotation = Quaternion(0.7007994, -0.30058986, 0.5423407, 0.35269323)
+bones/12/rotation = Quaternion(0.3542795, -0.21968223, -0.055231083, 0.90729016)
+bones/13/rotation = Quaternion(-0.05659821, 0.0005656985, -0.08714073, 0.9945868)
+bones/15/rotation = Quaternion(0.13384365, 0.088357516, 0.98385465, -0.079428725)
+bones/16/rotation = Quaternion(-0.16899002, -0.017886054, 0.031075612, 0.9849654)
+bones/17/rotation = Quaternion(0.5170936, -0.025801545, -0.056241885, 0.8536892)
+bones/18/rotation = Quaternion(0.28764287, 0.007952053, -0.0014121563, 0.95770377)
+bones/20/rotation = Quaternion(-0.08779873, -0.022868365, 0.9956142, -0.022822717)
+bones/21/rotation = Quaternion(-0.08370933, 0.084579155, -0.02501177, 0.9925793)
+bones/22/rotation = Quaternion(0.5374061, 0.01604744, 0.026089335, 0.84276724)
+bones/23/rotation = Quaternion(0.3049488, -0.008429789, 0.0013664089, 0.9523305)
 
-[node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=788899885]
+[node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=146339561]
 surface_material_override/0 = SubResource("StandardMaterial3D_nwgu8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=538752767]
@@ -241,7 +241,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0571268, 0)
 shape = SubResource("CapsuleShape3D_en83w")
 
 [node name="CameraPivot" parent="." index="3" unique_id=1590433032 instance=ExtResource("2_en83w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8395689, -0.045618713)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.6674573, -1.0008047)
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="4" unique_id=1842881490]
 tree_root = SubResource("AnimationNodeBlendTree_fjl2o")

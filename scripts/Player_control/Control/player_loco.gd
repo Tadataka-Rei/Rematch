@@ -18,7 +18,7 @@ extends CharacterBody3D
 @export var speed: float = 5.0
 @export var rotation_speed: float = 10.0
 @export var JUMP_VELOCITY: float = 4.5
-@export var levitate_height: float = 2.0
+@export var levitate_height: float = 20.0
 @export var levitate_duration: float = 1.5
 
 @onready var armature: Node3D = $Armature
