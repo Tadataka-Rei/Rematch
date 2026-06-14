@@ -130,10 +130,6 @@ func create_board(board_size: int, direction: Vector3) -> void:
 
 func get_tile_color(x: int, z: int, forward: Vector3) -> Color:
 	var is_even = (x + z) % 2 == 0
-	if(x == 0&& z== 0):
-		return Color.RED
-	if(x == 7 && z== 7 ):
-		return Color.BLUE
 	if forward.x > 0 && forward.z <0:
 		return Color.WHITE if is_even else Color.BLACK
 	else:

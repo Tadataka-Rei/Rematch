@@ -245,7 +245,7 @@ func load_pieces_from_dict(placement: Dictionary):
 		spawn_piece(type, square)
 
 func test_spawn_starting_board():
-	var starting_fen = "RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr"
+	var starting_fen = "RNBKQBNR/PPPPPPPP/8/8/8/8/ppppppPP/rnbkqbnr"
 
 	fen_to_board(starting_fen)
 	for square in piece_placement:
@@ -515,9 +515,31 @@ func perform_move(from: String, to: String):
 		en_passant_square = ""
 	
 	# Promotion
-	if piece_char.to_upper() == "P":
-		if (white and to_coords.y == 7) or (not white and to_coords.y == 0):
-			promote_pawn(to, white)
+	var is_promo = (piece_char.to_upper() == "P") and \
+	((white and to_coords.y == 0) or (not white and to_coords.y == 7))
+	var final_piece_char = piece_char
+	if is_promo:
+		final_piece_char = "Q" if white else "q"
+		# 2. Update logic state
+	piece_placement.erase(from)
+	piece_placement[to] = final_piece_char 
+	
+	# 3. Handle Visuals
+	if is_promo:# Destroy pawn model immediately
+		if piece_nodes.has(from):
+			piece_nodes[from].queue_free()
+			piece_nodes.erase(from)
+			# Spawn the promoted piece
+		spawn_piece(final_piece_char, to)
+	else:
+		# Standard move
+		if piece_nodes.has(from):
+			var node = piece_nodes[from]
+			node.global_position = board_to_cord[to]
+			node.global_position.y += 19.7
+			node.square_notation = to
+			piece_nodes[to] = node
+			piece_nodes.erase(from)
 	
 	selected_square = ""
 	hide_indicators()

@@ -129,8 +129,8 @@ func levitate_player() -> void:
 	var target_y = global_position.y + levitate_height
 	var tween = create_tween()
 	
-	tween.tween_property(self, "global_position:y", target_y, levitate_duration)\
-	.set_trans(Tween.TRANS_SINE)\
+	tween.tween_property(self , "global_position:y", target_y, levitate_duration) \
+	.set_trans(Tween.TRANS_SINE) \
 	.set_ease(Tween.EASE_IN_OUT)
 
 func Toggle_gravity() -> void:
