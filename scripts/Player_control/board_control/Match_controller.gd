@@ -221,7 +221,7 @@ func get_pawn_moves(x: int, z: int, white: bool) -> Array:
 			var cap_sq = Cords_to_notation(cap_x, cap_z)
 			# Normal capture
 			if piece_placement.has(cap_sq) and is_white(piece_placement[cap_sq]) != white:
-				moves.append(cap_sq)# En Passant capture check
+				moves.append(cap_sq) # En Passant capture check
 			elif cap_sq == en_passant_square:
 				moves.append(cap_sq)
 	return moves
@@ -313,7 +313,7 @@ func execute_ai_turn():
 	is_player_turn = true
 
 func calculate_best_move(depth: int):
-	var best_score = 99999  # Start high for Black (minimizing)
+	var best_score = 99999 # Start high for Black (minimizing)
 	var alpha = -100000
 	var beta = 100000
 	var best_moves: Array = [] # Change this to an array to hold tied moves
@@ -324,18 +324,18 @@ func calculate_best_move(depth: int):
 		var temp_state = piece_placement.duplicate()
 		var temp_ep = en_passant_square
 		
-		apply_simulated_move(move.from, move.to) 
+		apply_simulated_move(move.from, move.to)
 		
 		var score = minimax(depth - 1, alpha, beta, true)
 		score += randf_range(-0.05, 0.05)
 		
-		piece_placement = temp_state 
+		piece_placement = temp_state
 		en_passant_square = temp_ep
 		
 		if score < best_score:
 			best_score = score
 			best_moves = [move]
-		elif abs(score - best_score) < 0.1: 
+		elif abs(score - best_score) < 0.1:
 			best_moves.append(move) # Move is essentially equal, add to choices
 			
 			beta = min(beta, best_score)
@@ -516,7 +516,7 @@ func perform_move(from: String, to: String):
 	
 	# Promotion
 	if piece_char.to_upper() == "P":
-		if (white and to_coords.y == 7) or (not white and to_coords.y == 0):
+		if (white and to_coords.y == 0) or (not white and to_coords.y == 7):
 			promote_pawn(to, white)
 	
 	selected_square = ""
