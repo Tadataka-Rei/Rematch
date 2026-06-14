@@ -170,8 +170,8 @@ node_connections = [&"output", 0, &"locomotion_state_machine"]
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wxnt1"]
 render_priority = 0
 shader = ExtResource("4_p0qwn")
-shader_parameter/speed = 10.0
-shader_parameter/strength = 0.5
+shader_parameter/speed = 3.0
+shader_parameter/strength = 0.0
 shader_parameter/upto = 19.5
 
 [sub_resource type="BoxMesh" id="BoxMesh_1ildo"]
@@ -210,30 +210,30 @@ transitionSpeed = 2.0
 [node name="Armature" parent="." index="0" unique_id=416541502]
 transform = Transform3D(-0.4, -6.039832e-08, 2.6400945e-15, 0, -1.7484556e-08, -0.4, 6.039832e-08, -0.4, 1.7484556e-08, 0, 0, 0)
 
-[node name="Skeleton3D" parent="Armature" index="0" unique_id=392051013]
-bones/0/position = Vector3(0.028405523, 0.034066435, -2.1170545)
-bones/0/rotation = Quaternion(-0.7270892, -0.0550064, 0.015304974, 0.68416476)
-bones/1/rotation = Quaternion(0.007107543, 0.0127666425, 0.020413226, 0.9996849)
-bones/2/rotation = Quaternion(-0.0037681258, 0.0024651438, 0.014288278, 0.9998879)
-bones/3/rotation = Quaternion(-0.003995486, 0.0030870663, 0.014223408, 0.9998861)
-bones/4/rotation = Quaternion(0.07792483, -0.00198117, 0.004372444, 0.9969477)
-bones/5/rotation = Quaternion(-0.043992594, 0.010268242, -0.003790331, 0.9989719)
-bones/7/rotation = Quaternion(-0.7021167, -0.30436555, 0.523452, -0.3746889)
-bones/8/rotation = Quaternion(0.4264549, 0.12061296, 0.054702774, 0.8947605)
-bones/9/rotation = Quaternion(-0.056175936, 0.0028539055, 0.014628282, 0.99830973)
-bones/11/rotation = Quaternion(0.7007994, -0.30058986, 0.5423407, 0.35269323)
-bones/12/rotation = Quaternion(0.3542795, -0.21968223, -0.055231083, 0.90729016)
-bones/13/rotation = Quaternion(-0.05659821, 0.0005656985, -0.08714073, 0.9945868)
-bones/15/rotation = Quaternion(0.13384365, 0.088357516, 0.98385465, -0.079428725)
-bones/16/rotation = Quaternion(-0.16899002, -0.017886054, 0.031075612, 0.9849654)
-bones/17/rotation = Quaternion(0.5170936, -0.025801545, -0.056241885, 0.8536892)
-bones/18/rotation = Quaternion(0.28764287, 0.007952053, -0.0014121563, 0.95770377)
-bones/20/rotation = Quaternion(-0.08779873, -0.022868365, 0.9956142, -0.022822717)
-bones/21/rotation = Quaternion(-0.08370933, 0.084579155, -0.02501177, 0.9925793)
-bones/22/rotation = Quaternion(0.5374061, 0.01604744, 0.026089335, 0.84276724)
-bones/23/rotation = Quaternion(0.3049488, -0.008429789, 0.0013664089, 0.9523305)
+[node name="Skeleton3D" parent="Armature" index="0" unique_id=1825067089]
+bones/0/position = Vector3(0.02554772, 0.031658936, -2.1171947)
+bones/0/rotation = Quaternion(-0.7274425, -0.053125262, 0.015284639, 0.68393826)
+bones/1/rotation = Quaternion(0.008897771, 0.013150412, 0.021476626, 0.9996433)
+bones/2/rotation = Quaternion(-0.00027026542, 0.0025770876, 0.014453064, 0.9998923)
+bones/3/rotation = Quaternion(-0.000511591, 0.0031241046, 0.014427391, 0.999891)
+bones/4/rotation = Quaternion(0.07612654, -0.0016663258, 0.0029889033, 0.9970923)
+bones/5/rotation = Quaternion(-0.050422378, 0.009241221, -0.0025506394, 0.99868196)
+bones/7/rotation = Quaternion(-0.7069025, -0.2963368, 0.52646357, -0.36784434)
+bones/8/rotation = Quaternion(0.4143095, 0.122675054, 0.051929314, 0.9003344)
+bones/9/rotation = Quaternion(-0.05624128, 0.0016686231, 0.021817854, 0.99817747)
+bones/11/rotation = Quaternion(0.7051272, -0.29306316, 0.5442734, 0.34738472)
+bones/12/rotation = Quaternion(0.34263566, -0.22090167, -0.055967793, 0.9114116)
+bones/13/rotation = Quaternion(-0.05656139, 0.00087371096, -0.085583635, 0.99472386)
+bones/15/rotation = Quaternion(0.13364512, 0.088272244, 0.98399097, -0.07815847)
+bones/16/rotation = Quaternion(-0.16954605, -0.01759379, 0.032912098, 0.9848155)
+bones/17/rotation = Quaternion(0.5149587, -0.02661196, -0.057768594, 0.8548522)
+bones/18/rotation = Quaternion(0.28752646, 0.007950174, -0.0014134172, 0.95773876)
+bones/20/rotation = Quaternion(-0.08884257, -0.021792112, 0.9955403, -0.023057602)
+bones/21/rotation = Quaternion(-0.086344324, 0.08403833, -0.026286572, 0.9923665)
+bones/22/rotation = Quaternion(0.5412388, 0.01724062, 0.025154913, 0.84031576)
+bones/23/rotation = Quaternion(0.30478573, -0.008662648, 0.0012658925, 0.9523808)
 
-[node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=146339561]
+[node name="Base_Cube" parent="Armature/Skeleton3D" index="0" unique_id=788899885]
 surface_material_override/0 = SubResource("StandardMaterial3D_nwgu8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=538752767]
@@ -249,7 +249,7 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/locomotion_state_machine/RunBlend/blend_position = Vector2(-0.54344624, 0.556962)
 parameters/locomotion_state_machine/WalkBlend/blend_position = Vector2(-0.0073637962, 0.0047392845)
 
-[node name="ChessboardDeploy" type="MultiMeshInstance3D" parent="." index="5" unique_id=1762747795 node_paths=PackedStringArray("Skill_field", "Match_Controller") groups=["Skill_Pivot"]]
+[node name="Skill_pivot" type="MultiMeshInstance3D" parent="." index="5" unique_id=1762747795 node_paths=PackedStringArray("Skill_field", "Match_Controller") groups=["Skill_Pivot"]]
 physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.059128523, 0.039432287, -0.06561661)
 top_level = true
